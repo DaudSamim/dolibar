@@ -179,9 +179,9 @@ public function update(Request $request)
     { 
         
         DB::table('employees')->where('id',$request->id)->update([
-            'surnames' => $request->surnames,
+            'surname' => $request->surname,
             'name' => $request->name,
-            'direction' => $request->direction,
+            
             'province' => $request->province,
             'mobile' => $request->mobile,
             'email' => $request->email,
