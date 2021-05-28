@@ -49,7 +49,6 @@
     object-fit: contain;
 }
 </style>
-<!-- yeeen -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"
     integrity="sha384-REHJTs1r2ErKBuJB0fCK99gCYsVjwxHrSU0N7I1zl9vZbggVJXRMsv/sLlOAGb4M" crossorigin="anonymous">
 @section('content')
@@ -89,7 +88,7 @@
                 </div>
                 <div class="d-flex">
                     <div class="col-md-8">
-                        <h6 class="mb-3">Nombre del Trabajador</h6>
+                        <h6 class="mb-3">{{$employee->name}}</h6>
                         <div class="d-flex">
                             <div class="col-md-6 p-lg-0">
                                 <p>Numero celular</p>
@@ -98,10 +97,10 @@
                                 <p>E-mail</p>
                             </div>
                             <div class="col-md-6 p-lg-0">
-                                <p>Numero celular</p>
-                                <p>Direccion de residencia</p>
-                                <p>Provincia</p>
-                                <p>E-mail</p>
+                                <p>{{$employee->mobile}}</p>
+                                <p>{{$employee->address}}</p>
+                                <p>{{$employee->province}}</p>
+                                <p>{{$employee->email}}</p>
                             </div>
                         </div>
                     </div>
