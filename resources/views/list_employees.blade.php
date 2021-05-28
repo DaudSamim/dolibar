@@ -52,7 +52,7 @@
 											<tbody>
                                             @foreach($employees as $employee)
 												<tr>
-												    <td><a href="/profile">{{ $employee->name}}</a></td>
+												    <td><a href="{{'profile/'.$employee->id}}">{{ $employee->name}}</a></td>
 													<td>{{ $employee->mobile}}</td>
 													<td></td>
                                                     <td></td>
