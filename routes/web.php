@@ -8,12 +8,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', '\App\Http\Controllers\UserController@postLogin');
 });
 
-<<<<<<< HEAD
-// KASHIF
-=======
 
-// daud's commit final
->>>>>>> edda8df22521229b98c9b9e41ac3145568768336
 Route::middleware('auth:web')->group(function () {
     
     // Route::get('/home', '\App\Http\Controllers\HomeController@getHome');
@@ -27,8 +22,9 @@ Route::middleware('auth:web')->group(function () {
         $times = DB::table('times')->first();  
         return view('home',compact('times'));
     });
-    Route::get('/profile',function(){
-        return view('profile');
+    Route::get('/profile/{id}',function($id){
+        $employee = DB::table('employees')->where('id',$id)->first(); 
+        return view('profile',compact('employee'));
     });
     Route::get('/project_list',function(){
         return view('project_list');

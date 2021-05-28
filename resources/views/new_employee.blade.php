@@ -69,8 +69,8 @@
 									</div>
 
 									<div class="form-group form-inline-custom">
+                                    <label for="exampleInputPassword1">Tipo de cuenta</label>
 									<select class="js-example-basic-single w-100 select2-hidden-accessible" value="{{old('bank')}}"name="account_type" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
-                              <option value="" data-select2-id="3">Tipo de cuenta</option>
                               <option value="cuenta de ahorros" data-select2-id="3">cuenta de ahorros</option>
                                  <option value="cuenta corriente" data-select2-id="12">cuenta corriente</option>
                                  <option value="cuenta de ahorros" data-select2-id="13">cuenta de ahorros</option>
@@ -79,8 +79,9 @@
                               </select>
 							  </div>
 									<div class="form-group form-inline-custom">
+                                    <label for="exampleInputPassword1">Banco</label>
+
 									<select class="js-example-basic-single w-100 select2-hidden-accessible" value="{{old('bank')}}"name="bank" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
-                              <option value="" data-select2-id="3">Banco</option>
                               <option value="BCP" data-select2-id="3">BCP</option>
                                  <option value="Banco de la" data-select2-id="12">Banco de la</option>
                                  <option value="Nacion" data-select2-id="13">Nacion</option>
