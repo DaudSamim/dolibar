@@ -17,6 +17,11 @@ Route::middleware('auth:web')->group(function () {
     Route::get('delete_user/{id}','\App\Http\Controllers\HomeController@delete_user');
     Route::get('edit_user/{id}','\App\Http\Controllers\HomeController@edit_user');
     Route::post('/save_changes', '\App\Http\Controllers\HomeController@update');
+    Route::post('/save_changes_employee', '\App\Http\Controllers\HomeController@update_employee');
+
+    Route::get('edit_employee/{id}', '\App\Http\Controllers\HomeController@edit_employee');
+    Route::get('delete_employee/{id}', '\App\Http\Controllers\HomeController@delete_employee');
+
 
     Route::get('/home',function(){
         $times = DB::table('times')->first();  

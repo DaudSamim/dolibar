@@ -147,6 +147,13 @@ public function edit_user($id){
     $edit_user = DB::table('users')->where('id',$id)->first();
     return view('editpage',compact("edit_user"));
 }
+public function edit_employee($id){
+    $edit_employee = DB::table('employees')->where('id',$id)->first();
+    return view('editemppage',compact("edit_employee"));
+    dd($edit_employee);
+    
+}
+ 
 public function update(Request $request)
     { 
         $this->validate(request(), [
@@ -168,11 +175,33 @@ public function update(Request $request)
         ]);
         return redirect('user')->with('info', 'You have Edited User Successfully!');
     }
+    public function update_employee(Request $request)
+    { 
+        
+        DB::table('employees')->where('id',$request->id)->update([
+            'surnames' => $request->surnames,
+            'name' => $request->name,
+            'direction' => $request->direction,
+            'province' => $request->province,
+            'mobile' => $request->mobile,
+            'email' => $request->email,
+            'account_number' => $request->account_number,
+            'account_type' => $request->account_type,
+            'bank' => $request->bank,
+            'emergency_number' => $request->emergency_number,
+        ]);
+        return redirect('user')->with('info', 'You have Edited User Successfully!');
+    }
+   
 
-public function delete_user($id){
-    DB::table('users')->where('id',$id)->delete();
-     return redirect()->back()->with('info', 'You have Deleted User Successfully!');
-}
+    public function delete_user($id){
+        DB::table('users')->where('id',$id)->delete();
+        return redirect()->back()->with('info', 'You have Deleted User Successfully!');
+    }
+    public function delete_employee($id){
+        DB::table('employees')->where('id',$id)->delete();
+        return redirect()->back()->with('info', 'You have Deleted User Successfully!');
+    }
 
     public function gettest()
     {

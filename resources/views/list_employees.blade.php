@@ -47,6 +47,7 @@
                                                     <th>% estimado</th>
                                                     <th>Estado</th>
                                                     <th>Holgua tarea</th>
+                                                    <th>Actions</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -61,7 +62,36 @@
                                                     <td></td>
 													<td class="text-success">A tiempo</td>
 													<td class="text-success">+ 3 dias</td>
-												</tr>
+                                                    <td>
+                                                        <a href="{{'edit_employee/'.$employee->id}}"><button type="button" class=" btn btn-primary   text-white" name="create_record" id="create_product">
+                                                            Edit
+                                                        </button></a>
+                                                        <button type="button" class="btn  btn-danger" data-toggle="modal" data-target="{{'#exampleMod'.$employee->id}}">
+                                                        Delete
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <div class="modal fade" id="{{'exampleMod'.$employee->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                 <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                       <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">Delete User</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                          </button>
+                                       </div>
+                                       <div class="modal-body">
+                                          Are you sure you want to DELETE user?
+                                       </div>
+                                       <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                          <a href="{{'delete_employee/'.$employee->id}}"><button type="button" class=" btn btn-danger   text-white" name="create_record" id="create_product">
+                                          Delete
+                                          </button></a>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
                                             @endforeach
 												
 											</tbody>
