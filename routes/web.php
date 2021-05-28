@@ -9,6 +9,7 @@ Route::middleware('guest')->group(function () {
 });
 
 
+// daud's commit
 Route::middleware('auth:web')->group(function () {
     
     // Route::get('/home', '\App\Http\Controllers\HomeController@getHome');
