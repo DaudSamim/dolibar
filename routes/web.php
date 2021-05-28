@@ -8,7 +8,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', '\App\Http\Controllers\UserController@postLogin');
 });
 
+<<<<<<< HEAD
 // KASHIF
+=======
+
+// daud's commit final
+>>>>>>> edda8df22521229b98c9b9e41ac3145568768336
 Route::middleware('auth:web')->group(function () {
     
     // Route::get('/home', '\App\Http\Controllers\HomeController@getHome');
