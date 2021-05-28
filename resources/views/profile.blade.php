@@ -49,6 +49,7 @@
     object-fit: contain;
 }
 </style>
+<!-- yeeen -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"
     integrity="sha384-REHJTs1r2ErKBuJB0fCK99gCYsVjwxHrSU0N7I1zl9vZbggVJXRMsv/sLlOAGb4M" crossorigin="anonymous">
 @section('content')
