@@ -56,12 +56,7 @@
                      </tr>
                   </thead>
                   <tbody>
-                  @php
-                  $start = $times->monday_start_time;
-                  @endphp
-                  @php
-                  $end = $times->monday_end_time;
-                  @endphp
+                  
                   
                      <tr>
                         <th>Lunes</th>
@@ -128,7 +123,7 @@
                         </td>
                         <td>
                            <div class="form-group" data-select2-id="7">
-                              <select class="js-example-basic-single w-100 select2-hidden-accessible"onchange="difference()"id="#end"name="monday_end_time" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                              <select class="js-example-basic-single w-100 select2-hidden-accessible "onchange="difference('#start','#end','#reslt')"  onload="my()"id="#end"name="monday_end_time" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
                               <option value="{{$times->monday_end_time}}" data-select2-id="3">{{$times->monday_end_time}}</option>
                               <option value="0:00" data-select2-id="3">0:00</option>
                                  <option value="0:30" data-select2-id="12">0:30</option>
@@ -183,7 +178,7 @@
                         </td>
                         <td>
                         <div class="form-group">
-                        <span id = "result"></span>
+                        <span id = "#reslt"></span>
                               
                            </div>
                         </td>
@@ -192,7 +187,7 @@
                         <th>Martes</th>
                         <td>
                            <div class="form-group" data-select2-id="7">
-                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="tuesday_start_time" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="tuesday_start_time"id="#start1" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
                               <option value="{{$times->tuesday_start_time}}" data-select2-id="3">{{$times->tuesday_start_time}}</option>
                               <option value="0:00" data-select2-id="3">0:00</option>
                                  <option value="0:30" data-select2-id="12">0:30</option>
@@ -247,7 +242,7 @@
                         </td>
                         <td>
                            <div class="form-group" data-select2-id="7">
-                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="tuesday_end_time" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="tuesday_end_time"id="#end1"onchange="difference('#start1','#end1','#reslt1')" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
                               <option value="{{$times->tuesday_end_time}}" data-select2-id="3">{{$times->tuesday_end_time}}</option>
                               <option value="0:00" data-select2-id="3">0:00</option>
                                  <option value="0:30" data-select2-id="12">0:30</option>
@@ -301,8 +296,9 @@
                            </div>
                         </td>
                         <td>
-                           <div class="form-group">
-                              <input type="text " class="form-control">  
+                        <div class="form-group">
+                        <span id = "#reslt1"></span>
+                              
                            </div>
                         </td>
                      </tr>
@@ -310,7 +306,7 @@
                         <th>Miércoles</th>
                         <td>
                            <div class="form-group" data-select2-id="7">
-                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="wednesday_start_time" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="wednesday_start_time"id="#start2" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
                               <option value="{{$times->wednesday_start_time}}" data-select2-id="3">{{$times->wednesday_start_time}}</option>
                               <option value="0:00" data-select2-id="3">0:00</option>
                                  <option value="0:30" data-select2-id="12">0:30</option>
@@ -365,7 +361,7 @@
                         </td>
                         <td>
                            <div class="form-group" data-select2-id="7">
-                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="wednesday_end_time" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="wednesday_end_time"id="#end2"onchange="difference('#start2','#end2','#reslt2')" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
                               <option value="{{$times->wednesday_end_time}}" data-select2-id="3">{{$times->wednesday_end_time}}</option>
                               <option value="0:00" data-select2-id="3">0:00</option>
                                  <option value="0:30" data-select2-id="12">0:30</option>
@@ -419,8 +415,9 @@
                            </div>
                         </td>
                         <td>
-                           <div class="form-group">
-                              <input type="text " class="form-control">  
+                        <div class="form-group">
+                        <span id = "#reslt2"></span>
+                              
                            </div>
                         </td>
                      </tr>
@@ -428,7 +425,7 @@
                         <th>Jueves</th>
                         <td>
                            <div class="form-group" data-select2-id="7">
-                           <select class="js-example-basic-single w-100 select2-hidden-accessible"name="thursday_start_time" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                           <select class="js-example-basic-single w-100 select2-hidden-accessible"name="thursday_start_time"id="#start3" data-width="100%"  data-select2-id="1" tabindex="-1" aria-hidden="true">
                               <option value="{{$times->thursday_start_time}}" data-select2-id="3">{{$times->thursday_start_time}}</option>
                               <option value="0:00" data-select2-id="3">0:00</option>
                                  <option value="0:30" data-select2-id="12">0:30</option>
@@ -483,7 +480,7 @@
                         </td>
                         <td>
                            <div class="form-group" data-select2-id="7">
-                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="thursday_end_time" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="thursday_end_time"id="#end3"onchange="difference('#start3','#end3','#reslt3')" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
                               <option value="{{$times->thursday_end_time}}" data-select2-id="3">{{$times->thursday_end_time}}</option>
                               <option value="0:00" data-select2-id="3">0:00</option>
                                  <option value="0:30" data-select2-id="12">0:30</option>
@@ -537,8 +534,9 @@
                            </div>
                         </td>
                         <td>
-                           <div class="form-group">
-                              <input type="text " class="form-control">  
+                        <div class="form-group">
+                        <span id = "#reslt3"></span>
+                              
                            </div>
                         </td>
                      </tr>
@@ -547,7 +545,7 @@
                         <th>Viernes</th>
                         <td>
                            <div class="form-group" data-select2-id="7">
-                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="friday_start_time" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="friday_start_time" id="#start4" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
                               <option value="{{$times->friday_start_time}}" data-select2-id="3">{{$times->friday_start_time}}</option>
                               <option value="0:00" data-select2-id="3">0:00</option>
                                  <option value="0:30" data-select2-id="12">0:30</option>
@@ -602,7 +600,7 @@
                         </td>
                         <td>
                            <div class="form-group" data-select2-id="7">
-                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="friday_end_time" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true"value="11:00">
+                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="friday_end_time"id="#end4"onchange="difference('#start4','#end4','#reslt4')" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true"value="11:00">
                               <option value="{{$times->friday_end_time}}" data-select2-id="3">{{$times->friday_end_time}}</option>
                               <option value="0:00" data-select2-id="3">0:00</option>
                                  <option value="0:30" data-select2-id="12">0:30</option>
@@ -657,8 +655,9 @@
                         </td>
                         
                         <td>
-                           <div class="form-group">
-                              <input type="text " class="form-control">  
+                        <div class="form-group">
+                        <span id = "#reslt4"></span>
+                              
                            </div>
                         </td>
                      </tr>
@@ -668,7 +667,7 @@
                         <td>
                            <div class="form-group" data-select2-id="7">
                            
-                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="saturday_start_time" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="saturday_start_time"id="#start5" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
                               <option value="{{$times->saturday_start_time}}" data-select2-id="3">{{$times->saturday_start_time}}</option>
                               <option value="0:00" data-select2-id="3">0:00</option>
                                  <option value="0:30" data-select2-id="12">0:30</option>
@@ -723,7 +722,7 @@
                         </td>
                         <td>
                            <div class="form-group" data-select2-id="7">
-                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="saturday_end_time" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                              <select class="js-example-basic-single w-100 select2-hidden-accessible"name="saturday_end_time"id="#end5"onchange="difference('#start5','#end5','#reslt5')" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
                               <option value="{{$times->saturday_end_time}}" data-select2-id="3">{{$times->saturday_end_time}}</option>
                               <option value="0:00" data-select2-id="3">0:00</option>
                                  <option value="0:30" data-select2-id="12">0:30</option>
@@ -779,8 +778,9 @@
                            </div>
                         </td>
                         <td>
-                           <div class="form-group">
-                              <input type="text " class="form-control">  
+                        <div class="form-group">
+                        <span id = "#reslt5"></span>
+                              
                            </div>
                         </td>
                      </tr>
@@ -820,10 +820,10 @@
    </div>
 </div>
 <script>
-function difference() {
-    start =document.getElementById("#start").value;  
+function difference(strt,ed,reslt) {
+    start =document.getElementById(strt).value;  
     
-    end = document.getElementById("#end").value;  
+    end = document.getElementById(ed).value;  
 
     start = start.split(":");
     end = end.split(":");
@@ -841,11 +841,24 @@ function difference() {
     // If using time pickers with 24 hours format, add the below line get exact hours
     if (hours < 0)
        hours = hours + 24;
-
+       
     
-    document.getElementById("result").innerHTML = (hours <= 9 ? "0" : "") + hours + ":" + (minutes <= 9 ? "0" : "") + minutes + (seconds<= 9 ? "0" : "") + seconds;
+    document.getElementById(reslt).innerHTML = (hours <= 9 ? "0" : "") + hours + ":" + (minutes <= 9 ? "0" : "") + minutes ;
 
 }
+window.onload = function() {
+   
+   difference('#start','#end','#reslt');
+   difference('#start1','#end1','#reslt1');
+   difference('#start2','#end2','#reslt2');
+   difference('#start3','#end3','#reslt3');
+   difference('#start4','#end4','#reslt4');
+   difference('#start5','#end5','#reslt5');
+   
+    
+}
+
+
 
 </script>
 @endsection
