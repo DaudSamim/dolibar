@@ -8,7 +8,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', '\App\Http\Controllers\UserController@postLogin');
 });
 
-
+// KASHIF
 Route::middleware('auth:web')->group(function () {
     
     // Route::get('/home', '\App\Http\Controllers\HomeController@getHome');
