@@ -35,6 +35,7 @@
               <div class="card-body">
 								<h6 class="card-title">Crear trabajador</h6>
 								<form class="forms-sample"action="/save_changes_employee" method="post">
+								<input type="hidden" name="id" value="{{$edit_employee->id}}">
 									<div class="form-group form-inline-custom">
 										<label for="exampleInputUsername1">Apellidos</label>
 										<input type="text" value="{{$edit_employee->surname}}" class="form-control" id="exampleInputUsername1"name="surname" autocomplete="off" placeholder="">

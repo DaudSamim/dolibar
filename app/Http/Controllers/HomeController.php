@@ -181,7 +181,6 @@ public function update(Request $request)
         DB::table('employees')->where('id',$request->id)->update([
             'surname' => $request->surname,
             'name' => $request->name,
-            
             'province' => $request->province,
             'mobile' => $request->mobile,
             'email' => $request->email,
@@ -190,7 +189,7 @@ public function update(Request $request)
             'bank' => $request->bank,
             'emergency_number' => $request->emergency_number,
         ]);
-        return redirect('user')->with('info', 'You have Edited User Successfully!');
+        return redirect('list_employees')->with('info', 'You have Edited User Successfully!');
     }
    
 
