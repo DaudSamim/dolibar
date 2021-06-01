@@ -53,7 +53,9 @@ Route::middleware('auth:web')->group(function () {
         return view('create_tool');
     });
     
-
+    Route::get('/assign_task',function(){
+        return view('assign_task');
+    });
 
     Route::get('/password', '\App\Http\Controllers\HomeController@getChangePassword');
     Route::post('/password', '\App\Http\Controllers\HomeController@postChangePassword');
