@@ -52,6 +52,9 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/create_tool',function(){
         return view('create_tool');
     });
+    Route::get('/create_project',function(){
+        return view('create_project');
+    });
     
     Route::get('/assign_task',function(){
         return view('assign_task');
