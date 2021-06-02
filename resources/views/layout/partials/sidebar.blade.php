@@ -173,15 +173,7 @@
         </ul>
     </div>
 </nav> -->
-<style>
-.sidebar .sidebar-header{
-   width: 320px ;
-}
-.sidebar{
-   width: 320px ;
 
-}
-</style>
 <nav class="sidebar">
    <div class="sidebar-header">
       <a href="/home" class="sidebar-brand" style="font-size:18px">
@@ -246,13 +238,13 @@
             </div>
          </li>
          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ip67" role="button" aria-expanded="false"
-               aria-controls="ip67">
+            <a class="nav-link" data-toggle="collapse" href="#strm" role="button" aria-expanded="false"
+               aria-controls="strm">
             <i class="link-icon" data-feather="layers"></i>
             <span class="link-title">Trabajadores</span>
             <i class="link-arrow" data-feather="chevron-down"></i>
             </a>
-            <div class="collapse" id="ip67">
+            <div class="collapse" id="strm">
                <ul class="nav sub-menu">
                   <li class="nav-item">
                      <a href="/project_list" class="nav-link ">Crear trabajador</a>
@@ -265,21 +257,6 @@
                   </li>
                   <li class="nav-item">
                      <a href="/" class="nav-link ">Desempeño semanal del trabajador</a>
-                  </li>
-                  <li class="nav-item">
-                     <a data-toggle="collapse" href="#ip127" role="button" aria-expanded="false"
-                        aria-controls=ip127 href="/"
-                        class="nav-link  ">Vista resumen de los trabajadores <i class="link-arrow" data-feather="chevron-down"></i></a>
-                     <div class="collapse"
-                        id="ip127">
-                        <ul class="nav sub-menu">
-                           <li class="nav-item">
-                              <a href="/new_employee"
-                                 class="nav-link  ">Detalle del trabajador</a>
-                           </li>
-                           
-                        </ul>
-                     </div>
                   </li>
                </ul>
             </div>
@@ -294,167 +271,92 @@
             <div class="collapse"
                id="ip34">
                <ul class="nav sub-menu">
-                 
-                  <li class="nav-item">
-                     <a href="/list_employees"
-                        class="nav-link ">Crear Materiales</a>
-                  </li>
-                  <li class="nav-item">
-                     <a href="/history_employees"
-                        class="nav-link ">Crear Status
-                     </a>
-                  </li>
-                  <li class="nav-item">
-                     <a href="/history_employees"
-                        class="nav-link ">Asignar materiales a proyectos
-                     </a>
-                  </li>
                   <li class="nav-item">
                      <a data-toggle="collapse" href="#ip341" role="button" aria-expanded="false"
                         aria-controls=ip341 href="/new_employee"
-                        class="nav-link  ">Almacén  <i class="link-arrow" data-feather="chevron-down"></i></a>
+                        class="nav-link  ">Crear Materiales  <i class="link-arrow" data-feather="chevron-down"></i></a>
                      <div class="collapse"
                         id="ip341">
                         <ul class="nav sub-menu">
                            <li class="nav-item">
                               <a href="/new_employee"
-                                 class="nav-link  ">Adquisiciones</a>
+                                 class="nav-link  ">Datos generales del proyecto</a>
                            </li>
                            <li class="nav-item">
                               <a href="/list_employees"
-                                 class="nav-link ">Ventas</a>
+                                 class="nav-link ">Programar Tareas y Sub-tareas</a>
                            </li>
                            <li class="nav-item">
                               <a href="/history_employees"
-                                 class="nav-link ">Devolución
-                              </a>
-                           </li>
-                           <li class="nav-item">
-                              <a href="/history_employees"
-                                 class="nav-link ">Inventarios
-                              </a>
-                           </li>
-                           <li class="nav-item">
-                              <a href="/history_employees"
-                                 class="nav-link ">Traslados
+                                 class="nav-link ">Programar materiales
                               </a>
                            </li>
                         </ul>
                      </div>
+                  </li>
+                  <li class="nav-item">
+                     <a href="/list_employees"
+                        class="nav-link ">Crear Tareas / Sub-tareas</a>
+                  </li>
+                  <li class="nav-item">
+                     <a href="/history_employees"
+                        class="nav-link ">Gantt
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a href="/history_employees"
+                        class="nav-link ">Status de los proyectos
+                     </a>
                   </li>
                </ul>
             </div>
          </li>
          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ip45" role="button" aria-expanded="false"
-               aria-controls=ip>
-            <i class="link-icon" data-feather="terminal"></i>
-            <span class="link-title">Herramientas</span>
+            <a class="nav-link" data-toggle="collapse" href="#output" role="button" aria-expanded="false"
+               aria-controls="output">
+            <i class="link-icon" data-feather="external-link"></i>
+            <span class="link-title">Equipo / Herramienta</span>
             <i class="link-arrow" data-feather="chevron-down"></i>
             </a>
-            <div class="collapse"
-               id="ip45">
+            <div class="collapse "
+               id="output">
                <ul class="nav sub-menu">
-                 
                   <li class="nav-item">
-                     <a href="/list_employees"
-                        class="nav-link ">Crear Herramientas</a>
+                     <a href="/create_tool"
+                        class="nav-link  ">Crear Equipo / Herramienta</a>
                   </li>
                   <li class="nav-item">
-                     <a href="/history_employees"
-                        class="nav-link ">Crear Status
-                     </a>
+                     <a href="/list_tools"
+                        class="nav-link ">listado Equipo / Herramienta</a>
                   </li>
                   <li class="nav-item">
-                     <a href="/history_employees"
-                        class="nav-link ">Asignar herramientas a operarios
-                     </a>
+                     <a href="/list_tools"
+                        class="nav-link  ">histórico Equipo / Herramienta</a>
                   </li>
                   <li class="nav-item">
-                     <a data-toggle="collapse" href="#ip345" role="button" aria-expanded="false"
-                        aria-controls=ip345 href="/new_employee"
-                        class="nav-link  ">Almacén  <i class="link-arrow" data-feather="chevron-down"></i></a>
-                     <div class="collapse"
-                        id="ip345">
-                        <ul class="nav sub-menu">
-                           <li class="nav-item">
-                              <a href="/new_employee"
-                                 class="nav-link  ">Adquisiciones</a>
-                           </li>
-                           <li class="nav-item">
-                              <a href="/list_employees"
-                                 class="nav-link ">Ventas</a>
-                           </li>
-                           <li class="nav-item">
-                              <a href="/history_employees"
-                                 class="nav-link ">Devolución
-                              </a>
-                           </li>
-                           <li class="nav-item">
-                              <a href="/history_employees"
-                                 class="nav-link ">Inventarios
-                              </a>
-                           </li>
-                           <li class="nav-item">
-                              <a href="/history_employees"
-                                 class="nav-link ">Traslados
-                              </a>
-                           </li>
-                        </ul>
-                     </div>
+                     <a href="/create_state"
+                        class="nav-link ">crear estado , crear ubicacion , crear tipo</a>
                   </li>
                </ul>
             </div>
          </li>
          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ip56" role="button" aria-expanded="false"
-               aria-controls=ip56>
+            <a class="nav-link" data-toggle="collapse" href="#cdn-ip" role="button" aria-expanded="false"
+               aria-controls=cdn-ip>
             <i class="link-icon" data-feather="terminal"></i>
-            <span class="link-title">Ventas</span>
+            <span class="link-title">Admin Settings</span>
             <i class="link-arrow" data-feather="chevron-down"></i>
             </a>
-            <div class="collapse"
-               id="ip56">
+            <div class="collapse "
+               id="cdn-ip">
                <ul class="nav sub-menu">
-                 
                   <li class="nav-item">
-                     <a href="/list_employees"
-                        class="nav-link ">Crear cliente</a>
+                     <a href="{{ url('user') }}"
+                        class="nav-link ">Users</a>
                   </li>
                   <li class="nav-item">
-                     <a href="/history_employees"
-                        class="nav-link ">Crear Servicio
-                     </a>
-                  </li>
-                 
-                  <li class="nav-item">
-                     <a data-toggle="collapse" href="#ip356" role="button" aria-expanded="false"
-                        aria-controls=ip356 href="/new_employee"
-                        class="nav-link  ">CRM  <i class="link-arrow" data-feather="chevron-down"></i></a>
-                     <div class="collapse"
-                        id="ip356">
-                        <ul class="nav sub-menu">
-                           <li class="nav-item">
-                              <a href="/new_employee"
-                                 class="nav-link  ">Contactos (Personas)</a>
-                           </li>
-                           <li class="nav-item">
-                              <a href="/list_employees"
-                                 class="nav-link ">Empresas</a>
-                           </li>
-                           <li class="nav-item">
-                              <a href="/history_employees"
-                                 class="nav-link ">Acuerdos
-                              </a>
-                           </li>
-                           <li class="nav-item">
-                              <a href="/history_employees"
-                                 class="nav-link ">Tareas
-                              </a>
-                           </li>
-                          
-                        </ul>
-                     </div>
+                     <a href="/password"
+                        class="nav-link  ">Change Password</a>
                   </li>
                </ul>
             </div>
