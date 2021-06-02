@@ -55,6 +55,17 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/create_project',function(){
         return view('create_project');
     });
+    Route::post('/create_project', '\App\Http\Controllers\HomeController@postAddProject');
+
+    Route::get('/view_project',function(){
+
+        $projects = DB::table('projects')->orderby('id','desc')->get();
+
+        return view('list_projects',compact("projects"));
+    });
+    Route::post('/change_status', '\App\Http\Controllers\HomeController@postchangeStatus');
+
+
     
     Route::get('/assign_task',function(){
         return view('assign_task');

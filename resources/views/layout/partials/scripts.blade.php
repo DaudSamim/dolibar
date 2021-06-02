@@ -26,4 +26,7 @@
 <script src="{{ asset('vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
 <script src="{{ asset('js/data-table.js') }}"></script>
 
+
+
+
 @yield('scripts')

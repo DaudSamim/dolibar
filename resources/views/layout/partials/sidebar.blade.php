@@ -1,3 +1,6 @@
+
+
+
 <!-- 
 
 <nav class="sidebar">
@@ -181,6 +184,10 @@
    width: 320px ;
 
 }
+
+     .page-content{
+        padding: 25px 25px 25px 101px !important;
+    }
 </style>
 <nav class="sidebar">
    <div class="sidebar-header">
@@ -213,7 +220,7 @@
                         id="ip1">
                         <ul class="nav sub-menu">
                            <li class="nav-item">
-                              <a href="/new_employee"
+                              <a href="/create_project"
                                  class="nav-link  ">Datos generales del proyecto</a>
                            </li>
                            <li class="nav-item">
@@ -238,7 +245,7 @@
                      </a>
                   </li>
                   <li class="nav-item">
-                     <a href="/history_employees"
+                     <a href="/view_project"
                         class="nav-link ">Status de los proyectos
                      </a>
                   </li>

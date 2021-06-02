@@ -143,6 +143,63 @@ public function add_user(Request $request)
     return redirect()->back()->with('info', 'You have Added User Successfully!');
 }
 
+public function postAddProject(Request $request)
+{
+
+    
+
+    $this->validate($request, [
+        'project' => 'required',
+        'location' => 'required',
+        'customer' => 'required',
+        'contact_person' => 'required|min:11',
+        'engineer_incharge' => 'required',
+        'amount' => 'required',
+        'start_date' => 'required',
+        'delivery_date' => 'required|after:start_date',
+        'video' => 'required',
+
+        
+        
+
+    ]);
+    
+
+    if($request->file('video')){
+        $file = $request->file('video');
+        $filename = $file->getClientOriginalName();
+        $path = public_path().'/videos/';
+        $file->move($path, $filename);
+   
+
+
+    DB::table('projects')->insert([                       
+        'project' => $request->project,
+        'location' => $request->location,
+        'customer' => $request->customer,
+        'contact_person' => $request->contact_person,
+        'engineer_incharge' => $request->engineer_incharge,
+        'amount' => $request->amount,
+        'start_date' => $request->start_date,
+        'delivery_date' => $request->delivery_date,
+        'file' => $filename,
+        
+    ]);       
+
+    return redirect()->back()->with('info', 'You have Added User Successfully!');
+
+    };
+
+    return redirect()->back()->with('info','Something Wrong');
+
+}
+
+public function postchangeStatus(Request $request){
+     DB::table('projects')->where('id',$request->id)->update([
+       'status' => $request->status ]);
+       return redirect()->back()->with('info', 'Successfully Updated Status');
+}
+
 public function edit_user($id){
     $edit_user = DB::table('users')->where('id',$id)->first();
     return view('editpage',compact("edit_user"));
