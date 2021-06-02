@@ -61,7 +61,7 @@ Route::get('/view_project',function(){
 
 $projects = DB::table('projects')->orderby('id','desc')->get();
 
-return view('list_projects',compact("projects"));
+return view('project_list',compact("projects"));
 });
 Route::post('/change_status', '\App\Http\Controllers\HomeController@postchangeStatus');
 

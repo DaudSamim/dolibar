@@ -63,7 +63,7 @@
 											<tbody>
                                             @foreach($projects as $project)
 												<tr>
-                                                <td></td>
+                                                <td>{{$project->id}}</td>
                                                 <td>{{$project->project}}</td>
 													<td>{{$project->location}}</td>
 													<td>{{$project->contact_person}}</td>
