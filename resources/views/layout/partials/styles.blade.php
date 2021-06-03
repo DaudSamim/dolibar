@@ -15,6 +15,7 @@
 <!-- End layout styles -->
 {{--<link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" />--}}
 
-<link rel="stylesheet" href="{{ asset('vendors/datatables.net-bs4/dataTables.bootstrap4.css') }}">
 
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
 @yield('styles')

@@ -112,6 +112,53 @@ DB::table('employees')->insert([
 return redirect()->back()->with('info', 'You have Added User Successfully!');
 }
 
+public function postCreateTask(Request $request)
+{
+
+
+
+$this->validate($request, [
+'name' => 'required',
+'description' => 'required',
+
+]);
+
+// dd($request->emergency_number);
+DB::table('tasks')->insert([
+'task' => $request->name,
+'description' => $request->description,
+
+
+]);
+
+return redirect()->back()->with('info', 'You have Added User Successfully!');
+}
+
+public function postCreateSubTask(Request $request)
+{
+
+
+
+$this->validate($request, [
+'task_id' => 'required',
+'subtasks' => 'required',
+'description' => 'required',
+
+]);
+
+// dd($request->emergency_number);
+DB::table('sub_tasks')->insert([
+
+'task_id' => $request->task_id,
+'subtasks' => $request->subtasks,
+'desciption' => $request->description,
+
+
+]);
+
+return redirect()->back()->with('message', 'You have Added User Successfully!');
+}
+
 
 public function add_user(Request $request)
 {

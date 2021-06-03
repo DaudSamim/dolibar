@@ -71,6 +71,21 @@ Route::get('/assign_task',function(){
 return view('assign_task');
 });
 
+Route::get('/tasks-subtasks',function(){
+    $tasks = DB::table('tasks')->get();
+
+    return view('create_tasks_and_subtasks',compact('tasks'));
+    });
+Route::post('/create_task', '\App\Http\Controllers\HomeController@postCreateTask');
+Route::post('/create_subtask', '\App\Http\Controllers\HomeController@postCreateSubTask');
+Route::get('/schedule-task-subtask',function(){
+    $tasks = DB::table('tasks')->orderBy('id','DESC')->get();
+    
+    $subtasks = DB::table('sub_tasks')->orderBy('id','DESC')->get();
+    return view('schedule_tasks_subtasks',compact('tasks','subtasks'));
+    });
+
+
 Route::get('/password', '\App\Http\Controllers\HomeController@getChangePassword');
 Route::post('/password', '\App\Http\Controllers\HomeController@postChangePassword');
 

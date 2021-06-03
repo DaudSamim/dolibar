@@ -24,6 +24,7 @@
 <!-- end custom js for this page -->
 <script src="{{ asset('vendors/datatables.net/jquery.dataTables.js') }}"></script>
 <script src="{{ asset('vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
-<script src="{{ asset('js/data-table.js') }}"></script>
 
+<script>src="https://code.jquery.com/jquery-3.5.1.js"</script>
+<script>src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"</script> 
 @yield('scripts')
