@@ -7,737 +7,752 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Validator;
 
 class HomeController extends Controller
 {
 
-
 /**
-* Show the form for creating a new resource.
-*
-* @return \Illuminate\Http\Response
-*/
+ * Show the form for creating a new resource.
+ *
+ * @return \Illuminate\Http\Response
+ */
 
-
-public function create()
-{
+    public function create()
+    {
 //
-}
+    }
 
 /**
-* Store a newly created resource in storage.
-*
-* @param \Illuminate\Http\Request $request
-* @return \Illuminate\Http\Response
-*/
-public function getAllEmployees()
-{
-$employees = DB::table('employees')->get();
-return view('list_employees',compact('employees'));
-}
-
-public function postAddtime(Request $request)
-{
-$this->validate($request, [
-'monday_start_time' => 'required',
-'monday_end_time' => 'required',
-'tuesday_start_time' => 'required',
-'tuesday_end_time' =>'required',
-'wednesday_start_time' => 'required',
-'wednesday_end_time' => 'required',
-'thursday_start_time' => 'required',
-'thursday_end_time' => 'required',
-'friday_start_time' => 'required',
-'friday_end_time' => 'required',
-'saturday_start_time' => 'required',
-'saturday_end_time' => 'required',
-]);
-
-DB::table('times')->update([
-'monday_start_time' => $request->monday_start_time,
-'monday_end_time' => $request->monday_end_time,
-'tuesday_start_time' => $request->tuesday_start_time,
-'tuesday_end_time' =>$request->tuesday_end_time,
-'wednesday_start_time' => $request->wednesday_start_time,
-'wednesday_end_time' => $request->wednesday_end_time,
-'thursday_start_time' => $request->thursday_start_time,
-'thursday_end_time' => $request->thursday_end_time,
-'friday_start_time' => $request->friday_start_time,
-'friday_end_time' => $request->friday_end_time,
-'saturday_start_time' => $request->saturday_start_time,
-'saturday_end_time' => $request->saturday_end_time,
-
-]);
-
-
-
-return redirect()->back()->with('info', 'You have Added time Successfully!');
-}
-
-
-public function postAddEmployee(Request $request)
-{
-
-
-
-$this->validate($request, [
-'surname' => 'required',
-'name' => 'required',
-'address' => 'required',
-'province' => 'required',
-'mobile' =>'required|integer|min:12',
-'email' => 'required|unique:employees',
-'account_number' => 'required|unique:employees',
-'account_type' => 'required',
-'bank' => 'required',
-'emergency_number' => 'digits_between:7,12|required',
-]);
-
-// dd($request->emergency_number);
-DB::table('employees')->insert([
-'surname' => $request->surname,
-'name' => $request->name,
-'address' => $request->address,
-'province' => $request->province,
-'mobile' => $request->mobile,
-'email' => $request->email,
-'account_number' => $request->account_number,
-'account_type' => $request->account_type,
-'bank' => $request->bank,
-'emergency_number' => $request->emergency_number,
-
-]);
-
-return redirect()->back()->with('info', 'You have Added User Successfully!');
-}
-
-public function postCreateTask(Request $request)
-{
-
-
-
-$this->validate($request, [
-'name' => 'required',
-'description' => 'required',
-
-]);
-
-// dd($request->emergency_number);
-DB::table('tasks')->insert([
-'task' => $request->name,
-'description' => $request->description,
-
-
-]);
-
-return redirect()->back()->with('info', 'You have Added Task Successfully!');
-}
-
-public function postCreateSubTask(Request $request)
-{
-
-
-
-$this->validate($request, [
-'task_id' => 'required',
-'subtasks' => 'required',
-'description' => 'required',
-
-]);
-
-// dd($request->emergency_number);
-DB::table('sub_tasks')->insert([
-
-'task_id' => $request->task_id,
-'subtasks' => $request->subtasks,
-'desciption' => $request->description,
-
-
-]);
-
-return redirect()->back()->with('message', 'You have Added SubTask Successfully!');
-}
-
-public function postAssignTask(Request $request)
-{
-
-
-
-$this->validate($request, [
-'project_id' => 'required',
-'task_id' => 'required',
-'employee_id_1' => 'required',
-'employee_id_2' => 'required',
-'employee_id_3' => 'required',
-
-
-]);
-
-// dd($request->emergency_number);
-DB::table('assignments')->insert([
-
-'project_id' => $request->project_id,
-'task_id' => $request->task_id,
-'employee_id_1' => $request->employee_id_1,
-'employee_id_2' => $request->employee_id_2,
-'employee_id_3' => $request->employee_id_3,
-'employee_id_4' => $request->employee_id_4,
-
-
-]);
-
-return redirect()->back()->with('info', 'You have Assigned Task Successfully!');
-}
-
-public function postAddMaterials(Request $request)
-{
-
-
-
-$this->validate($request, [
-'manufacturer' => 'required',
-'dimension' => 'required',
-'height' => 'required',
-'length' => 'required',
-'width' => 'required',
-'depth' => 'required',
-'diameter' => 'required',
-'types_of_material' => 'required',
-'quality' => 'required',
-
-
-]);
-
-// dd($request->emergency_number);
-DB::table('materials')->insert([
-
-'manufacturer_name' => $request->manufacturer,
-'dimension' => $request->dimension,
-'height' => $request->height,
-'length' => $request->length,
-'width' => $request->width,
-'depth' => $request->depth,
-'diameter' => $request->diameter,
-'types_of_materials' => $request->types_of_material,
-'quality_of_finishes' => $request->quality,
-
-
-]);
-
-return redirect()->back()->with('info', 'You have Added Materials Successfully!');
-}
-
-
-
-public function add_user(Request $request)
-{
-
-
-
-$this->validate($request, [
-'username' => 'required|unique:users',
-'password' => 'min:6|required_with:confirm_password|same:confirm_password',
-'confirm_password' => 'min:6'
-]);
-
-
-DB::table('users')->insert([
-'username' => $request->username,
-'password' => bcrypt($request->password),
-'new_employee' => $request->has('new_employee')?1:0,
-'list_employees' => $request->has('list_employees')?1:0,
-'history_employees' => $request->has('history_employees')?1:0,
-'project_list' => $request->has('project_list')?1:0,
-'production' => $request->has('production')?1:0,
-'dedicated_time' => $request->has('dedicated_time')?1:0,
-'create_tool' => $request->has('create_tool')?1:0,
-'list_tools' => $request->has('list_tools')?1:0,
-'history_tools' => $request->has('history_tools')?1:0,
-'create_state' => $request->has('create_state')?1:0,
-]);
-
-return redirect()->back()->with('info', 'You have Added User Successfully!');
-}
-
-public function postAddProject(Request $request)
-{
-
-
-
-$this->validate($request, [
-'project' => 'required',
-'location' => 'required',
-'customer' => 'required',
-'contact_person' => 'required|min:11',
-'engineer_incharge' => 'required',
-'amount' => 'required',
-'start_date' => 'required',
-'delivery_date' => 'required|after:start_date',
-'video' => 'required',
-
-
-
-
-]);
-
-
-if($request->file('video')){
-$file = $request->file('video');
-$filename = $file->getClientOriginalName();
-$path = public_path().'/videos/';
-$file->move($path, $filename);
-
-
-
-DB::table('projects')->insert([
-'project' => $request->project,
-'location' => $request->location,
-'customer' => $request->customer,
-'contact_person' => $request->contact_person,
-'engineer_incharge' => $request->engineer_incharge,
-'amount' => $request->amount,
-'start_date' => $request->start_date,
-'delivery_date' => $request->delivery_date,
-'file' => $filename,
-
-]);
-
-return redirect()->back()->with('info', 'You have Added Project Successfully!');
-
-};
-
-return redirect()->back()->with('info','Something Wrong');
-
-}
-
-public function postchangeStatus(Request $request){
-DB::table('projects')->where('id',$request->id)->update([
-'status' => $request->status ]);
-return redirect()->back()->with('info', 'Successfully Updated Status');
-}
-
-public function edit_user($id){
-$edit_user = DB::table('users')->where('id',$id)->first();
-return view('editpage',compact("edit_user"));
-}
-public function update(Request $request)
-{
-$this->validate(request(), [
-'username' => 'required',
-]);
-
-DB::table('users')->where('id',$request->id)->update([
-'username' => $request->username,
-'new_employee' => $request->has('new_employee')?1:0,
-'list_employees' => $request->has('list_employees')?1:0,
-'history_employees' => $request->has('history_employees')?1:0,
-'project_list' => $request->has('project_list')?1:0,
-'production' => $request->has('production')?1:0,
-'dedicated_time' => $request->has('dedicated_time')?1:0,
-'create_tool' => $request->has('create_tool')?1:0,
-'list_tools' => $request->has('list_tools')?1:0,
-'history_tools' => $request->has('history_tools')?1:0,
-'create_state' => $request->has('create_state')?1:0,
-]);
-return redirect('user')->with('info', 'You have Edited User Successfully!');
-}
-
-public function postRegisterMaterials(Request $request)
-{
-$this->validate(request(), [
-'invoice' => 'required',
-'date' => 'required',
-'supplier' => 'required',
-
-]);
-
-$items = $request->get('item');
-
-foreach($items as $i => $item)
-  {
-    DB::table('register_materials')->insert([
-        'invoice' => $request->invoice,
-        'date' => $request->date,
-        'supplier' => $request->supplier,
-        'item'=> $items[$i],
-        'quantity'=> $request->get('quantity')[$i],
-        'price'=> $request->get('price')[$i],
+ * Store a newly created resource in storage.
+ *
+ * @param \Illuminate\Http\Request $request
+ * @return \Illuminate\Http\Response
+ */
+    public function getAllEmployees()
+    {
+        $employees = DB::table('employees')->get();
+        return view('list_employees', compact('employees'));
+    }
+
+    public function postAddtime(Request $request)
+    {
+        $this->validate($request, [
+            'monday_start_time' => 'required',
+            'monday_end_time' => 'required',
+            'tuesday_start_time' => 'required',
+            'tuesday_end_time' => 'required',
+            'wednesday_start_time' => 'required',
+            'wednesday_end_time' => 'required',
+            'thursday_start_time' => 'required',
+            'thursday_end_time' => 'required',
+            'friday_start_time' => 'required',
+            'friday_end_time' => 'required',
+            'saturday_start_time' => 'required',
+            'saturday_end_time' => 'required',
         ]);
-        
-  }
 
-return redirect()->back()->with('info', 'You have Registerd Materials Successfully!');
-}
+        DB::table('times')->update([
+            'monday_start_time' => $request->monday_start_time,
+            'monday_end_time' => $request->monday_end_time,
+            'tuesday_start_time' => $request->tuesday_start_time,
+            'tuesday_end_time' => $request->tuesday_end_time,
+            'wednesday_start_time' => $request->wednesday_start_time,
+            'wednesday_end_time' => $request->wednesday_end_time,
+            'thursday_start_time' => $request->thursday_start_time,
+            'thursday_end_time' => $request->thursday_end_time,
+            'friday_start_time' => $request->friday_start_time,
+            'friday_end_time' => $request->friday_end_time,
+            'saturday_start_time' => $request->saturday_start_time,
+            'saturday_end_time' => $request->saturday_end_time,
 
+        ]);
 
+        return redirect()->back()->with('info', 'You have Added time Successfully!');
+    }
 
-public function delete_user($id){
-DB::table('users')->where('id',$id)->delete();
-return redirect()->back()->with('info', 'You have Deleted User Successfully!');
-}
+    public function postAddEmployee(Request $request)
+    {
 
-public function gettest()
-{
-$view_users = DB::table('users')->where('username','!=', 'admin')->get();
-return view('users',compact("view_users"));
-}
+        $this->validate($request, [
+            'surname' => 'required',
+            'name' => 'required',
+            'address' => 'required',
+            'province' => 'required',
+            'mobile' => 'required|integer|min:12',
+            'email' => 'required|unique:employees',
+            'account_number' => 'required|unique:employees',
+            'account_type' => 'required',
+            'bank' => 'required',
+            'emergency_number' => 'digits_between:7,12|required',
+        ]);
+
+// dd($request->emergency_number);
+        DB::table('employees')->insert([
+            'surname' => $request->surname,
+            'name' => $request->name,
+            'address' => $request->address,
+            'province' => $request->province,
+            'mobile' => $request->mobile,
+            'email' => $request->email,
+            'account_number' => $request->account_number,
+            'account_type' => $request->account_type,
+            'bank' => $request->bank,
+            'emergency_number' => $request->emergency_number,
+
+        ]);
+
+        return redirect()->back()->with('info', 'You have Added User Successfully!');
+    }
+
+    public function postCreateTask(Request $request)
+    {
+
+        $this->validate($request, [
+            'name' => 'required',
+            'description' => 'required',
+
+        ]);
+
+// dd($request->emergency_number);
+        DB::table('tasks_and_subtasks')->insert([
+            'parent_id' => 0,
+            'task' => $request->name,
+            'description' => $request->description,
+
+        ]);
+
+        return redirect()->back()->with('info', 'You have Added Task Successfully!');
+    }
+
+    public function postCreateSubTask(Request $request)
+    {
+
+        $this->validate($request, [
+            'task_id' => 'required',
+            'subtasks' => 'required',
+            'description' => 'required',
+
+        ]);
+
+// dd($request->emergency_number);
+        DB::table('tasks_and_subtasks')->insert([
+
+            'parent_id' => $request->task_id,
+            'task' => $request->subtasks,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->back()->with('message', 'You have Added SubTask Successfully!');
+    }
+
+    public function SearchProject(Request $request)
+    {
+
+        $count = 0;
+        $search_date = DB::table('projects')->where('start_date', $request->fecha)->get();
+        if (isset($request->work)) {
+            foreach ($search_date as $date) {
+                $projects[$count] = DB::table('projects')->where('status', $request->work)->first();
+                $count = $count + 1;
+
+            }
+            dd($projects);
+        }
+
+        return redirect()->back()->with('message', 'You have Added SubTask Successfully!');
+    }
+
+    public function postAssignTask(Request $request)
+    {
+
+        $this->validate($request, [
+            'project_id' => 'required',
+            'task_id' => 'required',
+            'employee_id_1' => 'required',
+            'employee_id_2' => 'required',
+            'employee_id_3' => 'required',
+
+        ]);
+
+// dd($request->emergency_number);
+        DB::table('assignments')->insert([
+
+            'project_id' => $request->project_id,
+            'task_id' => $request->task_id,
+            'employee_id_1' => $request->employee_id_1,
+            'employee_id_2' => $request->employee_id_2,
+            'employee_id_3' => $request->employee_id_3,
+            'employee_id_4' => $request->employee_id_4,
+
+        ]);
+
+        return redirect()->back()->with('info', 'You have Assigned Task Successfully!');
+    }
+
+    public function postAddMaterials(Request $request)
+    {
+
+        $this->validate($request, [
+            'manufacturer' => 'required',
+            'dimension' => 'required',
+            'height' => 'required',
+            'length' => 'required',
+            'width' => 'required',
+            'depth' => 'required',
+            'diameter' => 'required',
+            'types_of_material' => 'required',
+            'quality' => 'required',
+
+        ]);
+
+// dd($request->emergency_number);
+        DB::table('materials')->insert([
+
+            'manufacturer_name' => $request->manufacturer,
+            'dimension' => $request->dimension,
+            'height' => $request->height,
+            'length' => $request->length,
+            'width' => $request->width,
+            'depth' => $request->depth,
+            'diameter' => $request->diameter,
+            'types_of_materials' => $request->types_of_material,
+            'quality_of_finishes' => $request->quality,
+
+        ]);
+
+        return redirect()->back()->with('info', 'You have Added Materials Successfully!');
+    }
+
+    public function add_user(Request $request)
+    {
+
+        $this->validate($request, [
+            'username' => 'required|unique:users',
+            'password' => 'min:6|required_with:confirm_password|same:confirm_password',
+            'confirm_password' => 'min:6',
+        ]);
+
+        DB::table('users')->insert([
+            'username' => $request->username,
+            'password' => bcrypt($request->password),
+            'new_employee' => $request->has('new_employee') ? 1 : 0,
+            'list_employees' => $request->has('list_employees') ? 1 : 0,
+            'history_employees' => $request->has('history_employees') ? 1 : 0,
+            'project_list' => $request->has('project_list') ? 1 : 0,
+            'production' => $request->has('production') ? 1 : 0,
+            'dedicated_time' => $request->has('dedicated_time') ? 1 : 0,
+            'create_tool' => $request->has('create_tool') ? 1 : 0,
+            'list_tools' => $request->has('list_tools') ? 1 : 0,
+            'history_tools' => $request->has('history_tools') ? 1 : 0,
+            'create_state' => $request->has('create_state') ? 1 : 0,
+        ]);
+
+        return redirect()->back()->with('info', 'You have Added User Successfully!');
+    }
+
+    public function postAddProject(Request $request)
+    {
+
+        $this->validate($request, [
+            'project' => 'required',
+            'location' => 'required',
+            'customer' => 'required',
+            'contact_person' => 'required|min:11',
+            'engineer_incharge' => 'required',
+            'amount' => 'required',
+            'start_date' => 'required',
+            'delivery_date' => 'required|after:start_date',
+            'video' => 'required',
+
+        ]);
+
+        if ($request->file('video')) {
+            $file = $request->file('video');
+            $filename = $file->getClientOriginalName();
+            $path = public_path() . '/videos/';
+            $file->move($path, $filename);
+
+            DB::table('projects')->insert([
+                'project' => $request->project,
+                'location' => $request->location,
+                'customer' => $request->customer,
+                'contact_person' => $request->contact_person,
+                'engineer_incharge' => $request->engineer_incharge,
+                'amount' => $request->amount,
+                'start_date' => $request->start_date,
+                'delivery_date' => $request->delivery_date,
+                'file' => $filename,
+
+            ]);
+            $project_id = DB::table('projects')->orderby('id', 'desc')->first();
+
+            DB::table('project_details')->insert([
+                'project_id' => $project_id->id,
+                'subtask_id' => $request->task_id,
+                'quantity' => $request->quantity,
+                'location' => $request->locations,
+                'direction' => $request->directions,
+
+            ]);
+
+            return redirect()->back()->with('info', 'You have Added Project Successfully!');
+
+        };
+
+        return redirect()->back()->with('info', 'Something Wrong');
+
+    }
+
+    public function postchangeStatus(Request $request)
+    {
+        DB::table('projects')->where('id', $request->id)->update([
+            'status' => $request->status]);
+        return redirect()->back()->with('info', 'Successfully Updated Status');
+    }
+
+    public function edit_user($id)
+    {
+        $edit_user = DB::table('users')->where('id', $id)->first();
+        return view('editpage', compact("edit_user"));
+    }
+    public function update(Request $request)
+    {
+        $this->validate(request(), [
+            'username' => 'required',
+        ]);
+
+        DB::table('users')->where('id', $request->id)->update([
+            'username' => $request->username,
+            'new_employee' => $request->has('new_employee') ? 1 : 0,
+            'list_employees' => $request->has('list_employees') ? 1 : 0,
+            'history_employees' => $request->has('history_employees') ? 1 : 0,
+            'project_list' => $request->has('project_list') ? 1 : 0,
+            'production' => $request->has('production') ? 1 : 0,
+            'dedicated_time' => $request->has('dedicated_time') ? 1 : 0,
+            'create_tool' => $request->has('create_tool') ? 1 : 0,
+            'list_tools' => $request->has('list_tools') ? 1 : 0,
+            'history_tools' => $request->has('history_tools') ? 1 : 0,
+            'create_state' => $request->has('create_state') ? 1 : 0,
+        ]);
+        return redirect('user')->with('info', 'You have Edited User Successfully!');
+    }
+
+    public function postRegisterMaterials(Request $request)
+    {
+        $this->validate(request(), [
+            'invoice' => 'required',
+            'date' => 'required',
+            'supplier' => 'required',
+
+        ]);
+
+        $items = $request->get('item');
+
+        foreach ($items as $i => $item) {
+            DB::table('register_materials')->insert([
+                'invoice' => $request->invoice,
+                'date' => $request->date,
+                'supplier' => $request->supplier,
+                'item' => $items[$i],
+                'quantity' => $request->get('quantity')[$i],
+                'price' => $request->get('price')[$i],
+            ]);
+
+        }
+
+        return redirect()->back()->with('info', 'You have Registerd Materials Successfully!');
+    }
+
+    public function delete_user($id)
+    {
+        DB::table('users')->where('id', $id)->delete();
+        return redirect()->back()->with('info', 'You have Deleted User Successfully!');
+    }
+
+    public function gettest()
+    {
+        $view_users = DB::table('users')->where('username', '!=', 'admin')->get();
+        return view('users', compact("view_users"));
+    }
 
 /**
-* Store a newly created resource in storage.
-*
-* @param \Illuminate\Http\Request $request
-* @return \Illuminate\Http\Response
-*/
-
+ * Store a newly created resource in storage.
+ *
+ * @param \Illuminate\Http\Request $request
+ * @return \Illuminate\Http\Response
+ */
 
 /**
-* Display the specified resource.
-*
-* @param int $id
-* @return \Illuminate\Http\Response
-*/
-public function show($id)
-{
+ * Display the specified resource.
+ *
+ * @param int $id
+ * @return \Illuminate\Http\Response
+ */
+    public function show($id)
+    {
 //
-}
+    }
 
 /**
-* Show the form for editing the specified resource.
-*
-* @param int $id
-* @return \Illuminate\Http\Response
-*/
-
-
-/**
-* Update the specified resource in storage.
-*
-* @param \Illuminate\Http\Request $request
-* @param int $id
-* @return \Illuminate\Http\Response
-*/
-
+ * Show the form for editing the specified resource.
+ *
+ * @param int $id
+ * @return \Illuminate\Http\Response
+ */
 
 /**
-* Remove the specified resource from storage.
-*
-* @param int $id
-* @return \Illuminate\Http\Response
-*/
+ * Update the specified resource in storage.
+ *
+ * @param \Illuminate\Http\Request $request
+ * @param int $id
+ * @return \Illuminate\Http\Response
+ */
+
+/**
+ * Remove the specified resource from storage.
+ *
+ * @param int $id
+ * @return \Illuminate\Http\Response
+ */
 
 ///////////////////////////////////////////////////////
-/////////////////// IP METHODS ///////////////////
+    /////////////////// IP METHODS ///////////////////
+    ///////////////////////////////////////////////////////
+    public function getIP()
+    {
+        $opt['opt'] = 'add-ip';
+        return view('ip')->with($opt);
+    }
+    public function getHome()
+    {
+        $opt['opt'] = '';
+        return view('cdn-ip');
+    }
+
+    public function postIP(Request $request)
+    {
+        $this->validate($request, [
+            'ip' => 'required',
+        ]);
+
+        DB::table('ips')->insert([
+            'ip' => $request['ip'],
+        ]);
+
+        $fixed = DB::table('fixed_fields')->get()->first();
+        $strms = DB::table('strms')->get();
+
+        foreach ($strms as $strm) {
+            DB::table('streams')->insert([
+                'dest_port' => $fixed->dest_port,
+                'auth_schema' => $fixed->auth_schema,
+                'paused' => $fixed->paused,
+                'ssl' => $fixed->ssl,
+                'keep_src_stream_params' => $fixed->keep_src_stream_params,
+                'src_app' => $fixed->src_app,
+                'src_strm' => $strm->strm,
+                'dest_addr' => $request['ip'],
+                'dest_app' => $fixed->dest_app,
+                'dest_strm' => $strm->strm,
+                'dest_app_params' => $fixed->dest_app_params,
+                'dest_stream_params' => $fixed->dest_stream_params,
+                'dest_login' => $fixed->dest_login,
+                'dest_password' => $fixed->dest_password,
+                'description' => $fixed->description,
+                'protocol' => $fixed->protocol,
+            ]);
+        }
+
+        return redirect()->back()->with('info', 'New IP Added Successfully');
+    }
+
+    public function getUpdateIP()
+    {
+        $ips['ips'] = DB::table('ips')->get();
+        $opt['opt'] = 'update-ip';
+        return view('update-ip')->with($opt)->with($ips);
+    }
+
+    public function postUpdateIP(Request $request)
+    {
+        $ips = DB::table('ips')->get();
+        foreach ($ips as $ip) {
+            $index = $ip->id;
+            if ($ip->ip != $request[$ip->id]) {
+                DB::table('streams')->where('dest_addr', $ip->ip)->update([
+                    'dest_addr' => $request[$index],
+                ]);
+                DB::table('ips')->where('ip', $ip->ip)->update([
+                    'ip' => $request[$index],
+                ]);
+            }
+        }
+
+        return redirect()->back()->with('info', 'IP Updated Successfully');
+    }
+
+    public function getDeleteIP($id)
+    {
+        DB::table('streams')->where('dest_addr', $id)->delete();
+        DB::table('ips')->where('ip', $id)->delete();
+        return redirect()->back()->with('info', "IP deleted Successfully");
+    }
 ///////////////////////////////////////////////////////
-public function getIP()
-{
-$opt['opt'] = 'add-ip';
-return view('ip')->with($opt);
-}
-public function getHome()
-{
-$opt['opt'] = '';
-return view('cdn-ip');
-}
+    /////////////////// STRM METHODS ///////////////////
+    ///////////////////////////////////////////////////////
+    public function getSTRM()
+    {
+        $opt['opt'] = 'add-strm';
+        return view('strm')->with($opt);
+    }
 
-public function postIP(Request $request)
-{
-$this->validate($request, [
-'ip' => 'required'
-]);
+    public function postSTRM(Request $request)
+    {
+        $this->validate($request, [
+            'strm' => 'required',
+        ]);
 
-DB::table('ips')->insert([
-'ip' => $request['ip'],
-]);
+        DB::table('strms')->insert([
+            'strm' => $request['strm'],
+        ]);
 
-$fixed = DB::table('fixed_fields')->get()->first();
-$strms = DB::table('strms')->get();
+        $fixed = DB::table('fixed_fields')->get()->first();
+        $ips = DB::table('ips')->get();
 
-foreach($strms as $strm)
-{
-DB::table('streams')->insert([
-'dest_port' => $fixed->dest_port,
-'auth_schema' => $fixed->auth_schema,
-'paused' => $fixed->paused,
-'ssl' => $fixed->ssl,
-'keep_src_stream_params' => $fixed->keep_src_stream_params,
-'src_app' => $fixed->src_app,
-'src_strm' => $strm->strm,
-'dest_addr' => $request['ip'],
-'dest_app' => $fixed->dest_app,
-'dest_strm' => $strm->strm,
-'dest_app_params' => $fixed->dest_app_params,
-'dest_stream_params' => $fixed->dest_stream_params,
-'dest_login' => $fixed->dest_login,
-'dest_password' => $fixed->dest_password,
-'description' => $fixed->description,
-'protocol' => $fixed->protocol,
-]);
-}
+        foreach ($ips as $ip) {
+            DB::table('streams')->insert([
+                'dest_port' => $fixed->dest_port,
+                'auth_schema' => $fixed->auth_schema,
+                'paused' => $fixed->paused,
+                'ssl' => $fixed->ssl,
+                'keep_src_stream_params' => $fixed->keep_src_stream_params,
+                'src_app' => $fixed->src_app,
+                'src_strm' => $request['strm'],
+                'dest_addr' => $ip->ip,
+                'dest_app' => $fixed->dest_app,
+                'dest_strm' => $request['strm'],
+                'dest_app_params' => $fixed->dest_app_params,
+                'dest_stream_params' => $fixed->dest_stream_params,
+                'dest_login' => $fixed->dest_login,
+                'dest_password' => $fixed->dest_password,
+                'description' => $fixed->description,
+                'protocol' => $fixed->protocol,
+            ]);
+        }
 
-return redirect()->back()->with('info', 'New IP Added Successfully');
-}
+        return redirect()->back()->with('info', 'New STRM Added Successfully');
+    }
 
-public function getUpdateIP()
-{
-$ips['ips'] = DB::table('ips')->get();
-$opt['opt'] = 'update-ip';
-return view('update-ip')->with($opt)->with($ips);
-}
+    public function getUpdateSTRM()
+    {
+        $strms['strms'] = DB::table('strms')->get();
+        $opt['opt'] = 'update-strm';
+        return view('update-strm')->with($opt)->with($strms);
+    }
 
-public function postUpdateIP(Request $request)
-{
-$ips = DB::table('ips')->get();
-foreach($ips as $ip)
-{
-$index = $ip->id;
-if ($ip->ip != $request[$ip->id])
-{
-DB::table('streams')->where('dest_addr', $ip->ip)->update([
-'dest_addr' => $request[$index],
-]);
-DB::table('ips')->where('ip', $ip->ip)->update([
-'ip' => $request[$index],
-]);
-}
-}
+    public function postUpdateSTRM(Request $request)
+    {
+        $strms = DB::table('strms')->get();
+        foreach ($strms as $strm) {
+            $index = $strm->id;
+            if ($strm->strm != $request[$strm->id]) {
+                DB::table('streams')->where('src_strm', $strm->strm)->update([
+                    'src_strm' => $request[$index],
+                    'dest_strm' => $request[$index],
+                ]);
+                DB::table('strms')->where('strm', $strm->strm)->update([
+                    'strm' => $request[$index],
+                ]);
+            }
+        }
 
-return redirect()->back()->with('info', 'IP Updated Successfully');
-}
+        return redirect()->back()->with('info', 'STRM Updated Successfully');
+    }
 
-public function getDeleteIP($id)
-{
-DB::table('streams')->where('dest_addr', $id)->delete();
-DB::table('ips')->where('ip', $id)->delete();
-return redirect()->back()->with('info', "IP deleted Successfully");
-}
+    public function getDeleteSTRM($id)
+    {
+        DB::table('streams')->where('dest_strm', $id)->delete();
+        DB::table('strms')->where('strm', $id)->delete();
+        return redirect()->back()->with('info', "STRM deleted Successfully");
+    }
 ///////////////////////////////////////////////////////
-/////////////////// STRM METHODS ///////////////////
+    /////////////////// OUTPUT ///////////////////
+    ///////////////////////////////////////////////////////
+    public function getFixed()
+    {
+        $fixed['fixed'] = DB::table('fixed_fields')->get()->first();
+        $opt['opt'] = 'fixed';
+        return view('fixed')->with($opt)->with($fixed);
+    }
+
+    public function postFixed(Request $request)
+    {
+        DB::table('fixed_fields')->where('id', '1')->update([
+            'dest_port' => $request->dest_port,
+            'auth_schema' => $request->auth_schema,
+            'paused' => $request->paused,
+            'ssl' => $request->ssl,
+            'keep_src_stream_params' => $request->keep_src_stream_params,
+            'src_app' => $request->src_app,
+            'dest_app' => $request->dest_app,
+            'dest_app_params' => $request->dest_app_params,
+            'dest_stream_params' => $request->dest_stream_params,
+            'dest_login' => $request->dest_login,
+            'dest_password' => $request->dest_password,
+            'description' => $request->description,
+            'protocol' => $request->protocol,
+        ]);
+
+        $streams = DB::table('streams')->get();
+
+        foreach ($streams as $stream) {
+            DB::table('streams')->where('id', $stream->id)->update([
+                'dest_port' => $request->dest_port,
+                'auth_schema' => $request->auth_schema,
+                'paused' => $request->paused,
+                'ssl' => $request->ssl,
+                'keep_src_stream_params' => $request->keep_src_stream_params,
+                'src_app' => $request->src_app,
+                'dest_app' => $request->dest_app,
+                'dest_app_params' => $request->dest_app_params,
+                'dest_stream_params' => $request->dest_stream_params,
+                'dest_login' => $request->dest_login,
+                'dest_password' => $request->dest_password,
+                'description' => $request->description,
+                'protocol' => $request->protocol,
+            ]);
+        }
+
+        return redirect()->back()->with('info', 'Fixed Fields Updated');
+    }
+
+    public function getCopyCode()
+    {
+        $streams['streams'] = DB::table('streams')
+            ->get(['dest_port', 'auth_schema', 'paused', 'ssl', 'keep_src_stream_params', 'src_app', 'src_strm',
+                'dest_addr', 'dest_app', 'dest_strm', 'dest_app_params', 'dest_stream_params', 'dest_login', 'dest_password',
+                'description', 'protocol']);
+        $opt['opt'] = 'copy-code';
+        return view('code')->with($opt)->with($streams);
+    }
 ///////////////////////////////////////////////////////
-public function getSTRM()
-{
-$opt['opt'] = 'add-strm';
-return view('strm')->with($opt);
-}
+    ///////////////// PASSWORD ///////////////////
+    ///////////////////////////////////////////////////////
+    public function getChangePassword()
+    {
+        $opt['opt'] = 'password';
+        return view('password')->with($opt);
+    }
 
-public function postSTRM(Request $request)
-{
-$this->validate($request, [
-'strm' => 'required'
-]);
+    public function postChangePassword(Request $request)
+    {
+        $this->validate($request, [
+            'password' => 'required',
+            'confirm_password' => 'required | same:password',
+        ]);
 
-DB::table('strms')->insert([
-'strm' => $request['strm'],
-]);
+        DB::table('users')->where('id', Auth::user()->id)->update([
+            'password' => bcrypt($request->password),
+        ]);
 
-$fixed = DB::table('fixed_fields')->get()->first();
-$ips = DB::table('ips')->get();
-
-foreach($ips as $ip)
-{
-DB::table('streams')->insert([
-'dest_port' => $fixed->dest_port,
-'auth_schema' => $fixed->auth_schema,
-'paused' => $fixed->paused,
-'ssl' => $fixed->ssl,
-'keep_src_stream_params' => $fixed->keep_src_stream_params,
-'src_app' => $fixed->src_app,
-'src_strm' => $request['strm'],
-'dest_addr' => $ip->ip,
-'dest_app' => $fixed->dest_app,
-'dest_strm' => $request['strm'],
-'dest_app_params' => $fixed->dest_app_params,
-'dest_stream_params' => $fixed->dest_stream_params,
-'dest_login' => $fixed->dest_login,
-'dest_password' => $fixed->dest_password,
-'description' => $fixed->description,
-'protocol' => $fixed->protocol,
-]);
-}
-
-return redirect()->back()->with('info', 'New STRM Added Successfully');
-}
-
-public function getUpdateSTRM()
-{
-$strms['strms'] = DB::table('strms')->get();
-$opt['opt'] = 'update-strm';
-return view('update-strm')->with($opt)->with($strms);
-}
-
-public function postUpdateSTRM(Request $request)
-{
-$strms = DB::table('strms')->get();
-foreach($strms as $strm)
-{
-$index = $strm->id;
-if ($strm->strm != $request[$strm->id])
-{
-DB::table('streams')->where('src_strm', $strm->strm)->update([
-'src_strm' => $request[$index],
-'dest_strm' => $request[$index],
-]);
-DB::table('strms')->where('strm', $strm->strm)->update([
-'strm' => $request[$index],
-]);
-}
-}
-
-return redirect()->back()->with('info', 'STRM Updated Successfully');
-}
-
-public function getDeleteSTRM($id)
-{
-DB::table('streams')->where('dest_strm', $id)->delete();
-DB::table('strms')->where('strm', $id)->delete();
-return redirect()->back()->with('info', "STRM deleted Successfully");
-}
+        return redirect()->back()->with('info', 'Password Changed Successfully');
+    }
 ///////////////////////////////////////////////////////
-/////////////////// OUTPUT ///////////////////
-///////////////////////////////////////////////////////
-public function getFixed()
-{
-$fixed['fixed'] = DB::table('fixed_fields')->get()->first();
-$opt['opt'] = 'fixed';
-return view('fixed')->with($opt)->with($fixed);
-}
+    //////////////// CDN IP METHODS //////////////////
+    ///////////////////////////////////////////////////////
+    public function getCDNIP()
+    {
+        $opt['opt'] = 'add-cdn-ip';
+        return view('cdn-ip')->with($opt);
+    }
 
-public function postFixed(Request $request)
-{
-DB::table('fixed_fields')->where('id', '1')->update([
-'dest_port' => $request->dest_port,
-'auth_schema' => $request->auth_schema,
-'paused' => $request->paused,
-'ssl' => $request->ssl,
-'keep_src_stream_params' => $request->keep_src_stream_params,
-'src_app' => $request->src_app,
-'dest_app' => $request->dest_app,
-'dest_app_params' => $request->dest_app_params,
-'dest_stream_params' => $request->dest_stream_params,
-'dest_login' => $request->dest_login,
-'dest_password' => $request->dest_password,
-'description' => $request->description,
-'protocol' => $request->protocol,
-]);
+    public function postCDNIP(Request $request)
+    {
+        $this->validate($request, [
+            'cdn_ip' => 'required',
+        ]);
 
-$streams = DB::table('streams')->get();
+        DB::table('cdn_ips')->insert([
+            'cdn_ip' => $request['cdn_ip'],
+        ]);
 
-foreach ($streams as $stream)
-{
-DB::table('streams')->where('id', $stream->id)->update([
-'dest_port' => $request->dest_port,
-'auth_schema' => $request->auth_schema,
-'paused' => $request->paused,
-'ssl' => $request->ssl,
-'keep_src_stream_params' => $request->keep_src_stream_params,
-'src_app' => $request->src_app,
-'dest_app' => $request->dest_app,
-'dest_app_params' => $request->dest_app_params,
-'dest_stream_params' => $request->dest_stream_params,
-'dest_login' => $request->dest_login,
-'dest_password' => $request->dest_password,
-'description' => $request->description,
-'protocol' => $request->protocol,
-]);
-}
+        return redirect()->back()->with('info', 'New CDN IP Added Successfully');
+    }
 
-return redirect()->back()->with('info', 'Fixed Fields Updated');
-}
+    public function getEditCDNIP()
+    {
+        $ips['ips'] = DB::table('cdn_ips')->get();
+        $opt['opt'] = 'edit-cdn-ip';
+        return view('edit-cdn-ip')->with($opt)->with($ips);
+    }
 
-public function getCopyCode()
-{
-$streams['streams'] = DB::table('streams')
-->get( ['dest_port','auth_schema','paused','ssl','keep_src_stream_params','src_app','src_strm',
-'dest_addr','dest_app','dest_strm','dest_app_params','dest_stream_params','dest_login','dest_password',
-'description','protocol']);
-$opt['opt'] = 'copy-code';
-return view('code')->with($opt)->with($streams);
-}
-///////////////////////////////////////////////////////
-///////////////// PASSWORD ///////////////////
-///////////////////////////////////////////////////////
-public function getChangePassword()
-{
-$opt['opt'] = 'password';
-return view('password')->with($opt);
-}
+    public function postEditCDNIP(Request $request)
+    {
+        $ips = DB::table('cdn_ips')->get();
+        foreach ($ips as $ip) {
+            $index = $ip->id;
+            if ($ip->cdn_ip != $request[$ip->id]) {
+                DB::table('cdn_ips')->where('cdn_ip', $ip->cdn_ip)->update([
+                    'cdn_ip' => $request[$index],
+                ]);
+            }
+        }
 
-public function postChangePassword(Request $request)
-{
-$this->validate($request, [
-'password' => 'required',
-'confirm_password' => 'required | same:password',
-]);
+        return redirect()->back()->with('info', 'CDN IP Updated Successfully');
+    }
 
-DB::table('users')->where('id', Auth::user()->id)->update([
-'password' => bcrypt($request->password),
-]);
+    public function getDeleteCDNIP($id)
+    {
+        DB::table('cdn_ips')->where('id', $id)->delete();
+        return redirect()->back()->with('info', 'CDN IP Deleted Successfully');
+    }
 
-return redirect()->back()->with('info', 'Password Changed Successfully');
-}
-///////////////////////////////////////////////////////
-//////////////// CDN IP METHODS //////////////////
-///////////////////////////////////////////////////////
-public function getCDNIP()
-{
-$opt['opt'] = 'add-cdn-ip';
-return view('cdn-ip')->with($opt);
-}
+    public function getPublish()
+    {
+        $opt['opt'] = 'publish';
+        $ips['ips'] = DB::table('cdn_ips')->get();
+        return view('publish')->with($opt)->with($ips);
+    }
 
-public function postCDNIP(Request $request)
-{
-$this->validate($request, [
-'cdn_ip' => 'required'
-]);
+    public function postPublish(Request $request)
+    {
+        Storage::disk('public')->put('ipcall.php', '<?php ' . $request['content']);
+        return redirect()->back()->with('info', 'File Published Successfully');
+    }
 
-DB::table('cdn_ips')->insert([
-'cdn_ip' => $request['cdn_ip'],
-]);
+    public function daily_worker_performance()
+    {
+        $employees = DB::table('employees')->get();
+        return view('daily_worker_performance', compact('employees'));
+    }
 
-return redirect()->back()->with('info', 'New CDN IP Added Successfully');
-}
+    public function post_daily_worker_performance(Request $request)
+    {
+        $this->validate($request,
+            [
+                'employee_id' => 'required',
+                'project_id' => 'required',
+                'task_id' => 'required',
+                'requirements' => 'required',
+                'working_time' => 'required',
+                'objective' => 'required',
+            ]);
 
-public function getEditCDNIP()
-{
-$ips['ips'] = DB::table('cdn_ips')->get();
-$opt['opt'] = 'edit-cdn-ip';
-return view('edit-cdn-ip')->with($opt)->with($ips);
-}
+        DB::table('daily_worker_performance')->insert([
+            'employee_id' => $request->employee_id,
+            'project_id' => $request->project_id,
+            'task_id' => $request->task_id,
+            'requirements' => $request->requirements,
+            'working_time' => $request->working_time,
+            'finished_units' => $request->finished_units,
+            'objective' => $request->objective,
+            'faulty_units' => $request->faulty_units,
+            'valued_loss' => $request->valued_loss,
+            'commentary' => $request->commentary,
 
-public function postEditCDNIP(Request $request)
-{
-$ips = DB::table('cdn_ips')->get();
-foreach($ips as $ip)
-{
-$index = $ip->id;
-if ($ip->cdn_ip != $request[$ip->id])
-{
-DB::table('cdn_ips')->where('cdn_ip', $ip->cdn_ip)->update([
-'cdn_ip' => $request[$index],
-]);
-}
-}
+        ]);
 
-return redirect()->back()->with('info', 'CDN IP Updated Successfully');
-}
-
-public function getDeleteCDNIP($id)
-{
-DB::table('cdn_ips')->where('id', $id)->delete();
-return redirect()->back()->with('info', 'CDN IP Deleted Successfully');
-}
-
-public function getPublish()
-{
-$opt['opt'] = 'publish';
-$ips['ips'] = DB::table('cdn_ips')->get();
-return view('publish')->with($opt)->with($ips);
-}
-
-public function postPublish(Request $request)
-{
-Storage::disk('public')->put('ipcall.php', '<?php ' . $request['content']);
-return redirect()->back()->with('info', 'File Published Successfully');
-}
+        return redirect()->back()->with('info', 'Successfully Added');
+    }
 
 }

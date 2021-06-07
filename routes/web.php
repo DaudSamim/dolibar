@@ -53,7 +53,9 @@ Route::get('/create_tool',function(){
 return view('create_tool');
 });
 Route::get('/create_project',function(){
-return view('create_project');
+    $tasks = DB::table('tasks_and_subtasks')->get();
+
+return view('create_project',compact('tasks'));
 });
 Route::post('/create_project', '\App\Http\Controllers\HomeController@postAddProject');
 
@@ -63,6 +65,15 @@ $projects = DB::table('projects')->orderby('id','desc')->get();
 
 return view('project_list',compact("projects"));
 });
+Route::get('/search_project',function(){
+
+    $projects = DB::table('projects')->orderby('id','desc')->get();
+    
+    return view('search_project',compact("projects"));
+    });
+Route::post('/search_project', '\App\Http\Controllers\HomeController@SearchProject');
+
+
 Route::post('/change_status', '\App\Http\Controllers\HomeController@postchangeStatus');
 
 
@@ -74,7 +85,7 @@ Route::post('/assign_task', '\App\Http\Controllers\HomeController@postAssignTask
 
 
 Route::get('/tasks-subtasks',function(){
-    $tasks = DB::table('tasks')->get();
+    $tasks = DB::table('tasks_and_subtasks')->where('parent_id',0)->get();
 
     return view('create_tasks_and_subtasks',compact('tasks'));
     });
@@ -121,4 +132,37 @@ Route::post('/add_time', '\App\Http\Controllers\HomeController@postAddtime');
 
 
 Route::get('/logout', '\App\Http\Controllers\UserController@getLogout');
+
+
+Route::post('/change_actual_cost', function(Request $request){
+    DB::table('projects')->where('id',$request->id)->update([
+    'actual_cost' => $request->actual_cost,
+    ]);
+    
+    return redirect()->back()->with('info','Successfully Updated');
+    });
+    
+    Route::post('/change_current_status', function(Request $request){
+    DB::table('projects')->where('id',$request->id)->update([
+    'current_task' => $request->current_task,
+    ]);
+    
+    return redirect()->back()->with('info','Successfully Updated');
+    });
+    
+    Route::post('/change_degree_of_progree', function(Request $request){
+    
+    if($request->degree_of_progress > 100 || $request->degree_of_progress < 0){
+    return redirect()->back()->with('alert','Degree of Progress must be percentage');
+    }
+    
+    DB::table('projects')->where('id',$request->id)->update([
+    'degree_of_progress' => $request->degree_of_progress,
+    ]);
+    
+    return redirect()->back()->with('info','Successfully Updated');
+    });
+    
+    Route::get('/daily_worker_performance','\App\Http\Controllers\HomeController@daily_worker_performance');
+    Route::post('/daily_worker_performance','\App\Http\Controllers\HomeController@post_daily_worker_performance');
 });
