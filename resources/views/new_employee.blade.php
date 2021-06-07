@@ -98,6 +98,17 @@
 										<label for="exampleInputPassword1">Movil de emergencia</label>
 										<input type="number" class="form-control"value="{{old('emergency_number')}}" id="exampleInputPassword1"name="emergency_number" autocomplete="off" placeholder="" aria-autocomplete="list">
 									</div>
+
+									<div class="form-group form-inline-custom">
+										<label for="exampleInputPassword1">Sueldo</label>
+										<input type="number" class="form-control"value="{{old('salary')}}" id="exampleInputPassword1"name="salary" autocomplete="off" placeholder="" aria-autocomplete="list">
+									</div>
+
+									<div class="form-group form-inline-custom">
+										<label for="exampleInputPassword1">Horas de trabajo</label>
+										<input type="number" class="form-control"value="{{old('working_hours')}}" id="exampleInputPassword1"name="working_hours" autocomplete="off" placeholder="" aria-autocomplete="list">
+									</div>
+
 									<div class="div-btns text-center">
 									<input type="hidden" name="_token" value={{csrf_token()}}>
                                     <button type="submit" class="btn btn-grabar">GRABAR</button>
