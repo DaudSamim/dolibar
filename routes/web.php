@@ -70,6 +70,8 @@ Route::post('/change_status', '\App\Http\Controllers\HomeController@postchangeSt
 Route::get('/assign_task',function(){
 return view('assign_task');
 });
+Route::post('/assign_task', '\App\Http\Controllers\HomeController@postAssignTask');
+
 
 Route::get('/tasks-subtasks',function(){
     $tasks = DB::table('tasks')->get();
@@ -84,6 +86,30 @@ Route::get('/schedule-task-subtask',function(){
     $subtasks = DB::table('sub_tasks')->orderBy('id','DESC')->get();
     return view('schedule_tasks_subtasks',compact('tasks','subtasks'));
     });
+Route::get('/add-materials',function(){
+         return view('create_materials');
+        });
+
+Route::get('/view-materials',function(){
+    $materials = DB::table('materials')->orderBy('id','DESC')->get();
+            return view('view_materials',compact('materials'));
+            });
+            
+Route::get('/delete/{id}',function($id){
+        
+    DB::table('materials')->where('id',$id)->delete();
+    return redirect()->back()->with('info', 'You have Deleted Successfully!');
+});
+
+Route::get('/register-materials',function(){
+        
+    return view('register_materials');
+});
+Route::post('/register_material', '\App\Http\Controllers\HomeController@postRegisterMaterials');
+
+
+Route::post('/create_material', '\App\Http\Controllers\HomeController@postAddMaterials');
+
 
 
 Route::get('/password', '\App\Http\Controllers\HomeController@getChangePassword');
