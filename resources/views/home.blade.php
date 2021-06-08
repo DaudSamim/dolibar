@@ -31,11 +31,47 @@
    }
 </style>
 @section('content')
+
+<div class="row">
+   <div class="col-md-12">
+      <div class="card p-3">
+
+      <h4>Proyectos activos</h4>
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="parent-div">
+                     <div class="div-flex ">
+                        <h5>Etiqueta proyecto</h5>
+                        <h5>Días restantes</h5>
+                     </div>
+                     <div class="div-border">
+                        <div class="div-flex">
+                           <span>Rejillas metalicas</span>
+                           <span>15 dias</span>
+                        </div>
+                        <div class="div-flex">
+                           <span>Cercos metalicos</span>
+                           <span class="text-danger">3 dias</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+          
+            
+            </div>
+         </div>
+      </div>
+   </div>
+
+
 <div class="row">
    <div class="col-md-12">
       <div class="card">
+
       
          <div class="card-body">
+            <h5>horas de trabajo de la empresa</h5>
+            <hr>
          @if(Session::has('info'))
       <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('info') }}</p>
       @endif
@@ -788,26 +824,10 @@
                   </tbody>
                </table>
             </div>
-            <hr>
-            <h5>Proyectos activos</h5>
+
             <div class="row">
                <div class="col-md-5">
-                  <div class="parent-div">
-                     <div class="div-flex ">
-                        <h5>Etiqueta proyecto</h5>
-                        <h5>Días restantes</h5>
-                     </div>
-                     <div class="div-border">
-                        <div class="div-flex">
-                           <span>Rejillas metalicas</span>
-                           <span>15 dias</span>
-                        </div>
-                        <div class="div-flex">
-                           <span>Cercos metalicos</span>
-                           <span class="text-danger">3 dias</span>
-                        </div>
-                     </div>
-                  </div>
+               
                </div>
 			   <div class="col-md-7" style="display: flex; justify-content: flex-end;  align-items: flex-end;">
 				   <button type="submit" class="btn btn-grabar">GRABAR</button>

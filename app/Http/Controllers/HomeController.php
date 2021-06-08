@@ -84,9 +84,10 @@ class HomeController extends Controller
             'account_type' => 'required',
             'bank' => 'required',
             'emergency_number' => 'digits_between:7,12|required',
+            'salary' => 'required',
+            'working_hours' => 'required',
         ]);
 
-// dd($request->emergency_number);
         DB::table('employees')->insert([
             'surname' => $request->surname,
             'name' => $request->name,
@@ -98,6 +99,8 @@ class HomeController extends Controller
             'account_type' => $request->account_type,
             'bank' => $request->bank,
             'emergency_number' => $request->emergency_number,
+            'salary' => $request->salary,
+            'working_hours' => $request->working_hours,
 
         ]);
 
@@ -168,10 +171,8 @@ class HomeController extends Controller
         $this->validate($request, [
             'project_id' => 'required',
             'task_id' => 'required',
+            'date' => 'required',
             'employee_id_1' => 'required',
-            'employee_id_2' => 'required',
-            'employee_id_3' => 'required',
-
         ]);
 
 // dd($request->emergency_number);
@@ -179,6 +180,7 @@ class HomeController extends Controller
 
             'project_id' => $request->project_id,
             'task_id' => $request->task_id,
+            'date' => $request->date,
             'employee_id_1' => $request->employee_id_1,
             'employee_id_2' => $request->employee_id_2,
             'employee_id_3' => $request->employee_id_3,
@@ -373,351 +375,6 @@ class HomeController extends Controller
     {
         $view_users = DB::table('users')->where('username', '!=', 'admin')->get();
         return view('users', compact("view_users"));
-    }
-
-/**
- * Store a newly created resource in storage.
- *
- * @param \Illuminate\Http\Request $request
- * @return \Illuminate\Http\Response
- */
-
-/**
- * Display the specified resource.
- *
- * @param int $id
- * @return \Illuminate\Http\Response
- */
-    public function show($id)
-    {
-//
-    }
-
-/**
- * Show the form for editing the specified resource.
- *
- * @param int $id
- * @return \Illuminate\Http\Response
- */
-
-/**
- * Update the specified resource in storage.
- *
- * @param \Illuminate\Http\Request $request
- * @param int $id
- * @return \Illuminate\Http\Response
- */
-
-/**
- * Remove the specified resource from storage.
- *
- * @param int $id
- * @return \Illuminate\Http\Response
- */
-
-///////////////////////////////////////////////////////
-    /////////////////// IP METHODS ///////////////////
-    ///////////////////////////////////////////////////////
-    public function getIP()
-    {
-        $opt['opt'] = 'add-ip';
-        return view('ip')->with($opt);
-    }
-    public function getHome()
-    {
-        $opt['opt'] = '';
-        return view('cdn-ip');
-    }
-
-    public function postIP(Request $request)
-    {
-        $this->validate($request, [
-            'ip' => 'required',
-        ]);
-
-        DB::table('ips')->insert([
-            'ip' => $request['ip'],
-        ]);
-
-        $fixed = DB::table('fixed_fields')->get()->first();
-        $strms = DB::table('strms')->get();
-
-        foreach ($strms as $strm) {
-            DB::table('streams')->insert([
-                'dest_port' => $fixed->dest_port,
-                'auth_schema' => $fixed->auth_schema,
-                'paused' => $fixed->paused,
-                'ssl' => $fixed->ssl,
-                'keep_src_stream_params' => $fixed->keep_src_stream_params,
-                'src_app' => $fixed->src_app,
-                'src_strm' => $strm->strm,
-                'dest_addr' => $request['ip'],
-                'dest_app' => $fixed->dest_app,
-                'dest_strm' => $strm->strm,
-                'dest_app_params' => $fixed->dest_app_params,
-                'dest_stream_params' => $fixed->dest_stream_params,
-                'dest_login' => $fixed->dest_login,
-                'dest_password' => $fixed->dest_password,
-                'description' => $fixed->description,
-                'protocol' => $fixed->protocol,
-            ]);
-        }
-
-        return redirect()->back()->with('info', 'New IP Added Successfully');
-    }
-
-    public function getUpdateIP()
-    {
-        $ips['ips'] = DB::table('ips')->get();
-        $opt['opt'] = 'update-ip';
-        return view('update-ip')->with($opt)->with($ips);
-    }
-
-    public function postUpdateIP(Request $request)
-    {
-        $ips = DB::table('ips')->get();
-        foreach ($ips as $ip) {
-            $index = $ip->id;
-            if ($ip->ip != $request[$ip->id]) {
-                DB::table('streams')->where('dest_addr', $ip->ip)->update([
-                    'dest_addr' => $request[$index],
-                ]);
-                DB::table('ips')->where('ip', $ip->ip)->update([
-                    'ip' => $request[$index],
-                ]);
-            }
-        }
-
-        return redirect()->back()->with('info', 'IP Updated Successfully');
-    }
-
-    public function getDeleteIP($id)
-    {
-        DB::table('streams')->where('dest_addr', $id)->delete();
-        DB::table('ips')->where('ip', $id)->delete();
-        return redirect()->back()->with('info', "IP deleted Successfully");
-    }
-///////////////////////////////////////////////////////
-    /////////////////// STRM METHODS ///////////////////
-    ///////////////////////////////////////////////////////
-    public function getSTRM()
-    {
-        $opt['opt'] = 'add-strm';
-        return view('strm')->with($opt);
-    }
-
-    public function postSTRM(Request $request)
-    {
-        $this->validate($request, [
-            'strm' => 'required',
-        ]);
-
-        DB::table('strms')->insert([
-            'strm' => $request['strm'],
-        ]);
-
-        $fixed = DB::table('fixed_fields')->get()->first();
-        $ips = DB::table('ips')->get();
-
-        foreach ($ips as $ip) {
-            DB::table('streams')->insert([
-                'dest_port' => $fixed->dest_port,
-                'auth_schema' => $fixed->auth_schema,
-                'paused' => $fixed->paused,
-                'ssl' => $fixed->ssl,
-                'keep_src_stream_params' => $fixed->keep_src_stream_params,
-                'src_app' => $fixed->src_app,
-                'src_strm' => $request['strm'],
-                'dest_addr' => $ip->ip,
-                'dest_app' => $fixed->dest_app,
-                'dest_strm' => $request['strm'],
-                'dest_app_params' => $fixed->dest_app_params,
-                'dest_stream_params' => $fixed->dest_stream_params,
-                'dest_login' => $fixed->dest_login,
-                'dest_password' => $fixed->dest_password,
-                'description' => $fixed->description,
-                'protocol' => $fixed->protocol,
-            ]);
-        }
-
-        return redirect()->back()->with('info', 'New STRM Added Successfully');
-    }
-
-    public function getUpdateSTRM()
-    {
-        $strms['strms'] = DB::table('strms')->get();
-        $opt['opt'] = 'update-strm';
-        return view('update-strm')->with($opt)->with($strms);
-    }
-
-    public function postUpdateSTRM(Request $request)
-    {
-        $strms = DB::table('strms')->get();
-        foreach ($strms as $strm) {
-            $index = $strm->id;
-            if ($strm->strm != $request[$strm->id]) {
-                DB::table('streams')->where('src_strm', $strm->strm)->update([
-                    'src_strm' => $request[$index],
-                    'dest_strm' => $request[$index],
-                ]);
-                DB::table('strms')->where('strm', $strm->strm)->update([
-                    'strm' => $request[$index],
-                ]);
-            }
-        }
-
-        return redirect()->back()->with('info', 'STRM Updated Successfully');
-    }
-
-    public function getDeleteSTRM($id)
-    {
-        DB::table('streams')->where('dest_strm', $id)->delete();
-        DB::table('strms')->where('strm', $id)->delete();
-        return redirect()->back()->with('info', "STRM deleted Successfully");
-    }
-///////////////////////////////////////////////////////
-    /////////////////// OUTPUT ///////////////////
-    ///////////////////////////////////////////////////////
-    public function getFixed()
-    {
-        $fixed['fixed'] = DB::table('fixed_fields')->get()->first();
-        $opt['opt'] = 'fixed';
-        return view('fixed')->with($opt)->with($fixed);
-    }
-
-    public function postFixed(Request $request)
-    {
-        DB::table('fixed_fields')->where('id', '1')->update([
-            'dest_port' => $request->dest_port,
-            'auth_schema' => $request->auth_schema,
-            'paused' => $request->paused,
-            'ssl' => $request->ssl,
-            'keep_src_stream_params' => $request->keep_src_stream_params,
-            'src_app' => $request->src_app,
-            'dest_app' => $request->dest_app,
-            'dest_app_params' => $request->dest_app_params,
-            'dest_stream_params' => $request->dest_stream_params,
-            'dest_login' => $request->dest_login,
-            'dest_password' => $request->dest_password,
-            'description' => $request->description,
-            'protocol' => $request->protocol,
-        ]);
-
-        $streams = DB::table('streams')->get();
-
-        foreach ($streams as $stream) {
-            DB::table('streams')->where('id', $stream->id)->update([
-                'dest_port' => $request->dest_port,
-                'auth_schema' => $request->auth_schema,
-                'paused' => $request->paused,
-                'ssl' => $request->ssl,
-                'keep_src_stream_params' => $request->keep_src_stream_params,
-                'src_app' => $request->src_app,
-                'dest_app' => $request->dest_app,
-                'dest_app_params' => $request->dest_app_params,
-                'dest_stream_params' => $request->dest_stream_params,
-                'dest_login' => $request->dest_login,
-                'dest_password' => $request->dest_password,
-                'description' => $request->description,
-                'protocol' => $request->protocol,
-            ]);
-        }
-
-        return redirect()->back()->with('info', 'Fixed Fields Updated');
-    }
-
-    public function getCopyCode()
-    {
-        $streams['streams'] = DB::table('streams')
-            ->get(['dest_port', 'auth_schema', 'paused', 'ssl', 'keep_src_stream_params', 'src_app', 'src_strm',
-                'dest_addr', 'dest_app', 'dest_strm', 'dest_app_params', 'dest_stream_params', 'dest_login', 'dest_password',
-                'description', 'protocol']);
-        $opt['opt'] = 'copy-code';
-        return view('code')->with($opt)->with($streams);
-    }
-///////////////////////////////////////////////////////
-    ///////////////// PASSWORD ///////////////////
-    ///////////////////////////////////////////////////////
-    public function getChangePassword()
-    {
-        $opt['opt'] = 'password';
-        return view('password')->with($opt);
-    }
-
-    public function postChangePassword(Request $request)
-    {
-        $this->validate($request, [
-            'password' => 'required',
-            'confirm_password' => 'required | same:password',
-        ]);
-
-        DB::table('users')->where('id', Auth::user()->id)->update([
-            'password' => bcrypt($request->password),
-        ]);
-
-        return redirect()->back()->with('info', 'Password Changed Successfully');
-    }
-///////////////////////////////////////////////////////
-    //////////////// CDN IP METHODS //////////////////
-    ///////////////////////////////////////////////////////
-    public function getCDNIP()
-    {
-        $opt['opt'] = 'add-cdn-ip';
-        return view('cdn-ip')->with($opt);
-    }
-
-    public function postCDNIP(Request $request)
-    {
-        $this->validate($request, [
-            'cdn_ip' => 'required',
-        ]);
-
-        DB::table('cdn_ips')->insert([
-            'cdn_ip' => $request['cdn_ip'],
-        ]);
-
-        return redirect()->back()->with('info', 'New CDN IP Added Successfully');
-    }
-
-    public function getEditCDNIP()
-    {
-        $ips['ips'] = DB::table('cdn_ips')->get();
-        $opt['opt'] = 'edit-cdn-ip';
-        return view('edit-cdn-ip')->with($opt)->with($ips);
-    }
-
-    public function postEditCDNIP(Request $request)
-    {
-        $ips = DB::table('cdn_ips')->get();
-        foreach ($ips as $ip) {
-            $index = $ip->id;
-            if ($ip->cdn_ip != $request[$ip->id]) {
-                DB::table('cdn_ips')->where('cdn_ip', $ip->cdn_ip)->update([
-                    'cdn_ip' => $request[$index],
-                ]);
-            }
-        }
-
-        return redirect()->back()->with('info', 'CDN IP Updated Successfully');
-    }
-
-    public function getDeleteCDNIP($id)
-    {
-        DB::table('cdn_ips')->where('id', $id)->delete();
-        return redirect()->back()->with('info', 'CDN IP Deleted Successfully');
-    }
-
-    public function getPublish()
-    {
-        $opt['opt'] = 'publish';
-        $ips['ips'] = DB::table('cdn_ips')->get();
-        return view('publish')->with($opt)->with($ips);
-    }
-
-    public function postPublish(Request $request)
-    {
-        Storage::disk('public')->put('ipcall.php', '<?php ' . $request['content']);
-        return redirect()->back()->with('info', 'File Published Successfully');
     }
 
     public function daily_worker_performance()

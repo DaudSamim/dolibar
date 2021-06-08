@@ -80,8 +80,8 @@
                                     </select>                                
                                 </div>
                                         <div class="form-group form-inline-custom">
-                                            <label for="exampleInputUsername1">Agregar Subtarea</label>
-                                            <input value="{{old('subtasks')}}"name="subtasks" class="js-example-basic-single w-100 select2-hidden-accessible"id="project" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true"></input>
+                                            <label for="exampleInputUsername1">Subtarea</label>
+                                            <input value="{{old('subtasks')}}" name="subtasks" class="js-example-basic-single w-100 select2-hidden-accessible"id="project" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true"></input>
                                         </div>
 
                                         <div class="form-group form-inline-custom">

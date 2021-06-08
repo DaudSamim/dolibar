@@ -23,6 +23,14 @@
    <div class="sidebar-body">
       <ul class="nav">
          <li class="nav-item">
+            <a class="nav-link" href="/" role="button">
+            <i class="link-icon" data-feather="terminal"></i>
+            <span class="link-title">Dashboard</span>
+            
+            </a>
+            
+         </li>
+         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ip" role="button" aria-expanded="false"
                aria-controls=ip>
             <i class="link-icon" data-feather="terminal"></i>
@@ -32,28 +40,9 @@
             <div class="collapse"
                id="ip">
                <ul class="nav sub-menu">
-                  <li class="nav-item">
-                     <a data-toggle="collapse" href="#ip1" role="button" aria-expanded="false"
-                        aria-controls=ip1 href="/new_employee"
-                        class="nav-link ">Crear Proyecto <i class="link-arrow" data-feather="chevron-down"></i></a>
-                     <div class="collapse"
-                        id="ip1">
-                        <ul class="nav sub-menu">
-                           <li class="nav-item">
-                              <a href="/create_project"
-                                 class="nav-link ">Datos generales del proyecto</a>
-                           </li>
-                           <li class="nav-item">
-                              <a href="/schedule-task-subtask"
-                                 class="nav-link ">Programar Tareas y Sub-tareas</a>
-                           </li>
-                           <li class="nav-item">
-                              <a href="/history_employees"
-                                 class="nav-link ">Programar materiales
-                              </a>
-                           </li>
-                        </ul>
-                     </div>
+                   <li class="nav-item">
+                     <a href="/create_project"
+                        class="nav-link ">Crear Proyecto</a>
                   </li>
                   <li class="nav-item">
                      <a href="/tasks-subtasks"
@@ -75,37 +64,29 @@
          <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ip67" role="button" aria-expanded="false"
                aria-controls="ip67">
-            <i class="link-icon" data-feather="layers"></i>
+           <i class="link-icon" data-feather="terminal"></i>
             <span class="link-title">Trabajadores</span>
             <i class="link-arrow" data-feather="chevron-down"></i>
             </a>
             <div class="collapse" id="ip67">
                <ul class="nav sub-menu">
                   <li class="nav-item">
-                     <a href="/project_list" class="nav-link ">Crear trabajador</a>
+                     <a href="/new_employee" class="nav-link ">Crear trabajador</a>
                   </li>
                   <li class="nav-item">
                      <a href="/assign_task" class="nav-link ">Asignar Trabajadores</a>
                   </li>
                   <li class="nav-item">
-                     <a href="#" class="nav-link ">Desempeño diario del trabajador</a>
+                     <a href="/daily_worker_performance" class="nav-link ">Desempeño diario del trabajador</a>
                   </li>
                   <li class="nav-item">
-                     <a href="#" class="nav-link ">Desempeño semanal del trabajador</a>
+                     <a href="/#" class="nav-link "> Desempeño de la obra</a>
                   </li>
                   <li class="nav-item">
-                     <a data-toggle="collapse" href="#ip127" role="button" aria-expanded="false"
-                        aria-controls=ip127 href="/"
-                        class="nav-link ">Vista resumen de los trabajadores <i class="link-arrow" data-feather="chevron-down"></i></a>
-                     <div class="collapse"
-                        id="ip127">
-                        <ul class="nav sub-menu">
-                           <li class="nav-item">
-                              <a href="#"
-                                 class="nav-link ">Detalle del trabajador</a>
-                           </li>
-                        </ul>
-                     </div>
+                     <a href="/search_project" class="nav-link ">Vista resumen de la obra</a>
+                  </li>
+                   <li class="nav-item">
+                     <a href="/#" class="nav-link ">Vista resumen de los trabajadores</a>
                   </li>
                </ul>
             </div>
