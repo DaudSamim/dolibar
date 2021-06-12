@@ -44,10 +44,7 @@
                      <a href="/create_project"
                         class="nav-link ">Crear Proyecto</a>
                   </li>
-                  <li class="nav-item">
-                     <a href="/tasks-subtasks"
-                        class="nav-link ">Crear Tareas / Sub-tareas</a>
-                  </li>
+                  
                   <li class="nav-item">
                      <a href="#"
                         class="nav-link ">Gantt
@@ -80,7 +77,7 @@
                      <a href="/daily_worker_performance" class="nav-link ">Desempeño diario del trabajador</a>
                   </li>
                   <li class="nav-item">
-                     <a href="/#" class="nav-link "> Desempeño de la obra</a>
+                     <a href="/work-performance" class="nav-link "> Desempeño de la obra</a>
                   </li>
                   <li class="nav-item">
                      <a href="/search_project" class="nav-link ">Vista resumen de la obra</a>
@@ -102,7 +99,7 @@
                id="ip34">
                <ul class="nav sub-menu">
                   <li class="nav-item">
-                     <a href="#"
+                     <a href="/add-materials"
                         class="nav-link ">Crear Materiales</a>
                   </li>
                   <li class="nav-item">
@@ -212,6 +209,35 @@
             </div>
          </li>
          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ip59" role="button" aria-expanded="false"
+               aria-controls=ip56>
+            <i class="link-icon" data-feather="terminal"></i>
+            <span class="link-title">Fabricaciones</span>
+            <i class="link-arrow" data-feather="chevron-down"></i>
+            </a>
+            <div class="collapse"
+               id="ip59">
+               <ul class="nav sub-menu">
+               
+                  <li class="nav-item">
+                     <a href="/view-materials"
+                        class="nav-link ">Productos en proceso</a>
+                  </li>
+                  <li class="nav-item">
+                     <a href="#"
+                        class="nav-link ">Productos terminados
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a href="#"
+                        class="nav-link ">Productos con fallas
+                     </a>
+                  </li>
+                  
+               </ul>
+            </div>
+         </li>
+         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ip56" role="button" aria-expanded="false"
                aria-controls=ip56>
             <i class="link-icon" data-feather="terminal"></i>
@@ -261,6 +287,7 @@
                </ul>
             </div>
          </li>
+         
       </ul>
    </div>
 </nav>

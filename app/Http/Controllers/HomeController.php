@@ -86,6 +86,7 @@ class HomeController extends Controller
             'emergency_number' => 'digits_between:7,12|required',
             'salary' => 'required',
             'working_hours' => 'required',
+            'type'=> 'required',
         ]);
 
         DB::table('employees')->insert([
@@ -101,6 +102,7 @@ class HomeController extends Controller
             'emergency_number' => $request->emergency_number,
             'salary' => $request->salary,
             'working_hours' => $request->working_hours,
+            'workers_type'=> $request->type,
 
         ]);
 
@@ -150,19 +152,45 @@ class HomeController extends Controller
 
     public function SearchProject(Request $request)
     {
+        $fecha = $request->fecha;
+        $work = $request->work;
+        if(isset($request->fecha) && isset($request->work)){
 
-        $count = 0;
-        $search_date = DB::table('projects')->where('start_date', $request->fecha)->get();
-        if (isset($request->work)) {
-            foreach ($search_date as $date) {
-                $projects[$count] = DB::table('projects')->where('status', $request->work)->first();
-                $count = $count + 1;
+            $projects = DB::table('projects')->where('status', $request->work)->where('start_date', $request->fecha)->get();
+            return view('search_project', compact('projects','work','fecha'));
+            }
+            else if(isset($request->fecha)){
+
+                $projects = DB::table('projects')->where('start_date', $request->fecha)->get();
+                
+                return view('search_project', compact('projects','fecha'));
+                
+            }
+            
+            else if (isset($request->work)){
+                $projects = DB::table('projects')->where('status', $request->work)->get();
+                
+                return view('search_project', compact('projects','work'));
+
 
             }
-            dd($projects);
-        }
+                
+            return redirect()->back();
 
-        return redirect()->back()->with('message', 'You have Added SubTask Successfully!');
+        
+
+        // $count = 0;
+        // $search_date = DB::table('projects')->where('start_date', $request->fecha)->get();
+        // if (isset($request->work)) {
+        //     foreach ($search_date as $date) {
+        //         $projects[$count] = DB::table('projects')->where('status', $request->work)->where('start_date', $request->fecha)->first();
+        //         $count = $count + 1;
+
+        //     }
+        //     dd($projects);
+        // }
+
+        // return redirect()->back()->with('message', 'You have Added SubTask Successfully!');
     }
 
     public function postAssignTask(Request $request)
@@ -393,6 +421,7 @@ class HomeController extends Controller
                 'requirements' => 'required',
                 'working_time' => 'required',
                 'objective' => 'required',
+                'date' => 'required',
             ]);
 
         DB::table('daily_worker_performance')->insert([
@@ -406,6 +435,7 @@ class HomeController extends Controller
             'faulty_units' => $request->faulty_units,
             'valued_loss' => $request->valued_loss,
             'commentary' => $request->commentary,
+            'date' => $request->date,
 
         ]);
 

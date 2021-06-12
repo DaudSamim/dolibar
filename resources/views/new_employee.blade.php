@@ -109,6 +109,19 @@
 										<input type="number" class="form-control"value="{{old('working_hours')}}" id="exampleInputPassword1"name="working_hours" autocomplete="off" placeholder="" aria-autocomplete="list">
 									</div>
 
+									<div class="form-group form-inline-custom">
+										<label for="exampleInputPassword1">Tipo de trabajador</label>
+										<select class="js-example-basic-single w-100 select2-hidden-accessible" value="{{old('type')}}"name="type" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                              <option value="" data-select2-id="3">Lista desplegable</option>
+                                 <option value="Soldador" data-select2-id="12">Soldador</option>
+                                 <option value="Maestro Soldador" data-select2-id="13">Maestro Soldador</option>
+                                 <option value=" Ingeniero" data-select2-id="14"> Ingeniero</option>
+                                 <option value="Vendedor" data-select2-id="15">Vendedor</option>
+                                 <option value="Tercerizado" data-select2-id="15">Tercerizado</option>
+                                 <option value="Ayudante" data-select2-id="15">Ayudante</option> 
+                              </select>
+							  </div>
+
 									<div class="div-btns text-center">
 									<input type="hidden" name="_token" value={{csrf_token()}}>
                                     <button type="submit" class="btn btn-grabar">GRABAR</button>

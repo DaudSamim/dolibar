@@ -49,6 +49,11 @@
                </div>
 
                <div class="form-group form-inline-custom">
+                  <label for="exampleInputEmail1">Fecha</label>
+                  <input type="date" value="{{old('date')}}"class="form-control" id="exampleInputEmail1"name="date" placeholder="">
+               </div>
+
+               <div class="form-group form-inline-custom">
                   <label for="exampleInputEmail1">Proyecto actual</label>
                   <input type="text" value="{{old('project_id')}}"class="form-control" id="exampleInputEmail1"name="project_id" placeholder="">
                </div>

@@ -32,6 +32,7 @@ Route::middleware('auth:web')->group(function ()
     });
     Route::get('/project_list', function ()
     {
+        
         return view('project_list');
     });
     Route::get('/production', function ()
@@ -196,5 +197,9 @@ Route::middleware('auth:web')->group(function ()
 
     Route::get('/daily_worker_performance', '\App\Http\Controllers\HomeController@daily_worker_performance');
     Route::post('/daily_worker_performance', '\App\Http\Controllers\HomeController@post_daily_worker_performance');
+    Route::get('/work-performance', function ()
+    {
+        return view('performance_of_work');
+    });
 });
 

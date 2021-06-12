@@ -37,20 +37,26 @@
       <p class="alert {{ Session::get('alert-class', 'alert-danger') }}">{{ $error }}</p>
       @endforeach
       @endif
-            
+      
+        
       <div class="card">
               <div class="card-body">
 								<h3 class="card-title">Vista resumen de las obras</h3>
 								<form class="forms-sample" action="/search_project" method="post" enctype='multipart/form-data'>
 									<div class="form-group form-inline-custom">
 										<label for="exampleInputUsername1">Fecha</label>
-										<input type="date"value="{{old('fecha')}}" class="form-control" id="exampleInputUsername1"name="fecha" autocomplete="off" placeholder="">
-									
+										<input type="date" @if(isset($fecha)) value="{{ \Carbon\Carbon::parse($fecha)->format('Y-m-d')}}"@endif class="form-control" id="exampleInputUsername1"name="fecha" autocomplete="off" placeholder="">
+                                        
 									</div>
-									<div class="form-group form-inline-custom">
-										<label for="exampleInputEmail1">Status de la obra</label>
-										<input type="text"value="{{old('work')}}"class="form-control" id="exampleInputEmail1"name="work" placeholder="">
-									</div>
+								<div class="form-group form-inline-custom">
+                                <label>Status de la obra</label>
+                                    <select class="js-example-basic-single w-100 select2-hidden-accessible" name="work" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                                          <option @if(isset($work)) value="{{$work}}" @endif>@if(isset($work)) @if($work==0) Proyecto por iniciar @endif @if($work==1) Proyecto abierto @endif @if($work==2) Proyecto cerrado @endif @else Select @endif</option>
+                                          <option value="0"> Proyecto por iniciar</option>   
+                                          <option value="1" >Proyecto abierto</option>
+                                          <option value="2" >Proyecto cerrado</option>
+                                    </select>
+                                </div>
                                     <div class="div-btns text-center">
                                         <input type="hidden" name="_token" value={{csrf_token()}}>
                                         <button type="submit" class="btn btn-grabar">Buscar</button>
@@ -59,13 +65,19 @@
                 </div>
                 </div>
 <br>
+
+
+
 <div class="row">
     
     <div class="col-md-12">
     <div class="table-responsive">
 										<table class="table">
+                                        
 											<thead>
+
 												<tr>
+                                                
 													<th>Id</th>
 													<th>Project</th>
                                                     <th>Costo de mano de obra</th>
@@ -84,28 +96,16 @@
 												<tr>
                                                 <td>{{$project->id}}</td>
                                                 <td>{{$project->project}}</td>
-                                                <td>{{$project->amount}}</td>
-                                                <td>{{$project->amount}}</td>
-													<td>{{$project->location}}</td>
-													<td>{{$project->contact_person}}</td>
-													<td>{{$project->engineer_incharge}}</td>
+                                                <td>N/A</td>
+                                                <td>N/A</td>
+													<td>{{$project->amount}}</td>
+													<td>{{$project->degree_of_progress}}</td>
+													
                                                     
-													<td>{{$project->start_date}}</td>
+                                                    
 													<td>{{$project->delivery_date}}</td>
-                                                    <td>@if($project->status == 0) 
-                                                                <option value="{{$project->status}}" data-select2-id="3">To start</option>  
-                                                                @endif  
-                                                                @if($project->status == 1) 
-                                                                <option value="{{$project->status}}" data-select2-id="3">On going</option>  
-                                                                @endif  
-                                                                @if($project->status == 2) 
-                                                                <option value="{{$project->status}}" data-select2-id="3">Stopped</option>  
-                                                                @endif  </td>
-                                                    
-                                                    
-                                                    
-                                                       
-                                                    </form>
+                                                    <td>{{$project->engineer_incharge}}</td>
+                                                    <td>{{$project->contact_person}}</td>
                                                     
                                             @endforeach	
 												</tr>
@@ -115,6 +115,7 @@
 
         </div>
     </div>
+
 </div>
 </div>
 </div>

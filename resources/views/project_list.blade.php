@@ -131,10 +131,10 @@
                                   <div class="form-group form-inline-custom">
                                   <input name="id" type="hidden" value="{{$project->id}}">
                     <select class="js-example-basic-single w-100 select2-hidden-accessible" value=""name="status" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
-                                          <option value="0"@if($project->status == 0)selected @endif data-select2-id="14">Por iniciar</option>   
-                                          <option value="1" @if($project->status == 1)selected @endif data-select2-id="13">En marcha</option>
-                                          <option value="2" @if($project->status == 2) selected @endif data-select2-id="12">Detenido</option>
-                                          <option value="3" @if($project->status == 3) selected @endif data-select2-id="12">Parado</option>
+                                          <option value="0"@if($project->status == 0)selected @endif data-select2-id="14"> Proyecto por iniciar</option>   
+                                          <option value="1" @if($project->status == 1)selected @endif data-select2-id="13">Proyecto abierto</option>
+                                          <option value="2" @if($project->status == 2) selected @endif data-select2-id="12">Proyecto cerrado</option>
+                                          
                                         
                                            
                                       </select>
