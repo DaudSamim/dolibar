@@ -109,8 +109,8 @@
                     <br>
                     <div class="col-lg-10">
                         <ul>
-                            <h4>Tarea</h4>
-                            <li style="margin-left:30px">Subtarea</li>
+                            <h4>Tarea 1</h4>
+                            
                         </ul>
                     </div>
                     <div class="col-2"></div>
@@ -121,15 +121,9 @@
                                 <div class="card-body">
                                     <div id="">
                                         <div class="form-group form-inline-custom">
-                                            <label for="exampleInputUsername1">Nombre</label>
-                                            <select class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                value="{{old('task_id')}}" name="task_id" data-width="100%"
-                                                data-select2-id="1" tabindex="-1" aria-hidden="true">
-                                                @foreach($tasks as $task)
-                                                <option value="{{$task->id}}" data-select2-id="3">{{$task->task}}
-                                                </option>
-                                                @endforeach
-                                            </select>
+                                        <label for="exampleInputUsername1">Nombre </label>
+                                            <input value="{{old('location')}}" name="locations"
+                                                class="js-example-basic-single w-90"></input>
                                         </div>
                                         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Cantidad objetivo</label>
@@ -139,9 +133,23 @@
                                                 aria-hidden="true"></input>
                                         </div>
                                         <div class="form-group form-inline-custom">
-                                            <label for="exampleInputUsername1">Ubicación </label>
-                                            <textarea value="{{old('location')}}" name="locations"
-                                                class="js-example-basic-single w-90"></textarea>
+                                            
+
+                                                <label for="exampleInputUsername1"> Ubicación</label>
+                                            <select class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                value="{{old('task_id')}}" name="task_id" data-width="100%"
+                                                data-select2-id="1" tabindex="-1" aria-hidden="true">
+                                                
+                                                <option value="" data-select2-id="3">Lista desplegable:
+                                                </option>
+                                                <option value="" data-select2-id="3">Obra
+                                                </option>
+                                                <option value="" data-select2-id="3">Taller
+                                                </option>
+                                                <option value="" data-select2-id="3">Tercerizado
+                                                </option>
+                                                
+                                            </select>
                                         </div>
                                         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Indicaciones para los operarios (Subir
@@ -186,11 +194,24 @@
                                     <div class="addings">
 
                                         <div class="form-group form-inline-custom">
-                                            <label for="exampleInputUsername1">Tipo de operario</label>
-                                            <input value="{{old('subtasks')}}" name="subtasks"
-                                                class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
-                                                aria-hidden="true"></input>
+                                        <label for="exampleInputUsername1"> Tipo de operario</label>
+                                            <select class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                value="{{old('task_id')}}" name="task_id" data-width="100%"
+                                                data-select2-id="1" tabindex="-1" aria-hidden="true">
+                                                
+                                                <option value="" data-select2-id="3">Lista desplegable:
+                                                </option>
+                                                <option value="" data-select2-id="3">Soldador
+                                                </option>
+                                                <option value="" data-select2-id="3">Maestro soldador
+                                                </option>
+                                                <option value="" data-select2-id="3">Ayudante
+                                                </option>
+                                                <option value="" data-select2-id="3">Ingeniero
+                                                </option>
+                                                
+                                                
+                                            </select>
 
                                         </div>
                                         <div class="form-group form-inline-custom">
@@ -373,6 +394,7 @@
 </script>
 
 <script>
+      
     $("#addmore2").click(function () {
     
 
@@ -399,9 +421,7 @@
 
 
 
-<script>
 
- </script>
  
 
  <script>
@@ -467,16 +487,17 @@
 
 <script>
 
+var c = 1;
 
 
     $(document).ready(function(){
   $('.tasks').on('click', function(){
+      c = c + 1;
   
     $(this).closest('.addtasks').before(`<hr><br>
     <div class="col-lg-10">
                         <ul>
-                            <h4>Tarea</h4>
-                            <li style="margin-left:30px">Subtarea</li>
+                            <h4>Tarea `+ c + `</h4>
                         </ul>
                     </div>
                     <div class="col-2"></div>

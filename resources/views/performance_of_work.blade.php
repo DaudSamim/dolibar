@@ -38,10 +38,11 @@
         <div class="card">
             <div class="card-body">
                 <h6 class="card-title">Desempeño de la obra</h6>
+                <form class="forms-sample" action="/search" method="post" enctype='multipart/form-data'>
                 <div class="form-group form-inline-custom">
                     <label for="exampleInputUsername1">Projecto</label>
-                    <input type="text" value="{{old('surname')}}" class="form-control" id="exampleInputUsername1"
-                        name="surname" autocomplete="off" placeholder="">
+                    <input type="text" value="{{old('project')}}" class="form-control" id="exampleInputUsername1"
+                        name="project" autocomplete="off" placeholder="">
 
                 </div>
                 <div class="form-group form-inline-custom">
@@ -51,8 +52,8 @@
                 </div>
                 <div class="form-group form-inline-custom">
                     <label for="exampleInputPassword1">Fecha</label>
-                    <input type="text" value="{{old('address')}}" class="form-control" id="exampleInputPassword1"
-                        name="address" autocomplete="off" placeholder="" aria-autocomplete="list">
+                    <input type="date" value="{{old('date')}}" class="form-control" id="exampleInputPassword1"
+                        name="date" autocomplete="off" placeholder="" aria-autocomplete="list">
                 </div>
                 <div class="form-group form-inline-custom">
                     <label for="exampleInputPassword1">Filtro</label>
@@ -66,6 +67,11 @@
                         <option value="Tercerizado" data-select2-id="15">Pérdidas valorizadas </option>
                     </select>
                 </div>
+                <div class="div-btns text-center">
+                        <input type="hidden" name="_token" value={{csrf_token()}}>
+                        <button type="submit" class="btn btn-grabar">GRABAR</button>
+                    </div>
+                </form>
             
 <br>
 
@@ -130,21 +136,17 @@
 
                 </div>
                 <br><br>
-                <div class="form-group form-inline-custom">
-                    <label for="exampleInputUsername1">Completar Tarea</label>
-                    <input type="text" value="{{old('surname')}}" class="form-control" id="exampleInputUsername1"
-                        name="surname" autocomplete="off" placeholder="">
-
+                
+                <div class="div-btns text-left">
+                        <button type="submit" class="btn btn-grabar"style="width:200px!important">Completar Tarea</button>
                 </div>
-                <div class="form-group form-inline-custom">
-                    <label for="exampleInputEmail1">Completar Proyecto</label>
-                    <input type="text" value="{{old('name')}}" class="form-control" id="exampleInputEmail1" name="name"
-                        placeholder="">
+                <br>
+                <div class="div-btns text-left">
+                        <button type="submit" class="btn btn-grabar"style="width:200px!important">Proyecto Completar</button>
                 </div>
-                <div class="form-group form-inline-custom">
-                    <label for="exampleInputPassword1">Reabrir Proyecto</label>
-                    <input type="text" value="{{old('address')}}" class="form-control" id="exampleInputPassword1"
-                        name="address" autocomplete="off" placeholder="" aria-autocomplete="list">
+                <br>
+                <div class="div-btns text-left">
+                        <button type="submit" class="btn btn-grabar"style="width:200px!important">Reabrir Proyecto</button>
                 </div>
             </div>
         </div>

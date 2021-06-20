@@ -51,7 +51,7 @@
                      </a>
                   </li>
                   <li class="nav-item">
-                     <a href="/view_project"
+                     <a href="/search_project"
                         class="nav-link ">Status de los proyectos
                      </a>
                   </li>
@@ -99,7 +99,7 @@
                id="ip34">
                <ul class="nav sub-menu">
                   <li class="nav-item">
-                     <a href="/add-materials"
+                     <a href="#"
                         class="nav-link ">Crear Materiales</a>
                   </li>
                   <li class="nav-item">
@@ -218,11 +218,15 @@
             <div class="collapse"
                id="ip59">
                <ul class="nav sub-menu">
-               
+                  <li class="nav-item">
+                     <a href="/add-materials"
+                        class="nav-link ">Registrar fabricaciones</a>
+                  </li>
                   <li class="nav-item">
                      <a href="/view-materials"
                         class="nav-link ">Productos en proceso</a>
                   </li>
+                  
                   <li class="nav-item">
                      <a href="#"
                         class="nav-link ">Productos terminados

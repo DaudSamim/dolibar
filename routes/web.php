@@ -91,6 +91,8 @@ Route::middleware('auth:web')->group(function ()
         return view('search_project', compact("projects"));
     });
     Route::post('/search_project', '\App\Http\Controllers\HomeController@SearchProject');
+    Route::post('/search', '\App\Http\Controllers\HomeController@Search');
+
 
     Route::post('/change_status', '\App\Http\Controllers\HomeController@postchangeStatus');
 
@@ -201,5 +203,20 @@ Route::middleware('auth:web')->group(function ()
     {
         return view('performance_of_work');
     });
+
+    Route::get('/ajax', function ()
+    {
+        
+        return view('ajax');
+    });
+
+    Route::get('/ajaxx', function ()
+    {
+        
+        $data = $_GET['datavalue'];
+        echo "<option>{{$data}}</option>";
+    });
+    Route::post('/ajax', '\App\Http\Controllers\HomeController@ajax');
+
 });
 

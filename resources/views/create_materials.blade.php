@@ -18,6 +18,7 @@
    font-size: 16px !important;
    }
 </style>
+
 @section('content')
 <div class="row justify-content-center">
    <div class="col-md-8">
@@ -60,6 +61,10 @@
                <div class="form-group form-inline-custom">
                   <label for="exampleInputPassword1">Diámetro</label>
                   <input type="number" value="{{old('diameter')}}"class="form-control" id="exampleInputPassword1"name="diameter" autocomplete="off" placeholder="cm" aria-autocomplete="list">
+               </div>
+               <div class="form-group form-inline-custom">
+                  <label for="exampleInputPassword1">Espesor de materiales</label>
+                  <input type="number" value="{{old('thickness')}}"class="form-control" id="exampleInputPassword1"name="diameter" autocomplete="off" placeholder="cm" aria-autocomplete="list">
                </div>
                <div class="form-group form-inline-custom">
                   <label for="exampleInputPassword1">Tipo de material</label>

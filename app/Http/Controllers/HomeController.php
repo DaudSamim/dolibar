@@ -193,28 +193,69 @@ class HomeController extends Controller
         // return redirect()->back()->with('message', 'You have Added SubTask Successfully!');
     }
 
+    public function Search(Request $request)
+    {
+        $fecha = $request->date;
+        $work = $request->project;
+        dd($work);
+        if(isset($request->fecha) && isset($request->work)){
+
+            $projects = DB::table('projects')->where('project', $request->work)->where('start_date', $request->date)->get();
+            return view('performance_of_work', compact('projects','work','fecha'));
+            }
+            else if(isset($request->date)){
+
+                $projects = DB::table('projects')->where('start_date', $request->date)->get();
+                
+                return view('performance_of_work', compact('projects','fecha'));
+                
+            }
+            
+            else if (isset($request->project)){
+                $projects = DB::table('projects')->where('project', $request->project)->get();
+                
+                return view('performance_of_work', compact('projects','work'));
+
+
+            }
+                
+            return redirect()->back();
+
+        
+
+        // $count = 0;
+        // $search_date = DB::table('projects')->where('start_date', $request->fecha)->get();
+        // if (isset($request->work)) {
+        //     foreach ($search_date as $date) {
+        //         $projects[$count] = DB::table('projects')->where('status', $request->work)->where('start_date', $request->fecha)->first();
+        //         $count = $count + 1;
+
+        //     }
+        //     dd($projects);
+        // }
+
+        // return redirect()->back()->with('message', 'You have Added SubTask Successfully!');
+    }
+
     public function postAssignTask(Request $request)
     {
 
         $this->validate($request, [
             'project_id' => 'required',
             'task_id' => 'required',
-            'date' => 'required',
             'employee_id_1' => 'required',
         ]);
+        $employees = $request->get('employee_id_1');
+        foreach ($employees as $i => $employee) {
 
-// dd($request->emergency_number);
         DB::table('assignments')->insert([
 
             'project_id' => $request->project_id,
             'task_id' => $request->task_id,
-            'date' => $request->date,
-            'employee_id_1' => $request->employee_id_1,
-            'employee_id_2' => $request->employee_id_2,
-            'employee_id_3' => $request->employee_id_3,
-            'employee_id_4' => $request->employee_id_4,
-
+            
+            'employee_id_1' => $employees[$i],
         ]);
+    }
 
         return redirect()->back()->with('info', 'You have Assigned Task Successfully!');
     }
@@ -442,4 +483,11 @@ class HomeController extends Controller
         return redirect()->back()->with('info', 'Successfully Added');
     }
 
+
+    public function ajax(Request $request)
+    {
+        $data = $_GET['datavalue'];
+        echo "{{$data}}";
+        // return response()->json(['result'=>$request->surname]);
+    }
 }
