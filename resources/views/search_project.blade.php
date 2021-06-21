@@ -80,34 +80,35 @@
                                                 
 													<th>Id</th>
 													<th>Project</th>
-                                                    <th>Costo de mano de obra</th>
-                                                    <th>Costo de materiales</th>
-                                                    <th>Precio de venta</th>
+                          <th>Costo de mano de obra</th>
+                          <th>Costo de materiales</th>
+                          <th>Proyección de costo total</th>
+                          <th>Precio de venta</th>
 													<th>Grado de avance</th>
 													<th>Fecha de entrega</th>
-                                                    <th>Ingeniero a cargo</th>
-                                                    <th>Celular del ingeniero</th>
+                          <th>Tarea Actual</th>
+                          <th>Ingeniero a cargo</th>
+                                                  
                                                     
 
 												</tr>
 											</thead>
 											<tbody>
-                                            @foreach($projects as $project)
+                        @foreach($projects as $project)
 												<tr>
-                                                <td>{{$project->id}}</td>
-                                                <td>{{$project->project}}</td>
-                                                <td>N/A</td>
-                                                <td>N/A</td>
-													<td>{{$project->amount}}</td>
-													<td>{{$project->degree_of_progress}}</td>
-													
-                                                    
-                                                    
+                          <td>{{$project->id}}</td>
+                          <td>{{$project->project}}</td>
+                          <td>N/A</td>
+                          <td>N/A</td>
+                          <td>N/A</td>
+													<td>${{$project->amount}}</td>
+													<td>{{$project->degree_of_progress}}</td>                    
 													<td>{{$project->delivery_date}}</td>
-                                                    <td>{{$project->engineer_incharge}}</td>
-                                                    <td>{{$project->contact_person}}</td>
+                          <td>{{$project->contact_person}}</td>
+                          <td>{{$project->engineer_incharge}}</td>
+                         
                                                     
-                                            @endforeach	
+                        @endforeach	
 												</tr>
 											</tbody>
 										</table>

@@ -52,14 +52,25 @@
                 </div>
                 <div class="form-group form-inline-custom">
                     <label for="exampleInputPassword1">Fecha</label>
-                    <input type="date" value="{{old('date')}}" class="form-control" id="exampleInputPassword1"
+                    <input type="week" value="{{old('date')}}" class="form-control" id="exampleInputPassword1"
                         name="date" autocomplete="off" placeholder="" aria-autocomplete="list">
                 </div>
+
+                <div class="form-group form-inline-custom">
+                    <label for="exampleInputPassword1">Status del proyecto</label>
+                    <select class="js-example-basic-single w-100 select2-hidden-accessible" value="{{old('type')}}"
+                        name="type" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                       
+                        <option value="active" data-select2-id="12">Activo</option>
+                        <option value="delivered" data-select2-id="13">Entregado</option>
+                       
+                    </select>
+                </div>
+
                 <div class="form-group form-inline-custom">
                     <label for="exampleInputPassword1">Filtro</label>
                     <select class="js-example-basic-single w-100 select2-hidden-accessible" value="{{old('type')}}"
                         name="type" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
-                        <option value="" data-select2-id="3">Lista desplegable</option>
                         <option value="Soldador" data-select2-id="12">Tiempo de trabajo</option>
                         <option value="Maestro Soldador" data-select2-id="13">Cumplimiento del objetivo</option>
                         <option value=" Ingeniero" data-select2-id="14"> Unidades terminadas</option>
@@ -80,57 +91,48 @@
                         <thead>
                             <tr>
 
+                                <th>Trabajador</th>
+                                <th>Lun</th>
+                                <th>Mar</th>
+                                <th>Miér</th>
                                 <th></th>
-                                <th>Lun 21/07/21</th>
-                                <th>Mar 22/07/21</th>
-                                <th>Miér 23/07/21</th>
                                 <th></th>
                                 <th></th>
-                                <th></th>
-                                <th>Sábado 26/07/21</th>
-                                <th>Cantidad semanal</th>
+                                <th>Sábado</th>
+                                <th><strong>Cantidad semanal</strong></th>
 
 
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($workers as $row) 
                             <tr>
-                                <td></td>
-                                <td>Autocomplete</td>
-                                <td></td>
+                                <td>{{$row->name}}</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td>AutoComplete</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            @endforeach
+
+                             <tr>
+                                <td><strong>Cantidad diaria</strong></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
 
 
-                            <tr>
-                                <td></td>
-                                <td>Autocomplete</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>AutoComplete</td>
-                            </tr>
-
-
-                            <tr>
-                                <td></td>
-                                <td>Autocomplete</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>AutoComplete</td>
-                            </tr>
+                           
                         </tbody>
                     </table>
 
