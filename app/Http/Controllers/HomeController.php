@@ -74,15 +74,10 @@ class HomeController extends Controller
     {
 
         $this->validate($request, [
-            'surname' => 'required',
             'name' => 'required',
             'address' => 'required',
             'province' => 'required',
-            'mobile' => 'required|integer|min:12',
-            'email' => 'required|unique:employees',
-            'account_number' => 'required|unique:employees',
-            'account_type' => 'required',
-            'bank' => 'required',
+            'mobile' => 'required|integer|min:12|unique:employees',
             'emergency_number' => 'digits_between:7,12|required',
             'salary' => 'required',
             'working_hours' => 'required',
@@ -245,18 +240,18 @@ class HomeController extends Controller
             'task_id' => 'required',
             'employee_id_1' => 'required',
         ]);
+
         $employees = $request->get('employee_id_1');
-        foreach ($employees as $i => $employee) {
+    //     foreach ($employees as $i => $employee) {
 
         DB::table('assignments')->insert([
 
             'project_id' => $request->project_id,
             'task_id' => $request->task_id,
             
-            'employee_id_1' => $employees[$i],
+            'employee_id_1' => $employees?json_encode($employees):null,
         ]);
-    }
-
+    // }
         return redirect()->back()->with('info', 'You have Assigned Task Successfully!');
     }
 
@@ -265,14 +260,10 @@ class HomeController extends Controller
 
         $this->validate($request, [
             'manufacturer' => 'required',
-            'dimension' => 'required',
-            'height' => 'required',
-            'length' => 'required',
-            'width' => 'required',
-            'depth' => 'required',
-            'diameter' => 'required',
             'types_of_material' => 'required',
             'quality' => 'required',
+            'thickness' => 'required',
+
 
         ]);
 
@@ -280,7 +271,6 @@ class HomeController extends Controller
         DB::table('materials')->insert([
 
             'manufacturer_name' => $request->manufacturer,
-            'dimension' => $request->dimension,
             'height' => $request->height,
             'length' => $request->length,
             'width' => $request->width,
@@ -288,6 +278,9 @@ class HomeController extends Controller
             'diameter' => $request->diameter,
             'types_of_materials' => $request->types_of_material,
             'quality_of_finishes' => $request->quality,
+            'thickness_of_material' => $request->thickness,
+
+
 
         ]);
 

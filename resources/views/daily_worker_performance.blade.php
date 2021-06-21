@@ -1,4 +1,7 @@
 @extends('layout.app')
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxy/1.6.1/scripts/jquery.ajaxy.js" integrity="sha512-4WpSQe8XU6Djt8IPJMGD9Xx9KuYsVCEeitZfMhPi8xdYlVA5hzRitm0Nt1g2AZFS136s29Nq4E4NVvouVAVrBw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
    .form-inline-custom{
    display: flex !important;
@@ -39,10 +42,10 @@
             <form class="forms-sample"action="/daily_worker_performance" method="post"enctype='multipart/form-data'>
                <div class="form-group form-inline-custom">
                   <label for="exampleInputUsername1">Nombre del trabajador</label>
-                  <select style="width: 75% !important" value="{{old('employee_id')}}" class="js-example-basic-single w-100 select2-hidden-accessible"name="employee_id" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                  <select style="width: 75% !important" value="{{old('employee_id')}}"id="this2" class="js-example-basic-single w-100 select2-hidden-accessible"name="employee_id" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
 
                     @foreach($employees as $row)
-                     <option value="{{$row->id}}" data-select2-id="3">{{$row->name}}</option>
+                     <option value="{{$row->name}}" data-select2-id="3">{{$row->name}}</option>
                     @endforeach
 
                   </select>
@@ -50,12 +53,15 @@
 
                <div class="form-group form-inline-custom">
                   <label for="exampleInputEmail1">Fecha</label>
-                  <input type="date" value="{{old('date')}}"class="form-control" id="exampleInputEmail1"name="date" placeholder="">
+                  <input type="date" value="{{old('date')}}"class="form-control" id="this"name="date" placeholder="">
                </div>
 
                <div class="form-group form-inline-custom">
                   <label for="exampleInputEmail1">Proyecto actual</label>
-                  <input type="text" value="{{old('project_id')}}"class="form-control" id="exampleInputEmail1"name="project_id" placeholder="">
+                  <!-- <input type="text"id="banks" value="{{old('project_id')}}"class="form-control" name="project_id" placeholder=""> -->
+                  <select id="banks">
+                  
+                  </select>
                </div>
 
                <div class="form-group form-inline-custom">
@@ -112,4 +118,41 @@
       </div>
    </div>
 </div>
+
+<script>
+$(document).ready(function(){
+   
+  $("#this").change(function(e){
+
+   e.preventDefault();
+    $.ajaxSetup({
+             headers:{
+                 'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')
+             }
+             
+
+         });
+         
+         
+    $.ajax({
+        url: "test",
+        type:"POST",
+        data: {date: $('#this').val(),name: $('#this2').val()},
+        
+        success:function(data){
+             document.getElementById("banks").innerHTML = data;
+            // $(".alert").html= result.success;
+            console.log('hi');
+            
+        },error:function(){ 
+         document.getElementById("banks").innerHTML = "<option></option>";
+         alert("NO PROJECTS TO SHOW");
+        }
+    }); //end
+
+  });
+});
+</script>
+
+
 @endsection

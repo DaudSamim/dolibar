@@ -67,11 +67,6 @@
                             placeholder="" aria-autocomplete="list">
                     </div>
                     <div class="form-group form-inline-custom">
-                        <label for="exampleInputPassword1">Monto</label>
-                        <input type="number" value="{{old('amount')}}" class="form-control" id="exampleInputPassword1"
-                            name="amount" autocomplete="off" placeholder="" aria-autocomplete="list">
-                    </div>
-                    <div class="form-group form-inline-custom">
                         <label for="exampleInputUsername1">Producto a fabricar</label>
                         <select class="js-example-basic-single w-100 select2-hidden-accessible"
                             value="{{old('task_id')}}" name="task_id" data-width="100%" data-select2-id="1"
@@ -84,6 +79,12 @@
                         <input type="number" value="{{old('amount')}}" class="form-control" id="exampleInputPassword1"
                             name="amount" autocomplete="off" placeholder="" aria-autocomplete="list"> -->
                     </div>
+                    <div class="form-group form-inline-custom">
+                        <label for="exampleInputPassword1">Precio de venta</label>
+                        <input type="number" value="{{old('amount')}}" class="form-control" id="exampleInputPassword1"
+                            name="amount" autocomplete="off" placeholder="" aria-autocomplete="list">
+                    </div>
+                    
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputPassword1">Fecha de inicio</label>
                         <input type="date" value="{{old('start_date')}}" class="form-control" id="exampleInputPassword1"
@@ -107,6 +108,7 @@
                     <br>
                     <hr>
                     <br>
+<div>
                     <div class="col-lg-10">
                         <ul>
                             <h4>Tarea 1</h4>
@@ -334,6 +336,7 @@
                                 <button type="button" id="addmore3" class="btn btn tasks">Add More Task</button>
                         </div>
                     </div>
+                    </div>
                     <div class="div-btns text-center">
                         <input type="hidden" name="_token" value={{csrf_token()}}>
                         <button type="submit" class="btn btn-grabar">GRABAR</button>
@@ -344,61 +347,16 @@
     </div>
 </div>
 
-<script>
-    $("#addmore").click(function () {
 
 
-        $("#addings").append(` <hr>
 
-       <div class="form-group form-inline-custom">
-                                 <label for="exampleInputUsername1">Tipo de operario</label>
-                                 <input value="{{old('subtasks')}}"name="subtasks" class="js-example-basic-single w-90 select2-hidden-accessible"id="project" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true"></input>
-                                
-                              </div>
-                              <div class="form-group form-inline-custom">
-                                 <label for="exampleInputUsername1">Cantidad de operarios</label>
-                                 <input value="{{old('subtasks')}}"name="subtasks" class="js-example-basic-single w-90 select2-hidden-accessible"id="project" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true"></input>
-                              </div>
-                              <div class="form-group form-inline-custom">
-                                 <label for="exampleInputUsername1">Horas hombre total</label>
-                                 <textarea value="{{old('description')}}"name="description" class="js-example-basic-single w-90"></textarea>
-                              </div> 
-                              `);
-    });
-
-</script>
 
 <script>
-    $("#addmore1").click(function () {
-
-    alert('jndsw');
-        $(this).closest('').append(` <hr>
-        <div class="form-group form-inline-custom">
-                                            <label for="exampleInputUsername1">Nombre del material</label>
-                                            <input value="{{old('subtasks')}}" name="subtasks"
-                                                class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
-                                                aria-hidden="true"></input>
-
-                                        </div>
-                                        <div class="form-group form-inline-custom">
-                                            <label for="exampleInputUsername1">Cantidad</label>
-                                            <input value="{{old('subtasks')}}" name="subtasks"
-                                                class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
-                                                aria-hidden="true"></input>
-                                        </div> 
-                              `);
-    });
-
-</script>
-
-<script>
-      
+      var q = 7000;
     $("#addmore2").click(function () {
     
 
-        $("#addings2").append(` <hr>
+        $("#addings2").append(`<div class="aaa"> <hr>
         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Nombre de la herramienta</label>
                                             <input value="{{old('subtasks')}}" name="subtasks"
@@ -414,21 +372,21 @@
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
                                         </div> 
+                                        <button type="button" onclick="removeop('`+ q +`')"id="`+ q +`" class="btn btn addmore">Remove Tool</button>
+                                            </div>
                               `);
+            q = q + 1;
     });
 
 </script>
-
-
-
-
  
-
- <script>
+<script>
+    var p = 5000;
     $(document).ready(function(){
   $('.addmore').on('click', function(){
+
   
-    $(this).closest('.addings').before(`<hr><br>
+    $(this).closest('.addings').before(`<div class="aaa"><hr><br>
                                             <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Tipo de operario</label>
                                             <input value="{{old('subtasks')}}" name="subtasks"
@@ -449,21 +407,25 @@
                                             <textarea value="{{old('description')}}" name="description"
                                                 class="js-example-basic-single w-90"></textarea>
                                         </div>
+                                        <button type="button" onclick="removeop('`+ p +`')"id="`+ p +`" class="btn btn addmore">Remove Opperator</button>
+                                            </div>
                                         
                                     `);
+                p = p + 1;
   });
-});
+    });
 
 
 
 
- </script>
+</script>
 
 <script>
+    var t = 6000;
     $(document).ready(function(){
   $('.addmore1').on('click', function(){
   
-    $(this).closest('.addings1').before(`<hr><br>
+    $(this).closest('.addings1').before(`<div class="aaa"><hr><br>
     <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Nombre del material</label>
                                             <input value="{{old('subtasks')}}" name="subtasks"
@@ -479,25 +441,38 @@
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
                                         </div>
+                                        <button type="button" onclick="removeop('`+ t +`')"id="`+ t +`" class="btn btn addmore">Remove Material</button>
+                                            </div>
                                         
                                     `);
+                    t = t + 1
         });
     });
- </script>
+</script>
 
 <script>
 
-var c = 1;
-
-
+    var c = 1;
+    var k = 500;
+    var j = 1000;
+    var u = 1500;
+    var m = 2000;
+    var n = 2500;
+    var x = 3000;
     $(document).ready(function(){
   $('.tasks').on('click', function(){
       c = c + 1;
+      
+      
+      
   
-    $(this).closest('.addtasks').before(`<hr><br>
-    <div class="col-lg-10">
+    $(this).closest('.addtasks').before(`<div class="yoo">
+    <hr><br>
+    
+    <div class="col-lg-10 ">
                         <ul>
-                            <h4>Tarea `+ c + `</h4>
+                            <h4>Tarea `+ c + `</h4> <button type="button"  onclick="yeen('`+ c +`')"id="`+ c +`" class="btn btn addmore uoo">Remove</button>
+                                        
                         </ul>
                     </div>
                     <div class="col-2"></div>
@@ -560,11 +535,16 @@ var c = 1;
                     <hr>
 
                     <br>
+                    <div class="">
+                    
                     <div class="row ">
-                        <div class="col-2"><br></div>
+                        <div class="col-2"><br>
+                        </div>
                         <div class="col-10">
 
-                            <li>Operarios</li>
+                            <li>Operarios </li> 
+                            
+                                        
                             <br>
 
 
@@ -594,9 +574,9 @@ var c = 1;
                                         </div>
                                         
                                     </div>
-                                    <div class="addings">
+                                    <div class="addings5">
                                     <div class="div-btns text-center">
-                                        <button type="button" class="btn btn addmore">Agregar otro tipo de
+                                        <button type="button"onclick="myFunction('`+ k +`')"id="`+ k +`"  class="btn btn addmore">Agregar otro tipo de
                                             operario</button>
                                         </div>
                                     </div>
@@ -605,6 +585,7 @@ var c = 1;
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </div>
                     <br>
                     <br>
@@ -640,7 +621,7 @@ var c = 1;
                                     </div>
                                     <div class="addings">
                                     <div class="div-btns text-center">
-                                        <button type="button" onclick="newfunc();" class="btn btn addmore1">Agregar otro tipo de
+                                        <button type="button" onclick="myFunction2('`+ u +`')"id="`+ u +`" class="btn btn addmore1">Agregar otro tipo de
                                             materiales</button>
                                     </div>
                                     </div>
@@ -681,37 +662,170 @@ var c = 1;
                                         </div>
 
                                     </div>
+                                    <div class="addings">
                                     <div class="div-btns text-center">
-                                        <button type="button" id="addmore2" class="btn btn">Agregar otro tipo de
+                                        <button type="button" onclick="myFunction3('`+ n +`')"id="`+ n +`" class="btn btn">Agregar otro tipo de
                                             herramienta</button>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <div>
                                         
                                     `);
+                                     k = k + 1;
+     j = j + 1;
+     u = u + 1;
+     m = m + 1;
+     n = n + 1;
+     x = x + 1;
         });
     });
 </script>
 
 <script>
-function newfunc() {
-    var x = document.getElementsByClassName("addings");
-    x.remove();
+        function myFunction(p1) {
+        // var closest = element.closest(p1);
+        
+        var y = "#" + p1;
+        $(y).closest('.addings5').before(` 
+        <div class="aaa"> <hr><div class="form-group form-inline-custom">
+                                            <label for="exampleInputUsername1">Tipo de operario</label>
+                                            <input value="{{old('subtasks')}}" name="subtasks"
+                                                class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
+                                                aria-hidden="true"></input>
 
-    $('.addings'). remove();
+                                        </div>
+                                        <div class="form-group form-inline-custom">
+                                            <label for="exampleInputUsername1">Cantidad de operarios</label>
+                                            <input value="{{old('subtasks')}}" name="subtasks"
+                                                class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
+                                                aria-hidden="true"></input>
+                                        </div>
+                                        <div class="form-group form-inline-custom">
+                                            <label for="exampleInputUsername1">Horas hombre total</label>
+                                            <textarea value="{{old('description')}}" name="description"
+                                                class="js-example-basic-single w-90"></textarea>
+                                        </div>  
+                                        <button type="button" onclick="removeop('`+ j +`')"id="`+ j +`" class="btn btn addmore">Remove Opperator</button>
+                                            </div>`);
+        k = k + 1;
+        j = j + 1;
+        
+    
 
+    }
 
+</script>
 
-}
+<script>
+    function yeen(yes) {
+    
+    var r = "#" + yes; 
+    c = c - 1;
+    // var closest = element.closest(p1);
+    $(r).closest('.yoo').addClass('d-none');
+    }
 
 
 
 </script>
- 
+
+<script>
+
+    function removeop(yes) {
+    
+    var o = "#" + yes; 
+    // var closest = element.closest(p1);
+    $(o).closest('.aaa').addClass('d-none');
+    }
 
 
+
+</script>
+
+<script>
+        function myFunction2(p1) {
+        // var closest = element.closest(p1);
+        
+        var y = "#" + p1;
+        $(y).closest('.addings').before(`<div class="aaa"> <hr> <div class="form-group form-inline-custom">
+                                            <label for="exampleInputUsername1">Nombre del material</label>
+                                            <input value="{{old('subtasks')}}" name="subtasks"
+                                                class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
+                                                aria-hidden="true"></input>
+
+                                        </div>
+                                        <div class="form-group form-inline-custom">
+                                            <label for="exampleInputUsername1">Cantidad</label>
+                                            <input value="{{old('subtasks')}}" name="subtasks"
+                                                class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
+                                                aria-hidden="true"></input>
+                                        </div>
+                                        <button type="button" onclick="removemat('`+ m +`')"id="`+ m +`" class="btn btn addmore">Remove Material</button>
+                                            </div>
+                                        </div>
+        `);
+        m = m + 1;
+        u = u + 1;
+        
+    
+
+    }
+
+    function removemat(yes) {
+    
+    var o = "#" + yes; 
+    // var closest = element.closest(p1);
+    $(o).closest('.aaa').addClass('d-none');
+    }
+
+
+    function myFunction3(p1) {
+        // var closest = element.closest(p1);
+        
+        var y = "#" + p1;
+        $(y).closest('.addings').before(`<div class="aaa"> <hr><div class="form-group form-inline-custom">
+                                            <label for="exampleInputUsername1">Nombre de la herramienta</label>
+                                            <input value="{{old('subtasks')}}" name="subtasks"
+                                                class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
+                                                aria-hidden="true"></input>
+
+                                        </div>
+                                        <div class="form-group form-inline-custom">
+                                            <label for="exampleInputUsername1">Cantidad</label>
+                                            <input value="{{old('subtasks')}}" name="subtasks"
+                                                class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
+                                                aria-hidden="true"></input>
+                                        </div>
+                                        <button type="button" onclick="removetool('`+ x +`')"id="`+ x +`" class="btn btn addmore">Remove Tool</button>
+                                            </div>
+                                        </div>
+
+        `);
+        n = n + 1;
+        x = x + 1;
+        
+    
+
+    }
+
+    function removetool(yes) {
+    
+    var o = "#" + yes; 
+    // var closest = element.closest(p1);
+    $(o).closest('.aaa').addClass('d-none');
+    }
+</script>
 
 
 
