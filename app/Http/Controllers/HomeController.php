@@ -357,8 +357,7 @@ class HomeController extends Controller
 
                     DB::table('project_operator')->insert([
                     
-                    'project_id' => $project_id->id,
-                    'task_it' => $item[$i],
+                    
                     'location' => $request->get('task_location')[$i],
                     'directions' => $request->get('task_directions_operator')[$i],
                     'target_quantity' => $request->get('target_quantity')[$i],
