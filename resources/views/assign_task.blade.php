@@ -46,7 +46,7 @@
                 <form class="forms-sample" action="/assign_task" method="post">
                     <div class="form-group form-inline-custom">
                         @php
-                        $projects = DB::table('projects')->get();
+                        $projects = DB::table('projects')->where('status',1)->get();
                         $employees = DB::table('employees')->get();
                         $tasks = DB::table('tasks')->get();
                         @endphp
@@ -78,7 +78,7 @@
 
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputUsername1">Nombre del operario 1</label>
-                        <select value="{{old('employee_id_1[]')}}"
+                        <select value="{{old('employee_id_1[]')}}"required
                             class="js-example-basic-single w-100 select2-hidden-accessible" name="employee_id_1[]"
                             data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
                             <option value="" data-select2-id="3">Select</option>
@@ -87,28 +87,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group form-inline-custom">
-                        <label for="exampleInputUsername1">Nombre del operario 2</label>
-                        <select value="{{old('employee_id_1[]')}}"
-                            class="js-example-basic-single w-100 select2-hidden-accessible" name="employee_id_1[]"
-                            data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
-                            <option value="" data-select2-id="3">Select</option>
-                            @foreach($employees as $employee)
-                            <option value="{{$employee->id}}" data-select2-id="3">{{$employee->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group form-inline-custom">
-                        <label for="exampleInputUsername1">Nombre del operario 3</label>
-                        <select value="{{old('employee_id_1[]')}}"
-                            class="js-example-basic-single w-100 select2-hidden-accessible" name="employee_id_1[]"
-                            data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
-                            <option value="" data-select2-id="3">Select</option>
-                            @foreach($employees as $employee)
-                            <option value="{{$employee->id}}" data-select2-id="3">{{$employee->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    
                     <!-- <div class="form-group form-inline-custom">
                         <label for="exampleInputUsername1">Agregar Operario Adicional </label>
                         <input type="text" name="employee_id_4" class="form-control">
@@ -132,15 +111,16 @@
 
 
 <script>
-var c = 3;
+    var c = 1;
+    var q = 2000;
     $(document).ready(function(){
   $('.addmore').on('click', function(){
      c = c + 1;
   
-    $(this).closest('.addings').before(`
+    $(this).closest('.addings').before(`<div class="aaa">
     <div class="form-group form-inline-custom">
                         <label for="exampleInputUsername1">Nombre del operario `+ c + `</label>
-                        <select value="{{old('employee_id_1[]')}}"
+                        <select value="{{old('employee_id_1[]')}}"required
                             class="js-example-basic-single w-100 select2-hidden-accessible" name="employee_id_1[]"
                             data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
                             <option value="" data-select2-id="3">Select</option>
@@ -149,13 +129,28 @@ var c = 3;
                             @endforeach
                         </select>
                     </div>
+                    <button type="button" onclick="removeop('`+ q +`')"id="`+ q +`" class="btn btn addmore">Remove Operator</button>
+                                            </div>
                                         
                                     `);
+                q = q + 1;
   });
-});
+ });
+
+</script>
+
+<script>
+
+    function removeop(yes) {
+    
+    var o = "#" + yes; 
+    // var closest = element.closest(p1);
+    $(o).closest('.aaa').addClass('d-none');
+    c = c - 1;
+    }
+    
 
 
 
-
- </script>
+</script>
 @endsection

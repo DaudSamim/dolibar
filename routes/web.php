@@ -204,19 +204,29 @@ Route::middleware('auth:web')->group(function ()
         return view('performance_of_work');
     });
 
-    Route::get('/ajax', function ()
+    
+
+
+
+
+
+
+
+    Route::post('test', function(Request $request)
     {
+        $employee =  DB::Table('employees')->where('name',$request->name)->first();
+
+        $assignment = DB::Table('assignments')->where('employee_id_1',$employee->id)->first();
+
+        $project = DB::Table('projects')->where('id',$assignment->project_id)->first();
+
         
-        return view('ajax');
+             return "<option>{$project->project}</option>";
+            // return response()->json(['success'=>'Data saved','result'=>$request->file]);
+        
     });
 
-    Route::get('/ajaxx', function ()
-    {
-        
-        $data = $_GET['datavalue'];
-        echo "<option>{{$data}}</option>";
-    });
-    Route::post('/ajax', '\App\Http\Controllers\HomeController@ajax');
+
 
 });
 
