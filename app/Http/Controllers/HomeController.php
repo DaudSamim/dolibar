@@ -200,7 +200,8 @@ class HomeController extends Controller
         $dto->modify('+6 days');
         $ret['week_end'] = $dto->format('Y-m-d');
         
-        dd($ret);
+        $project = DB::table('projects')->where('id',$request->project)->first();
+        
         
     }
 
@@ -288,25 +289,24 @@ class HomeController extends Controller
 
     public function postAddProject(Request $request)
     {
-        $this->validate($request, [
-            // 'project' => 'required',
-            // 'location' => 'required',
-            // 'customer' => 'required',
-            // 'contact_person' => 'required|min:11',
-            // 'engineer_incharge' => 'required',
-            // 'amount' => 'required',
-            // 'start_date' => 'required',
-            // 'delivery_date' => 'required|after:start_date',
-            // 'video' => 'required',
-            // 'product_to_be_manufactured'  => 'required',
 
+        $this->validate($request, [
+            'project' => 'required',
+            'location' => 'required',
+            'customer' => 'required',
+            'contact_person' => 'required|min:11',
+            'engineer_incharge' => 'required',
+            'amount' => 'required',
+            'start_date' => 'required',
+            'delivery_date' => 'required|after:start_date',
+            'video' => 'required',
 
         ]);
 
         if ($request->file('video')) {
             $file = $request->file('video');
             $filename = $file->getClientOriginalName();
-            $path = public_path() . '/project';
+            $path = public_path() . '/videos/';
             $file->move($path, $filename);
 
             DB::table('projects')->insert([
@@ -319,58 +319,20 @@ class HomeController extends Controller
                 'start_date' => $request->start_date,
                 'delivery_date' => $request->delivery_date,
                 'file' => $filename,
-                'product_manufacturing' => $request->product_to_be_manufactured,
- 
+
             ]);
-            $items = $request->get('name_task');
-                $project_id = DB::table('projects')->orderby('id', 'desc')->first();
-                $c = 1;
-                foreach ($items as $i => $item) {
+            $project_id = DB::table('projects')->orderby('id', 'desc')->first();
 
-            if ($request->file('file')[$i]) {
-                $file = $request->file('file')[$i];
-                $filename = $file->getClientOriginalName();
-                $path = public_path() . '/task';
-                $file->move($path, $filename);
-                
-                
-                
-                DB::table('project_task')->insert([
-                    'task_number' => $c,
-                    'project_id' => $project_id->id,
-                    'task_name' => $item[$i],
-                    'location' => $request->get('task_location')[$i],
-                    'directions' => $request->get('task_directions_operator')[$i],
-                    'target_quantity' => $request->get('target_quantity')[$i],
-                    'file' => $filename,
-     
-                ]);
-            }
-            else { 
-                dd($filename[$i]);
-            }
-                $c = $c + 1;
-    
-            };
-            $operators = $request->get('type_operator');
-            foreach ($operators as $i => $operator) { 
+            DB::table('project_details')->insert([
+                'project_id' => $project_id->id,
+                'subtask_id' => $request->task_id,
+                'quantity' => $request->quantity,
+                'location' => $request->locations,
+                'direction' => $request->directions,
 
-                    DB::table('project_operator')->insert([
-                    
-                    'project_id' => $project_id->id,
-                    'task_it' => $item[$i],
-                    'location' => $request->get('task_location')[$i],
-                    'directions' => $request->get('task_directions_operator')[$i],
-                    'target_quantity' => $request->get('target_quantity')[$i],
-                    'file' => $filename,
-     
-                ]);
-            }
-
-
+            ]);
 
             return redirect()->back()->with('info', 'You have Added Project Successfully!');
-
 
         };
 
