@@ -92,8 +92,7 @@ Route::middleware('auth:web')->group(function ()
         return view('search_project', compact("projects"));
     });
     Route::post('/search_project', '\App\Http\Controllers\HomeController@SearchProject');
-    Route::post('/search', '\App\Http\Controllers\HomeController@Search');
-
+    
 
     Route::post('/change_status', '\App\Http\Controllers\HomeController@postchangeStatus');
 
@@ -200,32 +199,40 @@ Route::middleware('auth:web')->group(function ()
 
     Route::get('/daily_worker_performance', '\App\Http\Controllers\HomeController@daily_worker_performance');
     Route::post('/daily_worker_performance', '\App\Http\Controllers\HomeController@post_daily_worker_performance');
+
     Route::get('/work-performance', function ()
     {   
         $workers = DB::table('employees')->orderby('name','asc')->get();
-        return view('performance_of_work',compact('workers'));
+        $projects = DB::table('projects')->orderby('project','asc')->get();
+        return view('performance_of_work',compact('workers','projects'));
     });
 
-    
+    Route::post('/work-performance', '\App\Http\Controllers\HomeController@Search');
 
 
-
-
-
-
-
-    Route::post('test', function(Request $request)
+    Route::post('get_projects_ajax', function(Request $request)
     {
-        $employee =  DB::Table('employees')->where('name',$request->name)->first();
+        $employee =  DB::Table('employees')->where('name',$request->name)->pluck('id')->first();
+        $project_ids = DB::table('project_operators')->where('user_id',$employee)->get()->pluck('p_id');
+        $projects = DB::table('projects')->whereIn('id',$projects)->get();
 
-        $assignment = DB::Table('assignments')->where('employee_id_1',$employee->id)->first();
+        $data = null;
+        foreach ($projects as $key => $row) {
+            $data .= "<option value=".$row->id.">".$row->project."</option>";
+        }
+        return $data;   
+    });
 
-        $project = DB::Table('projects')->where('id',$assignment->project_id)->first();
-
+    Route::post('get_tasks_ajax', function(Request $request)
+    {
+        $tasks_ids = DB::table('project_operators')->where('p_id',$request->project)->where('user_id',$request->name)->get()->pluck('task_id');
+        $tasks =  DB::Table('project_tasks')->whereIn('id',$tasks_ids)->get();
         
-             return "<option>{$project->project}</option>";
-            // return response()->json(['success'=>'Data saved','result'=>$request->file]);
-        
+        $data = null;
+        foreach ($tasks as $key => $row) {
+            $data .= "<option value=".$row->id.">".$row->name."</option>";
+        }
+        return $data;   
     });
 
 

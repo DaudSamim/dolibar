@@ -190,46 +190,18 @@ class HomeController extends Controller
 
     public function Search(Request $request)
     {
-        $fecha = $request->date;
-        $work = $request->project;
-        dd($work);
-        if(isset($request->fecha) && isset($request->work)){
-
-            $projects = DB::table('projects')->where('project', $request->work)->where('start_date', $request->date)->get();
-            return view('performance_of_work', compact('projects','work','fecha'));
-            }
-            else if(isset($request->date)){
-
-                $projects = DB::table('projects')->where('start_date', $request->date)->get();
-                
-                return view('performance_of_work', compact('projects','fecha'));
-                
-            }
-            
-            else if (isset($request->project)){
-                $projects = DB::table('projects')->where('project', $request->project)->get();
-                
-                return view('performance_of_work', compact('projects','work'));
-
-
-            }
-                
-            return redirect()->back();
-
+        // To cenvert weeks into date
+        $date = explode('-',$request->date);
+        $year = $date[0];
+        $week = str_replace('W','',$date[1]);
+        $dto = new \DateTime();
+        $dto->setISODate($year, $week);
+        $ret['week_start'] = $dto->format('Y-m-d');
+        $dto->modify('+6 days');
+        $ret['week_end'] = $dto->format('Y-m-d');
         
-
-        // $count = 0;
-        // $search_date = DB::table('projects')->where('start_date', $request->fecha)->get();
-        // if (isset($request->work)) {
-        //     foreach ($search_date as $date) {
-        //         $projects[$count] = DB::table('projects')->where('status', $request->work)->where('start_date', $request->fecha)->first();
-        //         $count = $count + 1;
-
-        //     }
-        //     dd($projects);
-        // }
-
-        // return redirect()->back()->with('message', 'You have Added SubTask Successfully!');
+        dd($ret);
+        
     }
 
     public function postAssignTask(Request $request)
@@ -441,7 +413,7 @@ class HomeController extends Controller
 
     public function daily_worker_performance()
     {
-        $employees = DB::table('employees')->get();
+        $employees = DB::table('employees')->orderby('name','asc')->get();
         return view('daily_worker_performance', compact('employees'));
     }
 

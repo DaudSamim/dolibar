@@ -42,7 +42,7 @@
             <form class="forms-sample"action="/daily_worker_performance" method="post"enctype='multipart/form-data'>
                <div class="form-group form-inline-custom">
                   <label for="exampleInputUsername1">Nombre del trabajador</label>
-                  <select style="width: 75% !important" value="{{old('employee_id')}}"id="this2" class="js-example-basic-single w-100 select2-hidden-accessible"name="employee_id" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                  <select style="width: 75% !important" value="{{old('employee_id')}}"id="name" class="js-example-basic-single w-100 select2-hidden-accessible"name="employee_id" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
 
                     @foreach($employees as $row)
                      <option value="{{$row->name}}" data-select2-id="3">{{$row->name}}</option>
@@ -53,20 +53,22 @@
 
                <div class="form-group form-inline-custom">
                   <label for="exampleInputEmail1">Fecha</label>
-                  <input type="date" value="{{old('date')}}"class="form-control" id="this"name="date" placeholder="">
+                  <input type="date" value="{{old('date')}}"class="form-control" id="date" name="date" placeholder="">
                </div>
 
                <div class="form-group form-inline-custom">
                   <label for="exampleInputEmail1">Proyecto actual</label>
                   <!-- <input type="text"id="banks" value="{{old('project_id')}}"class="form-control" name="project_id" placeholder=""> -->
-                  <select id="banks">
+                  <select id="projects" name="projects">
                   
                   </select>
                </div>
 
                <div class="form-group form-inline-custom">
                   <label for="exampleInputPassword1">Tarea Actual</label>
-                  <input type="text"value="{{old('task_id')}}"class="form-control" id="exampleInputPassword1" name="task_id" autocomplete="off" placeholder="" aria-autocomplete="list">
+                  <select id="tasks" name="tasks">
+                  
+                  </select>
                </div>
 
                <div class="form-group form-inline-custom">
@@ -122,7 +124,7 @@
 <script>
 $(document).ready(function(){
    
-  $("#this").change(function(e){
+  $("#date").change(function(e){
 
    e.preventDefault();
     $.ajaxSetup({
@@ -132,25 +134,55 @@ $(document).ready(function(){
              
 
          });
-         
-         
+            
     $.ajax({
-        url: "test",
+        url: "get_projects_ajax",
         type:"POST",
-        data: {date: $('#this').val(),name: $('#this2').val()},
+        data: {
+                date: $('#date').val(),
+                name: $('#name').val()
+              },
         
         success:function(data){
-             document.getElementById("banks").innerHTML = data;
-            // $(".alert").html= result.success;
-            console.log('hi');
+            document.getElementById("projects").innerHTML = data;
             
         },error:function(){ 
-         document.getElementById("banks").innerHTML = "<option></option>";
-         alert("NO PROJECTS TO SHOW");
+            document.getElementById("projects").innerHTML = "<option>No Projects Available</option>";    
         }
-    }); //end
+    });
 
   });
+
+  $("#projects").change(function(e){
+
+   e.preventDefault();
+    $.ajaxSetup({
+             headers:{
+                 'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')
+             }
+             
+
+         });
+            
+    $.ajax({
+        url: "get_tasks_ajax",
+        type:"POST",
+        data: {
+                name: $('#name').val(),
+                project: $('#projects').val(),
+              },
+        
+        success:function(data){
+            document.getElementById("tasks").innerHTML = data;
+            
+        },error:function(){ 
+            document.getElementById("tasks").innerHTML = "<option>No Tasks Available</option>";    
+        }
+    });
+
+  });
+
+
 });
 </script>
 

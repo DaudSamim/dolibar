@@ -38,30 +38,30 @@
         <div class="card">
             <div class="card-body">
                 <h6 class="card-title">Desempeño de la obra</h6>
-                <form class="forms-sample" action="/search" method="post" enctype='multipart/form-data'>
+                <form class="forms-sample" action="/work-performance" method="post" enctype='multipart/form-data'>
                 <div class="form-group form-inline-custom">
                     <label for="exampleInputUsername1">Projecto</label>
-                    <input type="text" value="{{old('project')}}" class="form-control" id="exampleInputUsername1"
-                        name="project" autocomplete="off" placeholder="">
+                    <select class="js-example-basic-single w-100 select2-hidden-accessible" value="{{old('type')}}" name="project" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true" required>
+                        @foreach($projects as $row)
+                        <option value="{{$row->id}}" data-select2-id="12">{{$row->project}}</option>
+                        @endforeach
+                    </select>
+                   
 
                 </div>
-                <div class="form-group form-inline-custom">
+               <!--  <div class="form-group form-inline-custom">
                     <label for="exampleInputEmail1">Tarea</label>
-                    <input type="text" value="{{old('name')}}" class="form-control" id="exampleInputEmail1" name="name"
-                        placeholder="">
-                </div>
+                    <input type="text" value="{{old('name')}}" class="form-control" id="exampleInputEmail1" name="task" required placeholder="">
+                </div> -->
                 <div class="form-group form-inline-custom">
                     <label for="exampleInputPassword1">Fecha</label>
-                    <input type="week" value="{{old('date')}}" class="form-control" id="exampleInputPassword1"
-                        name="date" autocomplete="off" placeholder="" aria-autocomplete="list">
+                    <input type="week" value="{{old('date')}}" class="form-control" id="exampleInputPassword1" required name="date" autocomplete="off" placeholder="" aria-autocomplete="list">
                 </div>
 
                 <div class="form-group form-inline-custom">
                     <label for="exampleInputPassword1">Status del proyecto</label>
-                    <select class="js-example-basic-single w-100 select2-hidden-accessible" value="{{old('type')}}"
-                        name="type" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
-                       
-                        <option value="active" data-select2-id="12">Activo</option>
+                    <select class="js-example-basic-single w-100 select2-hidden-accessible" value="{{old('type')}}" name="status" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                        <option selected value="active" data-select2-id="12">Activo</option>
                         <option value="delivered" data-select2-id="13">Entregado</option>
                        
                     </select>
@@ -69,8 +69,8 @@
 
                 <div class="form-group form-inline-custom">
                     <label for="exampleInputPassword1">Filtro</label>
-                    <select class="js-example-basic-single w-100 select2-hidden-accessible" value="{{old('type')}}"
-                        name="type" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                    <select class="js-example-basic-single w-100 select2-hidden-accessible" value="{{old('type')}}" name="filter" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                        <option selected data-select2-id="12">Seleccionar filtro</option>
                         <option value="Soldador" data-select2-id="12">Tiempo de trabajo</option>
                         <option value="Maestro Soldador" data-select2-id="13">Cumplimiento del objetivo</option>
                         <option value=" Ingeniero" data-select2-id="14"> Unidades terminadas</option>
@@ -88,6 +88,7 @@
 
                 <div class="table-responsive">
                     <table class="table table-bordered">
+                        
                         <thead>
                             <tr>
 
@@ -95,9 +96,8 @@
                                 <th>Lun</th>
                                 <th>Mar</th>
                                 <th>Miér</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th>juev</th>
+                                <th>vier</th>
                                 <th>Sábado</th>
                                 <th><strong>Cantidad semanal</strong></th>
 
@@ -108,7 +108,6 @@
                             @foreach($workers as $row) 
                             <tr>
                                 <td>{{$row->name}}</td>
-                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -128,12 +127,12 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
                             </tr>
 
 
                            
                         </tbody>
+                       
                     </table>
 
                 </div>
