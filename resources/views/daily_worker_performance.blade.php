@@ -42,7 +42,7 @@
             <form class="forms-sample"action="/daily_worker_performance" method="post"enctype='multipart/form-data'>
                <div class="form-group form-inline-custom">
                   <label for="exampleInputUsername1">Nombre del trabajador</label>
-                  <select style="width: 75% !important" value="{{old('employee_id')}}"id="name" class="js-example-basic-single w-100 select2-hidden-accessible"name="employee_id" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                  <select style="width: 75% !important" value="{{old('employee_id')}}" id="name" class="js-example-basic-single w-100 select2-hidden-accessible"name="employee_id" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
 
                     @foreach($employees as $row)
                      <option value="{{$row->id}}" data-select2-id="3">{{$row->name}}</option>
@@ -125,7 +125,7 @@
 $(document).ready(function(){
    
   $("#name").change(function(e){
-
+    document.getElementById("tasks").innerHTML = '';
    e.preventDefault();
     $.ajaxSetup({
              headers:{
@@ -144,7 +144,11 @@ $(document).ready(function(){
               },
         
         success:function(data){
+          if(data){
             document.getElementById("projects").innerHTML = data;
+          }else{
+            document.getElementById("projects").innerHTML = "<option>No Projects Available</option>";    
+          }
             
         },error:function(){ 
             document.getElementById("projects").innerHTML = "<option>No Projects Available</option>";    
@@ -173,7 +177,11 @@ $(document).ready(function(){
               },
         
         success:function(data){
+          if(data){
             document.getElementById("tasks").innerHTML = data;
+          }else{
+            document.getElementById("tasks").innerHTML = "<option>No Tasks Available</option>";
+          }
             
         },error:function(){ 
             document.getElementById("tasks").innerHTML = "<option>No Tasks Available</option>";    

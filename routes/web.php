@@ -240,16 +240,19 @@ Route::middleware('auth:web')->group(function ()
     Route::post('get_projects_ajax', function(Request $request)
     {
 
-        $employee =  DB::Table('employees')->where('name',$request->name)->pluck('id')->first();
-        $employee_id =  DB::Table('assignments')->where('employee_id_1',$employee)->get()->pluck('project_id');
+        // $employee =  DB::Table('employees')->where('name',$request->name)->pluck('id')->first();
+        $employee_id =  DB::Table('assignments')->where('employee_id_1',$request->name)->get()->pluck('project_id');
             $projects = DB::table('projects')->whereIn('id',$employee_id)->get();
         
-        
-
-        $data = null;
+        $data = "<option>Select Project</option>";
         foreach ($projects as $key => $row) {
             $data .= "<option value=".$row->id.">".$row->project."</option>";
         }
+
+        if(count($projects) == 0){
+            $data = null;
+        }
+
         return $data;   
     });
 
