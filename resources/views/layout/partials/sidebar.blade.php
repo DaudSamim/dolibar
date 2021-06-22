@@ -51,7 +51,7 @@
                      </a>
                   </li>
                   <li class="nav-item">
-                     <a href="/search_project"
+                     <a href="#"
                         class="nav-link ">Status de los proyectos
                      </a>
                   </li>

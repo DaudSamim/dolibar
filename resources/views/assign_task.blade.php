@@ -46,14 +46,15 @@
                 <form class="forms-sample" action="/assign_task" method="post">
                     <div class="form-group form-inline-custom">
                         @php
-                        $projects = DB::table('projects')->where('status',1)->get();
+                       
                         $employees = DB::table('employees')->get();
-                        $tasks = DB::table('tasks')->get();
+                       
                         @endphp
                         <label for="exampleInputUsername1">Seleccionar Proyecto Activo </label>
                         <select value="{{old('project_id')}}"
                             class="js-example-basic-single w-100 select2-hidden-accessible" id="project"
                             name="project_id" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                            <option value="" data-select2-id="3">Select</option>
                             @foreach($projects as $project)
                             <option value="{{$project->id}}" data-select2-id="3">{{$project->project}}</option>
                             @endforeach
@@ -62,11 +63,9 @@
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputUsername1">Seleccionar Tarea Pendiente </label>
                         <select value="{{old('task_id')}}"
-                            class="js-example-basic-single w-100 select2-hidden-accessible" name="task_id"
+                            class="js-example-basic-single w-100 select2-hidden-accessible" name="task_id" id="task_id" 
                             data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
-                            @foreach($tasks as $task)
-                            <option value="{{$task->id}}" data-select2-id="3">{{$task->task}}</option>
-                            @endforeach
+                           
                         </select>
                     </div>
 
@@ -142,12 +141,39 @@
 <script>
 
     function removeop(yes) {
-    
-    var o = "#" + yes; 
-    // var closest = element.closest(p1);
-    $(o).closest('.aaa').addClass('d-none');
-    c = c - 1;
+        var o = "#" + yes; 
+        $(o).closest('.aaa').addClass('d-none');
+        c = c - 1;
     }
+
+    $("#project").change(function(e){
+
+       e.preventDefault();
+        $.ajaxSetup({
+                 headers:{
+                     'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')
+                 }
+                 
+
+             });
+                
+        $.ajax({
+            url: "get_task_list",
+            type:"POST",
+            data: {
+                    project: $('#project').val(),
+                  },
+            
+            success:function(data){
+                document.getElementById("task_id").innerHTML = data;
+                
+            },error:function(){ 
+                document.getElementById("task_id").innerHTML = "<option>No Tasks Available</option>";    
+            }
+        });
+
+      });
+
     
 
 

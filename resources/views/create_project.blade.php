@@ -119,6 +119,9 @@
                                                 <label for="exampleInputUsername1">Nombre </label>
                                                 <input value="{{old('name_task[]')}}" name="name_task[]"
                                                     class="js-example-basic-single w-90"></input>
+
+                                                    <input value="{{old('count_op[]')}}" id="myop" name="count_op[]"type="hidden"value="1"
+                                                    class="js-example-basic-single w-90"></input>
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Cantidad objetivo</label>
@@ -379,7 +382,8 @@
     var p = 5000;
     $(document).ready(function () {
         $('.addmore').on('click', function () {
-
+            
+            // $("#myop").val( s + 1) ;
 
             $(this).closest('.addings').before(`<div class="aaa"><hr><br>
             <div class="form-group form-inline-custom">

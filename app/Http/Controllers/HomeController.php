@@ -152,11 +152,32 @@ class HomeController extends Controller
         if(isset($request->fecha) && isset($request->work)){
 
             $projects = DB::table('projects')->where('status', $request->work)->where('start_date', $request->fecha)->get();
+            foreach($projects as $row){
+                $workers = DB::table('daily_work_performance')->where('project_id',$row->id)->get();
+                $labour = null;
+                foreach($workers as $value){
+                    $labour += DB::table('employees')->where('id',$value->employee_id)->pluck('salary')->first() * $value->working_time;
+                }
+                $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
+                $row->labour_cost = $labour;
+                $row->current_task = $recent_task;                
+            }
             return view('search_project', compact('projects','work','fecha'));
             }
             else if(isset($request->fecha)){
 
                 $projects = DB::table('projects')->where('start_date', $request->fecha)->get();
+                foreach($projects as $row){
+                    $workers = DB::table('daily_work_performance')->where('project_id',$row->id)->get();
+                    $labour = null;
+                    foreach($workers as $value){
+                        $labour += DB::table('employees')->where('id',$value->employee_id)->pluck('salary')->first() * $value->working_time;
+                    }
+                    $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
+                    $row->labour_cost = $labour;
+                    $row->current_task = $recent_task;
+                    
+                }
                 
                 return view('search_project', compact('projects','fecha'));
                 
@@ -164,6 +185,17 @@ class HomeController extends Controller
             
             else if (isset($request->work)){
                 $projects = DB::table('projects')->where('status', $request->work)->get();
+                foreach($projects as $row){
+                    $workers = DB::table('daily_work_performance')->where('project_id',$row->id)->get();
+                    $labour = null;
+                    foreach($workers as $value){
+                        $labour += DB::table('employees')->where('id',$value->employee_id)->pluck('salary')->first() * $value->working_time;
+                    }
+                    $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
+                    $row->labour_cost = $labour;
+                    $row->current_task = $recent_task;
+                    
+                }
                 
                 return view('search_project', compact('projects','work'));
 
@@ -197,10 +229,30 @@ class HomeController extends Controller
         $dto = new \DateTime();
         $dto->setISODate($year, $week);
         $ret['week_start'] = $dto->format('Y-m-d');
-        $dto->modify('+6 days');
+        $monday = $ret['week_start'];
+        $dto->modify('+1 days');
+        $tuesday = $dto->format('Y-m-d');
+        $dto->modify('+1 days');
+        $wednesday = $dto->format('Y-m-d');
+        $dto->modify('+1 days');
+        $thursday = $dto->format('Y-m-d');
+        $dto->modify('+1 days');
+        $friday = $dto->format('Y-m-d');
+       
+        $dto->modify('+1 days');
         $ret['week_end'] = $dto->format('Y-m-d');
-        
-        $project = DB::table('projects')->where('id',$request->project)->first();
+        $saturday = $ret['week_end'];
+
+      
+        $users = DB::table('daily_work_performance')->where('project_id',$request->project)->whereDate('date','>=',$ret['week_start'])->whereDate('date','<=',$ret['week_end'])->get()->pluck('employee_id');
+
+        // dd($users);
+        $project = $request->project;
+        $date = $request->date;
+       
+        $workers = DB::table('employees')->whereIn('id',$users)->orderBy('name','asc')->get();
+        $projects = DB::table('projects')->orderby('project','asc')->get();
+        return view('performance_of_work',compact('workers','projects','project','date','monday','tuesday','wednesday','thursday','friday','saturday'));
         
         
     }
@@ -212,19 +264,21 @@ class HomeController extends Controller
             'project_id' => 'required',
             'task_id' => 'required',
             'employee_id_1' => 'required',
+            'date' => 'required',
         ]);
 
         $employees = $request->get('employee_id_1');
-    //     foreach ($employees as $i => $employee) {
+   
+        foreach ($employees as $key => $value) {        
+            DB::table('assignments')->insert([
 
-        DB::table('assignments')->insert([
+                'project_id' => $request->project_id,
+                'task_id' => $request->task_id,
+                'date' => $request->date,
+                'employee_id_1' => $value,
+            ]);
+        }       
 
-            'project_id' => $request->project_id,
-            'task_id' => $request->task_id,
-            
-            'employee_id_1' => $employees?json_encode($employees):null,
-        ]);
-    // }
         return redirect()->back()->with('info', 'You have Assigned Task Successfully!');
     }
 
@@ -289,24 +343,25 @@ class HomeController extends Controller
 
     public function postAddProject(Request $request)
     {
-
         $this->validate($request, [
-            'project' => 'required',
-            'location' => 'required',
-            'customer' => 'required',
-            'contact_person' => 'required|min:11',
-            'engineer_incharge' => 'required',
-            'amount' => 'required',
-            'start_date' => 'required',
-            'delivery_date' => 'required|after:start_date',
-            'video' => 'required',
+            // 'project' => 'required',
+            // 'location' => 'required',
+            // 'customer' => 'required',
+            // 'contact_person' => 'required|min:11',
+            // 'engineer_incharge' => 'required',
+            // 'amount' => 'required',
+            // 'start_date' => 'required',
+            // 'delivery_date' => 'required|after:start_date',
+            // 'video' => 'required',
+            // 'product_to_be_manufactured'  => 'required',
+
 
         ]);
 
         if ($request->file('video')) {
             $file = $request->file('video');
             $filename = $file->getClientOriginalName();
-            $path = public_path() . '/videos/';
+            $path = public_path() . '/project';
             $file->move($path, $filename);
 
             DB::table('projects')->insert([
@@ -319,20 +374,60 @@ class HomeController extends Controller
                 'start_date' => $request->start_date,
                 'delivery_date' => $request->delivery_date,
                 'file' => $filename,
-
+                'product_manufacturing' => $request->product_to_be_manufactured,
+ 
             ]);
-            $project_id = DB::table('projects')->orderby('id', 'desc')->first();
 
-            DB::table('project_details')->insert([
-                'project_id' => $project_id->id,
-                'subtask_id' => $request->task_id,
-                'quantity' => $request->quantity,
-                'location' => $request->locations,
-                'direction' => $request->directions,
+            $items = $request->get('name_task');
+            $project_id = DB::table('projects')->orderby('id', 'desc')->pluck('id')->first();
+            $c = 1;
+            foreach ($items as $i => $item) {
 
-            ]);
+                if ($request->file('file')[$i]) {
+                    $file = $request->file('file')[$i];
+                    $filename = $file->getClientOriginalName();
+                    $path = public_path() . '/task';
+                    $file->move($path, $filename);
+                    
+                    
+                    
+                    DB::table('project_task')->insert([
+                        'task_number' => $c,
+                        'project_id' => $project_id,
+                        'task_name' => $item[$i],
+                        'location' => $request->get('task_location')[$i],
+                        'directions' => $request->get('task_directions_operator')[$i],
+                        'target_quantity' => $request->get('target_quantity')[$i],
+                        'file' => $filename,
+         
+                    ]);
+
+                    $task_id = DB::table('project_task')->orderby('id', 'desc')->pluck('id')->first();
+
+                    $operators = $request->get('type_operator');
+                    foreach ($operators as $i => $operator) { 
+                        DB::table('project_operator')->insert([
+                            'operator_type' => $request->get('type_operator')[$i],
+                            'total_hour' => $request->get('total_hours')[$i],
+                            'number_of_operator' => $request->get('operator_number')[$i],
+                            'task_id' => $task_id,
+                            'project_id' => $project_id,
+                        ]);
+                    }
+                }
+
+                else { 
+                    dd($filename[$i]);
+                }
+                $c = $c + 1;
+    
+            };
+            
+
+
 
             return redirect()->back()->with('info', 'You have Added Project Successfully!');
+
 
         };
 
@@ -423,26 +518,30 @@ class HomeController extends Controller
         $this->validate($request,
             [
                 'employee_id' => 'required',
-                'project_id' => 'required',
-                'task_id' => 'required',
+                'projects' => 'required',
+                'tasks' => 'required',
                 'requirements' => 'required',
                 'working_time' => 'required',
                 'objective' => 'required',
-                'date' => 'required',
+                'finished_units' => 'required',
+                'faulty_units'=> 'required',
+                'valued_loss'=> 'required',
+                'commentary' => 'required',
             ]);
 
-        DB::table('daily_worker_performance')->insert([
+        DB::table('daily_work_performance')->insert([
             'employee_id' => $request->employee_id,
-            'project_id' => $request->project_id,
-            'task_id' => $request->task_id,
-            'requirements' => $request->requirements,
-            'working_time' => $request->working_time,
-            'finished_units' => $request->finished_units,
-            'objective' => $request->objective,
-            'faulty_units' => $request->faulty_units,
-            'valued_loss' => $request->valued_loss,
-            'commentary' => $request->commentary,
             'date' => $request->date,
+
+            'project_id' => $request->projects,
+            'task_id' => $request->tasks,
+            'task_requirement' => $request->requirements,
+            'working_time' => $request->working_time,
+            'finished_unit' => $request->finished_units,
+            'objective' => $request->objective,
+            'failed_drives' => $request->faulty_units,
+            'valorized_loss' => $request->valued_loss,
+            'comment' => $request->commentary,
 
         ]);
 

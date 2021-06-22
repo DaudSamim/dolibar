@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 Route::middleware('guest')->group(function ()
 {
@@ -83,11 +84,24 @@ Route::middleware('auth:web')->group(function ()
 
         return view('project_list', compact('projects','tasks'));
     });
-    Route::get('/search_project', function ()
+   Route::get('/search_project', function ()
     {
 
-        $projects = DB::table('projects')->orderby('id', 'desc')
-            ->get();
+        $projects = DB::table('projects')->orderby('id', 'desc')->get();
+        foreach($projects as $row){
+            $workers = DB::table('daily_work_performance')->where('project_id',$row->id)->get();
+            $labour = null;
+            if(isset($workers)){
+            foreach($workers as $value){
+                $labour += DB::table('employees')->where('id',$value->employee_id)->pluck('salary')->first() * $value->working_time;
+            }
+            $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
+            $row->labour_cost = $labour;
+            $row->current_task = $recent_task;
+        }
+            
+        }
+        
 
         return view('search_project', compact("projects"));
     });
@@ -98,8 +112,10 @@ Route::middleware('auth:web')->group(function ()
 
     Route::get('/assign_task', function ()
     {
-        return view('assign_task');
+        $projects = DB::table('projects')->where('status',1)->orderby('project','asc')->get();
+        return view('assign_task',compact('projects'));
     });
+
     Route::post('/assign_task', '\App\Http\Controllers\HomeController@postAssignTask');
 
     Route::get('/tasks-subtasks', function ()
@@ -202,9 +218,20 @@ Route::middleware('auth:web')->group(function ()
 
     Route::get('/work-performance', function ()
     {   
+
+        $now = Carbon::now();
+        $monday = $now->startOfWeek(Carbon::MONDAY);
+        $tuesday = $now->startOfWeek(Carbon::TUESDAY);
+        $wednesday = $now->startOfWeek(Carbon::WEDNESDAY);
+        $thursday = $now->startOfWeek(Carbon::THURSDAY);
+        $friday = $now->startOfWeek(Carbon::FRIDAY);
+        $saturday = $now->startOfWeek(Carbon::SATURDAY);
+
+        
         $workers = DB::table('employees')->orderby('name','asc')->get();
         $projects = DB::table('projects')->orderby('project','asc')->get();
-        return view('performance_of_work',compact('workers','projects'));
+
+        return view('performance_of_work',compact('workers','projects','monday','tuesday','wednesday','thursday','friday','saturday'));
     });
 
     Route::post('/work-performance', '\App\Http\Controllers\HomeController@Search');
@@ -212,9 +239,12 @@ Route::middleware('auth:web')->group(function ()
 
     Route::post('get_projects_ajax', function(Request $request)
     {
+
         $employee =  DB::Table('employees')->where('name',$request->name)->pluck('id')->first();
-        $project_ids = DB::table('project_operators')->where('user_id',$employee)->get()->pluck('p_id');
-        $projects = DB::table('projects')->whereIn('id',$projects)->get();
+        $employee_id =  DB::Table('assignments')->where('employee_id_1',$employee)->get()->pluck('project_id');
+            $projects = DB::table('projects')->whereIn('id',$employee_id)->get();
+        
+        
 
         $data = null;
         foreach ($projects as $key => $row) {
@@ -225,14 +255,41 @@ Route::middleware('auth:web')->group(function ()
 
     Route::post('get_tasks_ajax', function(Request $request)
     {
-        $tasks_ids = DB::table('project_operators')->where('p_id',$request->project)->where('user_id',$request->name)->get()->pluck('task_id');
-        $tasks =  DB::Table('project_tasks')->whereIn('id',$tasks_ids)->get();
+        $tasks = DB::table('project_task')->where('project_id',$request->project)->get();
+
         
         $data = null;
         foreach ($tasks as $key => $row) {
-            $data .= "<option value=".$row->id.">".$row->name."</option>";
+            $data .= "<option value=".$row->id.">".$row->task_name."</option>";
         }
         return $data;   
+    });
+
+    Route::post('get_task_list', function(Request $request)
+    {
+        $tasks = DB::table('project_task')->where('project_id',$request->project)->get();
+       
+        $data = null;
+        foreach ($tasks as $key => $row) {
+            $data .= "<option value=".$row->id.">".$row->task_name."</option>";
+        }
+        return $data;   
+    });
+
+    Route::get('task_complete_{id}',function($id){
+        DB::Table('daily_work_performance')->where('id',$id)->update([
+                'status' => 1,
+        ]);
+
+        return redirect()->back()->with('info','Successfully Updated');
+    });
+
+     Route::get('task_reopen_{id}',function($id){
+        DB::Table('daily_work_performance')->where('id',$id)->update([
+                'status' => 0,
+        ]);
+
+        return redirect()->back()->with('info','Successfully Updated');
     });
 
 
