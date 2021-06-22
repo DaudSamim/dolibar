@@ -98,13 +98,23 @@
 												<tr>
                           <td>{{$project->id}}</td>
                           <td>{{$project->project}}</td>
+                          @if(isset($project->labour_cost))
+                          <td>${{$project->labour_cost}}</td>
+                          @else 
                           <td>N/A</td>
+
+                          @endif
                           <td>N/A</td>
                           <td>N/A</td>
 													<td>${{$project->amount}}</td>
 													<td>{{$project->degree_of_progress}}</td>                    
 													<td>{{$project->delivery_date}}</td>
-                          <td>{{$project->contact_person}}</td>
+                          @if(isset($project->current_task))
+                          <td>{{$project->current_task}}</td>
+                          @else 
+                          <td>N/A</td>
+
+                          @endif
                           <td>{{$project->engineer_incharge}}</td>
                          
                                                     

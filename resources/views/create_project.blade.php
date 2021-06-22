@@ -1,6 +1,10 @@
 @extends('layout.app')
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://use.fontawesome.com/your-embed-code.js"></script>
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/duotone.css" integrity="sha384-R3QzTxyukP03CMqKFe0ssp5wUvBPEyy9ZspCB+Y01fEjhMwcXixTyeot+S40+AjZ" crossorigin="anonymous"/>
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/fontawesome.css" integrity="sha384-eHoocPgXsiuZh+Yy6+7DsKAerLXyJmu2Hadh4QYyt+8v86geixVYwFqUvMU8X90l" crossorigin="anonymous"/>
+
 <style>
     .form-inline-custom {
         display: flex !important;
@@ -379,14 +383,23 @@
 </script>
 
 <script>
+    var b = 0;
     var p = 5000;
     $(document).ready(function () {
         $('.addmore').on('click', function () {
+    
             
-            $("#myop").val() = s + 1;
-
-            $(this).closest('.addings').before(`<div class="aaa"><hr><br>
+if(b==0){
+            $(this).closest('.addings').before(`<div class="aaa"><hr>
+            <div style="float:right!important">
+            <button type="button" onclick="removeop('` + p + `')"id="` + p + `" class="btn btn addmore"><h5 style="color:red">X</h5></button>
+            </div>
+            <br>
+            <br>
+            
             <div class="form-group form-inline-custom">
+            
+
                                                 <label for="exampleInputUsername1"> Tipo de operario</label>
                                                 <select class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     value="{{old('type_operator[]')}}" name="type_operator[]" data-width="100%"
@@ -419,11 +432,66 @@
                                                 <textarea value="{{old('total_hours[]')}}" name="total_hours[]"
                                                     class="js-example-basic-single w-90"></textarea>
                                             </div>
-                                        <button type="button" onclick="removeop('` + p + `')"id="` + p + `" class="btn btn addmore">Remove Opperator</button>
                                             </div>
                                         
                                     `);
+                                    z = p;
             p = p + 1;
+            b = b + 1;
+        }else if(b > 0){
+            w = "#" + z;
+            $(w).addClass('d-none');
+
+            $(this).closest('.addings').before(`<div class="aaa"><hr>
+            <div style="float:right!important">
+            <button type="button" onclick="removeop('` + p + `')"id="` + p + `" class="btn btn addmore"><h5 style="color:red">X</h5></button>
+            </div>
+            <br>
+            <br>
+            
+            <div class="form-group form-inline-custom">
+            
+
+                                                <label for="exampleInputUsername1"> Tipo de operario</label>
+                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                    value="{{old('type_operator[]')}}" name="type_operator[]" data-width="100%"
+                                                    data-select2-id="1" tabindex="-1" aria-hidden="true">
+
+                                                    <option value="" data-select2-id="3">Lista desplegable:
+                                                    </option>
+                                                    <option value="Soldador" data-select2-id="3">Soldador
+                                                    </option>
+                                                    <option value="Maestro soldador" data-select2-id="3">Maestro soldador
+                                                    </option>
+                                                    <option value="Ayudante" data-select2-id="3">Ayudante
+                                                    </option>
+                                                    <option value="Ingeniero" data-select2-id="3">Ingeniero
+                                                    </option>
+
+
+                                                </select>
+
+                                            </div>
+                                            <div class="form-group form-inline-custom">
+                                                <label for="exampleInputUsername1">Cantidad de operarios</label>
+                                                <input value="{{old('operator_number[]')}}"type="number" name="operator_number[]"
+                                                    class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                    id="project" data-width="100%" data-select2-id="1" tabindex="-1"
+                                                    aria-hidden="true"></input>
+                                            </div>
+                                            <div class="form-group form-inline-custom">
+                                                <label for="exampleInputUsername1">Horas hombre total</label>
+                                                <textarea value="{{old('total_hours[]')}}" name="total_hours[]"
+                                                    class="js-example-basic-single w-90"></textarea>
+                                            </div>
+                                            </div>
+                                        
+                                    `);
+                                    z = p;
+            
+            p = p + 1;
+
+        }
         });
     });
 
@@ -784,8 +852,11 @@
     function removeop(yes) {
 
         var o = "#" + yes;
+        var g = "#" + (yes - 1);
         // var closest = element.closest(p1);
         $(o).closest('.aaa').addClass('d-none');
+        $(g).removeClass('d-none');
+
     }
 
 </script>
