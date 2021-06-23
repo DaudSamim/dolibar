@@ -218,39 +218,19 @@ class HomeController extends Controller
     public function Search(Request $request)
     {
         // To cenvert weeks into date
+        
         $date = explode('-',$request->date);
-        $year = $date[0];
-        $week = str_replace('W','',$date[1]);
-        $dto = new \DateTime();
-        $dto->setISODate($year, $week);
-        $ret['week_start'] = $dto->format('Y-m-d');
-        $monday = $ret['week_start'];
-        $dto->modify('+1 days');
-        $tuesday = $dto->format('Y-m-d');
-        $dto->modify('+1 days');
-        $wednesday = $dto->format('Y-m-d');
-        $dto->modify('+1 days');
-        $thursday = $dto->format('Y-m-d');
-        $dto->modify('+1 days');
-        $friday = $dto->format('Y-m-d');
-       
-        $dto->modify('+1 days');
-        $ret['week_end'] = $dto->format('Y-m-d');
-        $saturday = $ret['week_end'];
-
-
-        $users = DB::table('daily_work_performance')->where('project_id',$request->project)->whereDate('date','>=',$ret['week_start'])->whereDate('date','<=',$ret['week_end'])->get()->pluck('employee_id');
-
-        // dd($users);
-        $project = $request->project;
-        $date = $request->date;
-        $data = 'yes';
-       
-        $workers = DB::table('employees')->whereIn('id',$users)->orderBy('name','asc')->get();
-        $projects = DB::table('projects')->orderby('project','asc')->get();
-        return view('performance_of_work',compact('workers','projects','project','date','monday','tuesday','wednesday','thursday','friday','saturday','data'));
+        $date2 = explode('-',$request->date);
         
+        $tasks_id = DB::table('daily_work_performance')->where('project_id',$request->project)->whereMonth('date',$date[1])->get()->pluck('task_id');
         
+        if(count($tasks_id) != 0){
+        $tasks = DB::table('project_task')->where('id',$tasks_id)->pluck('task_name');
+        $projects = DB::table('projects')->get();
+        return view('performance_of_work', compact('tasks','projects','date2'));
+
+        }
+        return redirect()->back()->with('info', 'No project tu show');   
     }
 
     public function postAssignTask(Request $request)
@@ -336,6 +316,46 @@ class HomeController extends Controller
 
         return redirect()->back()->with('info', 'You have Added User Successfully!');
     }
+    public function post_daily_worker_performance(Request $request)
+    {
+        $this->validate($request,
+            [
+                'employee_id' => 'required',
+                'projects' => 'required',
+                'tasks' => 'required',
+                
+
+            ]);
+        if($request->attendance == 'off' && $request->break== 'off'){
+            $present = "0";
+        
+        }
+        else if($request->attendance == 'on'){
+            $present = "1";
+        }
+        else if($request->break == 'on'){
+            $present = "2";
+        }
+
+        DB::table('daily_work_performance')->insert([
+            'employee_id' => $request->employee_id,
+            'date' => $request->date,
+            'attendance_status' => $present,
+            'project_id' => $request->projects,
+            'task_id' => $request->tasks,
+            'task_requirement' => $request->requirements,
+            'working_time' => $request->working_time,
+            'finished_unit' => $request->finished_units,
+            'objective' => $request->objective,
+            'failed_drives' => $request->faulty_units,
+            'valorized_loss' => $request->valued_loss,
+            'comment' => $request->commentary,
+
+        ]);
+
+        return redirect()->back()->with('info', 'Successfully Added');
+    }
+    
 
     public function postAddProject(Request $request)
     {
@@ -509,40 +529,7 @@ class HomeController extends Controller
         return view('daily_worker_performance', compact('employees'));
     }
 
-    public function post_daily_worker_performance(Request $request)
-    {
-        $this->validate($request,
-            [
-                'employee_id' => 'required',
-                'projects' => 'required',
-                'tasks' => 'required',
-                'requirements' => 'required',
-                'working_time' => 'required',
-                'objective' => 'required',
-                'finished_units' => 'required',
-                'faulty_units'=> 'required',
-                'valued_loss'=> 'required',
-                'commentary' => 'required',
-            ]);
-
-        DB::table('daily_work_performance')->insert([
-            'employee_id' => $request->employee_id,
-            'date' => $request->date,
-
-            'project_id' => $request->projects,
-            'task_id' => $request->tasks,
-            'task_requirement' => $request->requirements,
-            'working_time' => $request->working_time,
-            'finished_unit' => $request->finished_units,
-            'objective' => $request->objective,
-            'failed_drives' => $request->faulty_units,
-            'valorized_loss' => $request->valued_loss,
-            'comment' => $request->commentary,
-
-        ]);
-
-        return redirect()->back()->with('info', 'Successfully Added');
-    }
+    
 
 
     public function ajax(Request $request)

@@ -55,7 +55,7 @@
                 </div> -->
                 <div class="form-group form-inline-custom">
                     <label for="exampleInputPassword1">Fecha</label>
-                    <input type="week" class="form-control" id="exampleInputPassword1" required name="date" @if(isset($date)) value="{{$date}}" @endif autocomplete="off" placeholder="" aria-autocomplete="list">
+                    <input type="month" class="form-control" id="exampleInputPassword1" required name="date" @if(isset($date)) value="{{$date}}" @endif autocomplete="off" placeholder="" aria-autocomplete="list">
                 </div>
 
                 <div class="form-group form-inline-custom">
@@ -87,7 +87,7 @@
 <br>
 
                 <div class="table-responsive">
-                    @if(isset($data))
+                    
                     <table class="table table-bordered">
                         
                         <thead>
@@ -106,178 +106,29 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                $monday_cost = 0;
-                                $tuesday_cost = 0;
-                                $wednesday_cost = 0;
-                                $thursday_cost = 0;
-                                $friday_cost = 0;
-                                $saturday_cost = 0;
-                            @endphp
-                            @foreach($workers as $row) 
-
+                        @php
+                        $d = cal_days_in_month(CAL_GREGORIAN,2,1965);
+                       
+                        @endphp
+                            
+                           @if(isset($tasks))
+                           @foreach($tasks as $task)
                             <tr>
-                                <td>{{$row->name}}</td>
-                                @php
-                                    $weekly_cost = 0; 
-                                    $task = DB::table('daily_work_performance')->where('employee_id',$row->id)->whereDate('date',$monday)->pluck('task_id')->first();
-
-                                    $id = DB::table('daily_work_performance')->where('employee_id',$row->id)->whereDate('date',$monday)->first();
-
-                                    $task = DB::table('project_task')->where('id',$task)->pluck('task_name')->first();
-                                     if($id){
-                                     $cost = DB::table('employees')->where('id',$id->employee_id)->pluck('salary')->first() * $id->working_time;
-                                     $weekly_cost += $cost;
-                                     $monday_cost += $cost;  
-                                        }
-
-                                      
-                                @endphp
-                                <td>@if($task)
-                                    {{$task}}
-                                    <br>
-                                    ${{$cost}}
-                                    <br>
-                                    @if($id->status == 0)
-                                    <a href="task_complete_{{$id->id}}"><button class="btn btn-success btn-sm">Mark Complete</button></a>
-                                    @else
-                                   <a href="task_reopen_{{$id->id}}"><button class="btn btn-danger btn-sm">Reopen</button></a>
-                                    @endif
-                                    @endif
-                                </td>
-                                 @php
-                                    $task = DB::table('daily_work_performance')->where('employee_id',$row->id)->whereDate('date',$tuesday)->pluck('task_id')->first();
-                                     $id = DB::table('daily_work_performance')->where('employee_id',$row->id)->whereDate('date',$tuesday)->first();
-                                    $task = DB::table('project_task')->where('id',$task)->pluck('task_name')->first();
-                                     if($id){
-                                     $cost = DB::table('employees')->where('id',$id->employee_id)->pluck('salary')->first() * $id->working_time;
-                                        $weekly_cost += $cost ;
-                                        $tueday_cost += $cost; 
-                                        }
-                                           
-                                @endphp
-                                <td>@if($task)
-                                    {{$task}}
-                                    <br>
-                                    ${{$cost}}
-                                    <br>
-                                    @if($id->status == 0)
-                                    <a href="task_complete_{{$id->id}}"><button class="btn btn-success btn-sm">Mark Complete</button></a>
-                                    @else
-                                   <a href="task_reopen_{{$id->id}}"><button class="btn btn-danger btn-sm">Reopen</button></a>
-                                    @endif
-                                    @endif
-                                 @php
-                                    $task = DB::table('daily_work_performance')->where('employee_id',$row->id)->whereDate('date',$wednesday)->pluck('task_id')->first();
-                                     $id = DB::table('daily_work_performance')->where('employee_id',$row->id)->whereDate('date',$wednesday)->first();
-                                    $task = DB::table('project_task')->where('id',$task)->pluck('task_name')->first();
-                                     if($id){
-                                     $cost = DB::table('employees')->where('id',$id->employee_id)->pluck('salary')->first() * $id->working_time;
-                                        $weekly_cost += $cost ;
-                                        $wednesday_cost += $cost;    
-                                        }
-                                        
-                                @endphp
-                                <td>@if($task)
-                                    {{$task}}
-                                    <br>
-                                    ${{$cost}}
-                                    <br>
-                                    @if($id->status == 0)
-                                    <a href="task_complete_{{$id->id}}"><button class="btn btn-success btn-sm">Mark Complete</button></a>
-                                    @else
-                                    <a href="task_reopen_{{$id->id}}"><button class="btn btn-danger btn-sm">Reopen</button></a>
-                                    @endif
-                                    @endif
-                                 @php
-                                    $task = DB::table('daily_work_performance')->where('employee_id',$row->id)->whereDate('date',$thursday)->pluck('task_id')->first();
-
-                                     $id = DB::table('daily_work_performance')->where('employee_id',$row->id)->whereDate('date',$thursday)->first();
-                                    $task = DB::table('project_task')->where('id',$task)->pluck('task_name')->first();
-
-                                    if($id){
-                                    $cost = DB::table('employees')->where('id',$id->employee_id)->pluck('salary')->first() * $id->working_time;
-                                    $weekly_cost += $cost ; 
-                                    $thursday_cost += $cost;   
-                                     }
-                                     
-                                @endphp
-                                <td>@if($task)
-                                    {{$task}}
-                                    <br>
-                                    ${{$cost}}
-                                    <br>
-                                    @if($id->status == 0)
-                                    <a href="task_complete_{{$id->id}}"><button class="btn btn-success btn-sm">Mark Complete</button></a>
-                                    @else
-                                    <a href="task_reopen_{{$id->id}}"><button class="btn btn-danger btn-sm">Reopen</button></a>
-                                    @endif
-                                    @endif
-                                 @php
-                                    $task = DB::table('daily_work_performance')->where('employee_id',$row->id)->whereDate('date',$friday)->pluck('task_id')->first();
-                                     $id = DB::table('daily_work_performance')->where('employee_id',$row->id)->whereDate('date',$friday)->first();
-                                    $task = DB::table('project_task')->where('id',$task)->pluck('task_name')->first();
-                                     if($id){
-                                     $cost = DB::table('employees')->where('id',$id->employee_id)->pluck('salary')->first() * $id->working_time;
-                                     $weekly_cost += $cost ; 
-                                     $friday_cost += $cost; 
-                                        }
-                                          
-                                @endphp
-                                <td>@if($task)
-                                    {{$task}}
-                                    <br>
-                                    ${{$cost}}
-                                    <br>
-                                    @if($id->status == 0)
-                                    <a href="task_complete_{{$id->id}}"><button class="btn btn-success btn-sm">Mark Complete</button></a>
-                                    @else
-                                   <a href="task_reopen_{{$id->id}}"><button class="btn btn-danger btn-sm">Reopen</button></a>
-                                    @endif
-                                    @endif
-                                 @php
-                                    $task = DB::table('daily_work_performance')->where('employee_id',$row->id)->whereDate('date',$saturday)->pluck('task_id')->first();
-                                     $id = DB::table('daily_work_performance')->where('employee_id',$row->id)->whereDate('date',$saturday)->first();
-                                    $task = DB::table('project_task')->where('id',$task)->pluck('task_name')->first();
-                                     if($id){
-                                     $cost = DB::table('employees')->where('id',$id->employee_id)->pluck('salary')->first() * $id->working_time;
-                                     $weekly_cost += $cost ; 
-                                     $saturday_cost += $cost; 
-                                        }
-                                          
-                                @endphp
-                                <td>@if($task)
-                                    {{$task}}
-                                    <br>
-                                    ${{$cost}}
-                                    <br>
-                                    @if($id->status == 0)
-                                    <a href="task_complete_{{$id->id}}"><button class="btn btn-success btn-sm">Mark Complete</button></a>
-                                    @else
-                                    <a href="task_reopen_{{$id->id}}"><button class="btn btn-danger btn-sm">Reopen</button></a>
-                                    @endif
-                                    @endif
-                                <td>${{$weekly_cost}}</td>
+                            
+                                <td>{{$task}}</td>
+                               <td>@php dd(date('D',strtotime('01-'.$date2[1].'-'.$date2[0]))); @endphp</td>
+                                
+                                 
+                                
                             </tr>
                             @endforeach
-
-                             <tr>
-                                <td><strong>Cantidad diaria</strong></td>
-                                <td>$ {{$monday_cost}}</td>
-                                <td>$ {{$tuesday_cost}}</td>
-                                <td>$ {{$wednesday_cost}}</td>
-                                <td>$ {{$thursday_cost}}</td>
-                                <td>$ {{$friday_cost}}</td>
-                                <td>$ {{$saturday_cost}}</td>
-                                <td></td>
-                            </tr>
-
+                           @endif
 
                            
                         </tbody>
                        
                     </table>
-                    @endif
+                    
                 </div>
                 
             </div>
