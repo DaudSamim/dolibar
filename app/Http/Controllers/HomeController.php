@@ -159,11 +159,14 @@ class HomeController extends Controller
                     $labour += DB::table('employees')->where('id',$value->employee_id)->pluck('salary')->first() * $value->working_time;
                 }
                 $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
+                 $total_tasks = DB::table('daily_work_performance')->where('project_id',$row->id)->count();
+                    $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->where('status',1)->count() / $total_tasks * 100;
                 $row->labour_cost = $labour;
                 $row->current_task = $recent_task;                
             }
             return view('search_project', compact('projects','work','fecha'));
             }
+
             else if(isset($request->fecha)){
 
                 $projects = DB::table('projects')->where('start_date', $request->fecha)->get();
@@ -174,6 +177,9 @@ class HomeController extends Controller
                         $labour += DB::table('employees')->where('id',$value->employee_id)->pluck('salary')->first() * $value->working_time;
                     }
                     $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
+
+                    $total_tasks = DB::table('daily_work_performance')->where('project_id',$row->id)->count();
+                    $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->where('status',1)->count() / $total_tasks * 100;
                     $row->labour_cost = $labour;
                     $row->current_task = $recent_task;
                     
@@ -192,6 +198,9 @@ class HomeController extends Controller
                         $labour += DB::table('employees')->where('id',$value->employee_id)->pluck('salary')->first() * $value->working_time;
                     }
                     $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
+
+                     $total_tasks = DB::table('daily_work_performance')->where('project_id',$row->id)->count();
+                    $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->where('status',1)->count() / $total_tasks * 100;
                     $row->labour_cost = $labour;
                     $row->current_task = $recent_task;
                     
@@ -204,20 +213,6 @@ class HomeController extends Controller
                 
             return redirect()->back();
 
-        
-
-        // $count = 0;
-        // $search_date = DB::table('projects')->where('start_date', $request->fecha)->get();
-        // if (isset($request->work)) {
-        //     foreach ($search_date as $date) {
-        //         $projects[$count] = DB::table('projects')->where('status', $request->work)->where('start_date', $request->fecha)->first();
-        //         $count = $count + 1;
-
-        //     }
-        //     dd($projects);
-        // }
-
-        // return redirect()->back()->with('message', 'You have Added SubTask Successfully!');
     }
 
     public function Search(Request $request)
@@ -243,16 +238,17 @@ class HomeController extends Controller
         $ret['week_end'] = $dto->format('Y-m-d');
         $saturday = $ret['week_end'];
 
-      
+
         $users = DB::table('daily_work_performance')->where('project_id',$request->project)->whereDate('date','>=',$ret['week_start'])->whereDate('date','<=',$ret['week_end'])->get()->pluck('employee_id');
 
         // dd($users);
         $project = $request->project;
         $date = $request->date;
+        $data = 'yes';
        
         $workers = DB::table('employees')->whereIn('id',$users)->orderBy('name','asc')->get();
         $projects = DB::table('projects')->orderby('project','asc')->get();
-        return view('performance_of_work',compact('workers','projects','project','date','monday','tuesday','wednesday','thursday','friday','saturday'));
+        return view('performance_of_work',compact('workers','projects','project','date','monday','tuesday','wednesday','thursday','friday','saturday','data'));
         
         
     }
@@ -394,7 +390,7 @@ class HomeController extends Controller
                     DB::table('project_task')->insert([
                         'task_number' => $c,
                         'project_id' => $project_id,
-                        'task_name' => $item[$i],
+                        'task_name' => $item,
                         'location' => $request->get('task_location')[$i],
                         'directions' => $request->get('task_directions_operator')[$i],
                         'target_quantity' => $request->get('target_quantity')[$i],

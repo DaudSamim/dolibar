@@ -105,9 +105,20 @@
 
                           @endif
                           <td>N/A</td>
+                           @if(isset($project->labour_cost))
+                          <td>${{$project->labour_cost}}</td>
+                          @else 
                           <td>N/A</td>
+
+                          @endif
 													<td>${{$project->amount}}</td>
-													<td>{{$project->degree_of_progress}}</td>                    
+                             @if(isset($project->progress))
+                          <td>{{$project->progress}}%</td>
+                          @else 
+                          <td>N/A</td>
+
+                          @endif
+												                  
 													<td>{{$project->delivery_date}}</td>
                           @if(isset($project->current_task))
                           <td>{{$project->current_task}}</td>

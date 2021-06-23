@@ -96,6 +96,8 @@ Route::middleware('auth:web')->group(function ()
                 $labour += DB::table('employees')->where('id',$value->employee_id)->pluck('salary')->first() * $value->working_time;
             }
             $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
+             $total_tasks = DB::table('daily_work_performance')->where('project_id',$row->id)->count();
+            $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->where('status',1)->count() / $total_tasks * 100;
             $row->labour_cost = $labour;
             $row->current_task = $recent_task;
         }
