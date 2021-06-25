@@ -270,6 +270,50 @@ Route::middleware('auth:web')->group(function ()
         return $data;   
     });
 
+    Route::post('save_tasks', function(Request $request)
+    {
+
+        if ($request->file('filer')) {
+            $file = $request->file('filer');
+            $filename = $file->getClientOriginalName();
+            $path = public_path() . '/tasks';
+            $file->move($path, $filename);
+        dd($filename);
+        DB::table('project_task')->insert([
+
+            'project_id' => 0,
+            'task_number' => 0,
+            'file'=>$filename,
+            'task_name' => $request->nombre,
+            'target_quantity' => $request->cantidad,
+            'location' => $request->ubicación,
+            'directions' => $request->indicaciones,
+
+
+        ]);
+
+        
+    }else {
+        if(isset($request->nombre)){
+        DB::table('project_task')->insert([
+
+            'project_id' => 0,
+            'task_number' => 0,
+            'task_name' => $request->nombre,
+            'location' => $request->ubicación,
+
+
+        ]);
+        $data = "Added Successfully";
+        } else {
+            $data = 1;  
+        }
+         
+
+    }
+        return $data;   
+    });
+
     Route::post('get_task_list', function(Request $request)
     {
         $tasks = DB::table('project_task')->where('project_id',$request->project)->get();

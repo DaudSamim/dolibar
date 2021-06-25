@@ -4,6 +4,8 @@
 <script src="https://use.fontawesome.com/your-embed-code.js"></script>
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/duotone.css" integrity="sha384-R3QzTxyukP03CMqKFe0ssp5wUvBPEyy9ZspCB+Y01fEjhMwcXixTyeot+S40+AjZ" crossorigin="anonymous"/>
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/fontawesome.css" integrity="sha384-eHoocPgXsiuZh+Yy6+7DsKAerLXyJmu2Hadh4QYyt+8v86geixVYwFqUvMU8X90l" crossorigin="anonymous"/>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 
 <style>
     .form-inline-custom {
@@ -121,7 +123,7 @@
                                         <div id="">
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Nombre </label>
-                                                <input value="{{old('name_task[]')}}" name="name_task[]"
+                                                <input value="{{old('name_task[]')}}"  id="nombre" name="name_task[]"
                                                     class="js-example-basic-single w-90"></input>
 
                                                     <input value="{{old('count_op[]')}}" id="myop" name="count_op[]"type="hidden"value="1"
@@ -131,14 +133,14 @@
                                                 <label for="exampleInputUsername1">Cantidad objetivo</label>
                                                 <input value="{{old('target_quantity[]')}}"type="number" name="target_quantity[]"
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                    id="project" data-width="100%" data-select2-id="1" tabindex="-1"
+                                                    id="cantidad" data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true"></input>
                                             </div>
                                             <div class="form-group form-inline-custom">
 
 
                                                 <label for="exampleInputUsername1"> Ubicación</label>
-                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                <select class="js-example-basic-single w-90 select2-hidden-accessible" id="ubicación"
                                                     value="{{old('task_location[]')}}" name="task_location[]" data-width="100%"
                                                     data-select2-id="1" tabindex="-1" aria-hidden="true">
 
@@ -158,12 +160,12 @@
                                                     (Subir
                                                     archivo)
                                                 </label>
-                                                <textarea value="{{old('task_directions_operator[]')}}" name="task_directions_operator[]"
+                                                <textarea value="{{old('task_directions_operator[]')}}"id="indicaciones" name="task_directions_operator[]"
                                                     class="js-example-basic-single w-90"></textarea>
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputEmail1"></label>
-                                                <input class="form-control"  type="file" name="file[]">
+                                                <input class="form-control" id="filer"  type="file" name="file[]">
                                                 @if ($errors->has('file'))
                                                 <span class="text-danger">
                                                     <small
@@ -173,6 +175,14 @@
                                             </div>
 
                                         </div>
+                                        <div>
+                                        <h4 id="yeen" class=" text-center"style="margin-bottom:10px"></h4>
+                                        </div>
+                                        <div class="div-btns text-center">
+                                            <button  id="save_task" class="btn btn-grabar">GRABAR</button>
+                                        </div>
+
+                                        
                                         <!-- <div class="div-btns text-center">
                               <button type="button" id="addmore" class="btn btn">Add More</button>
                            </div> -->
@@ -205,14 +215,16 @@
 
                                                     <option value="" data-select2-id="3">Lista desplegable:
                                                     </option>
-                                                    <option value="Soldador" data-select2-id="3">Soldador
+                                                    <option value="Técnico" data-select2-id="3">Técnico
                                                     </option>
-                                                    <option value="Maestro soldador" data-select2-id="3">Maestro soldador
+                                                    <option value="Maestro" data-select2-id="3">Maestro
+
                                                     </option>
-                                                    <option value="Ayudante" data-select2-id="3">Ayudante
-                                                    </option>
-                                                    <option value="Ingeniero" data-select2-id="3">Ingeniero
-                                                    </option>
+                                                    <option value="Ayudante" data-select2-id="3">Ayudante</option>
+                                                    <option value="Por destajo" data-select2-id="3">Por destajo</option>
+                                                    <option value="Vendedor" data-select2-id="3">Vendedor</option>
+                                                    <option value="Tercerizado" data-select2-id="3">Tercerizado</option>
+                                                    <option value="Ingeniero" data-select2-id="3">Ingeniero</option>
 
 
                                                 </select>
@@ -389,7 +401,7 @@
         $('.addmore').on('click', function () {
     
             
-if(b==0){
+    if(b==0){
             $(this).closest('.addings').before(`<div class="aaa"><hr>
             <div style="float:right!important">
             <button type="button" onclick="removeop('` + p + `')"id="` + p + `" class="btn btn addmore"><h5 style="color:red">X</h5></button>
@@ -938,6 +950,57 @@ if(b==0){
         $(o).closest('.aaa').addClass('d-none');
     }
 
+</script>
+
+<script>
+    $("#save_task").click(function (e) {
+            e.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')
+                }
+
+
+            });
+
+            $.ajax({
+                url: "save_tasks",
+                type: "POST",
+                data: {
+                    nombre: $('#nombre').val(),
+                    cantidad: $('#cantidad').val(),
+                    indicaciones: $('#indicaciones').val(),
+                    ubicación: $('#ubicación').val(),
+                    filer: $('#filer').val()
+                },
+
+                success: function (data) {
+                    if (data) {
+                        if(data == 1){
+                            document.getElementById("yeen").innerHTML = "Nombre Required";
+                            $("#yeen").addClass('w3-red');
+                            $("#yeen").removeClass('w3-green');
+
+                            console.log('hiya');
+                        } else {
+                        document.getElementById("yeen").innerHTML = data;
+                        $("#yeen").addClass('w3-green');
+                        $("#yeen").removeClass('w3-red');
+                        console.log('hi');
+                    }
+                    } else {
+                        document.getElementById("yeen").innerHTML =
+                            "Something Wrong";
+                    }
+
+                },
+                error: function () {
+                    document.getElementById("projects").innerHTML =
+                        "<option>No Projects Available</option>";
+                }
+            });
+
+        });
 </script>
 
 
