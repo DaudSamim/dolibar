@@ -97,7 +97,7 @@ Route::middleware('auth:web')->group(function ()
             }
             $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
              $total_tasks = DB::table('daily_work_performance')->where('project_id',$row->id)->count();
-            $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->where('status',1)->count() / $total_tasks * 100;
+            $row->progress = $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->sum('working_time') / DB::table('project_operator')->where('project_id',$row->id)->sum('total_hour') * 100;
             $row->labour_cost = $labour;
             $row->current_task = $recent_task;
         }
@@ -221,19 +221,19 @@ Route::middleware('auth:web')->group(function ()
     Route::get('/work-performance', function ()
     {   
 
+       // To cenvert months into date
         $now = Carbon::now();
-        $monday = $now->startOfWeek(Carbon::MONDAY);
-        $tuesday = $now->startOfWeek(Carbon::TUESDAY);
-        $wednesday = $now->startOfWeek(Carbon::WEDNESDAY);
-        $thursday = $now->startOfWeek(Carbon::THURSDAY);
-        $friday = $now->startOfWeek(Carbon::FRIDAY);
-        $saturday = $now->startOfWeek(Carbon::SATURDAY);
+        $date[0] = $now->year;
+        $date[1] = $now->month;
+        $date2 = $now->year.'-'. Carbon::now()->format('m');;
 
         
-        $workers = DB::table('employees')->orderby('name','asc')->get();
-        $projects = DB::table('projects')->orderby('project','asc')->get();
+        $tasks_id = DB::table('daily_work_performance')->whereMonth('date',$date[1])->get()->pluck('task_id');
+        $tasks = DB::table('project_task')->whereIn('id',$tasks_id)->get();
+        $projects = DB::table('projects')->get();
 
-        return view('performance_of_work',compact('workers','projects','monday','tuesday','wednesday','thursday','friday','saturday'));
+        return view('performance_of_work', compact('tasks','projects','date2','date'));
+
     });
 
     Route::post('/work-performance', '\App\Http\Controllers\HomeController@Search');

@@ -112,8 +112,9 @@
 
                           @endif
 													<td>${{$project->amount}}</td>
-                             @if(isset($project->progress))
-                          <td>{{$project->progress}}%</td>
+                          
+                          @if(isset($project->progress))
+                              <td>{{$project->progress}}%</td>
                           @else 
                           <td>N/A</td>
 

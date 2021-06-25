@@ -160,7 +160,7 @@ class HomeController extends Controller
                 }
                 $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
                  $total_tasks = DB::table('daily_work_performance')->where('project_id',$row->id)->count();
-                    $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->where('status',1)->count() / $total_tasks * 100;
+                    $row->progress = $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->sum('working_time') / DB::table('project_operator')->where('project_id',$row->id)->sum('total_hour') * 100;
                 $row->labour_cost = $labour;
                 $row->current_task = $recent_task;                
             }
@@ -179,7 +179,7 @@ class HomeController extends Controller
                     $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
 
                     $total_tasks = DB::table('daily_work_performance')->where('project_id',$row->id)->count();
-                    $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->where('status',1)->count() / $total_tasks * 100;
+                    $row->progress = $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->sum('working_time') / DB::table('project_operator')->where('project_id',$row->id)->sum('total_hour') * 100;
                     $row->labour_cost = $labour;
                     $row->current_task = $recent_task;
                     
@@ -200,7 +200,7 @@ class HomeController extends Controller
                     $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
 
                      $total_tasks = DB::table('daily_work_performance')->where('project_id',$row->id)->count();
-                    $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->where('status',1)->count() / $total_tasks * 100;
+                    $row->progress = $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->sum('working_time') / DB::table('project_operator')->where('project_id',$row->id)->sum('total_hour') * 100;
                     $row->labour_cost = $labour;
                     $row->current_task = $recent_task;
                     
@@ -217,20 +217,25 @@ class HomeController extends Controller
 
     public function Search(Request $request)
     {
-        // To cenvert weeks into date
-        
+        $this->validate($request, [
+            'project' => 'required',
+            'date' => 'required',
+        ]);
+        // To cenvert months into date
         $date = explode('-',$request->date);
-        $date2 = explode('-',$request->date);
+        $date2 = $request->date;
+        $project = $request->project;
         
         $tasks_id = DB::table('daily_work_performance')->where('project_id',$request->project)->whereMonth('date',$date[1])->get()->pluck('task_id');
         
         if(count($tasks_id) != 0){
-        $tasks = DB::table('project_task')->where('id',$tasks_id)->pluck('task_name');
-        $projects = DB::table('projects')->get();
-        return view('performance_of_work', compact('tasks','projects','date2'));
+            $tasks = DB::table('project_task')->where('id',$tasks_id)->get();
+            $projects = DB::table('projects')->get();
+
+            return view('performance_of_work', compact('tasks','projects','date2','date','project'));
 
         }
-        return redirect()->back()->with('info', 'No project tu show');   
+        return redirect()->back()->with('info', 'No hay tareas para este filtro');   
     }
 
     public function postAssignTask(Request $request)
@@ -326,7 +331,9 @@ class HomeController extends Controller
                 
 
             ]);
-        if($request->attendance == 'off' && $request->break== 'off'){
+
+        
+        if(!isset($request->attendance) && !isset($request->break)){
             $present = "0";
         
         }

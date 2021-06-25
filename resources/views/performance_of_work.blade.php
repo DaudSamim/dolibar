@@ -40,8 +40,14 @@
                 <h6 class="card-title">Desempeño de la obra</h6>
                 <form class="forms-sample" action="/work-performance" method="post" enctype='multipart/form-data'>
                 <div class="form-group form-inline-custom">
+                    <label for="exampleInputPassword1">Fecha</label>
+                    <input type="month" class="form-control" id="exampleInputPassword1" required name="date" @if(isset($date2)) value="{{$date2}}" @endif autocomplete="off" placeholder="" aria-autocomplete="list">
+                </div>
+
+                <div class="form-group form-inline-custom">
                     <label for="exampleInputUsername1">Projecto</label>
                     <select class="js-example-basic-single w-100 select2-hidden-accessible" value="{{old('type')}}" name="project" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true" required>
+                        <option>Seleccionar proyecto</option>
                         @foreach($projects as $row)
                         <option value="{{$row->id}}" @if(isset($project)) @if($project == $row->id)) selected @endif @endif data-select2-id="12">{{$row->project}}</option>
                         @endforeach
@@ -49,15 +55,8 @@
                    
 
                 </div>
-               <!--  <div class="form-group form-inline-custom">
-                    <label for="exampleInputEmail1">Tarea</label>
-                    <input type="text" value="{{old('name')}}" class="form-control" id="exampleInputEmail1" name="task" required placeholder="">
-                </div> -->
-                <div class="form-group form-inline-custom">
-                    <label for="exampleInputPassword1">Fecha</label>
-                    <input type="month" class="form-control" id="exampleInputPassword1" required name="date" @if(isset($date)) value="{{$date}}" @endif autocomplete="off" placeholder="" aria-autocomplete="list">
-                </div>
-
+               
+               
                 <div class="form-group form-inline-custom">
                     <label for="exampleInputPassword1">Status del proyecto</label>
                     <select class="js-example-basic-single w-100 select2-hidden-accessible" value="{{old('type')}}" name="status" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
@@ -93,36 +92,76 @@
                         <thead>
                             <tr>
 
-                                <th>Trabajador</th>
-                                <th>Lun</th>
-                                <th>Mar</th>
-                                <th>Miér</th>
-                                <th>juev</th>
-                                <th>vier</th>
-                                <th>Sábado</th>
-                                <th><strong>Cantidad semanal</strong></th>
+                                <th>Tareas</th>
+                                @php
+                                    if(isset($date)){
+                                        $d = cal_days_in_month(CAL_GREGORIAN,$date[1],$date[0]);
+                                        
+                                    }
+                                @endphp
+                                @if(isset($date))
+                                @for($i=1; $i<=$d; $i++)
+                                    @if(date('D',strtotime($i.'-'.$date[1].'-'.$date[0])) != 'Sun')
+                                        <th>{{date('D-d',strtotime($i.'-'.$date[1].'-'.$date[0]))}}</th>
+                                    @endif
+                                @endfor
+                                @endif
+                                <th><strong>cantidad mensual</strong></th>
+                                <th>Status</th>
 
 
                             </tr>
                         </thead>
                         <tbody>
-                        @php
-                        $d = cal_days_in_month(CAL_GREGORIAN,2,1965);
-                       
-                        @endphp
+
                             
                            @if(isset($tasks))
                            @foreach($tasks as $task)
                             <tr>
                             
-                                <td>{{$task}}</td>
-                               <td>@php dd(date('D',strtotime('01-'.$date2[1].'-'.$date2[0]))); @endphp</td>
-                                
+                                <td>{{$task->task_name}}</td>
+                               @if(isset($date))
+                               @php
+                                $monthly_cost = 0;
+                               @endphp
+                                @for($i=1; $i<=$d; $i++)
+                                    @if(date('D',strtotime($i.'-'.$date[1].'-'.$date[0])) != 'Sun')
+                                        @php
+                                            $date_format = date('Y-m-d',strtotime($i.'-'.$date[1].'-'.$date[0]));
+
+                                            $worker_id = DB::table('daily_work_performance')->whereDate('date',$date_format)->where('task_id',$task->id)->where('attendance_status',0)->pluck('employee_id')->first();
+                                            $worker = DB::table('employees')->where('id',$worker_id)->first();
+                                            if($worker){
+                                                $cost = DB::table('daily_work_performance')->whereDate('date',$date_format)->where('task_id',$task->id)->pluck('working_time')->first() * $worker->salary;
+                                                $monthly_cost += $cost;
+                                            }
+                                        @endphp
+                                        <td>@if(isset($worker)){{$worker->name??''}}
+                                            <br>
+                                            ${{$cost}}
+                                            @endif
+                                        </td>
+                                    @endif
+                                @endfor
+                                @endif
+                                <td>${{$monthly_cost}}</td>
+                                <td><a href="#"><button class="btn" style="background-color: #9b75a6; color: white">Tarea cerrada</button></a></td>
+
                                  
                                 
                             </tr>
                             @endforeach
                            @endif
+
+                           <th><strong>cantidad diaria</strong></th>
+                            @if(isset($date))
+                                @for($i=1; $i<=$d; $i++)
+                                    @if(date('D',strtotime($i.'-'.$date[1].'-'.$date[0])) != 'Sun')
+                                        <td></td>
+                                    @endif
+                                @endfor
+                                @endif
+                          
 
                            
                         </tbody>
