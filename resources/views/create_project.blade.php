@@ -175,12 +175,8 @@
                                             </div>
 
                                         </div>
-                                        <div>
-                                        <h4 id="yeen" class=" text-center"style="margin-bottom:10px"></h4>
-                                        </div>
-                                        <div class="div-btns text-center">
-                                            <button  id="save_task" class="btn btn-grabar">GRABAR</button>
-                                        </div>
+                                        
+                                        
 
                                         
                                         <!-- <div class="div-btns text-center">
@@ -210,7 +206,7 @@
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1"> Tipo de operario</label>
                                                 <select class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                    value="{{old('type_operator[]')}}" name="type_operator[]" data-width="100%"
+                                                    value="{{old('type_operator[]')}}"id="type" name="type_operator[]" data-width="100%"
                                                     data-select2-id="1" tabindex="-1" aria-hidden="true">
 
                                                     <option value="" data-select2-id="3">Lista desplegable:
@@ -234,7 +230,7 @@
                                                 <label for="exampleInputUsername1">Cantidad de operarios</label>
                                                 <input value="{{old('operator_number[]')}}" type="number" name="operator_number[]"
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                    id="project" data-width="100%" data-select2-id="1" tabindex="-1"
+                                                    id="nooperators" data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true"></input>
                                             </div>
                                             <div class="form-group form-inline-custom">
@@ -275,7 +271,7 @@
                                                 <label for="exampleInputUsername1">Nombre del material</label>
                                                 <input value="{{old('subtasks')}}" name="subtasks"
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                    id="project" data-width="100%" data-select2-id="1" tabindex="-1"
+                                                    id="name_material" data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true"></input>
 
                                             </div>
@@ -318,7 +314,7 @@
                                                 <label for="exampleInputUsername1">Nombre de la herramienta</label>
                                                 <input value="{{old('subtasks')}}" name="subtasks"
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                    id="project" data-width="100%" data-select2-id="1" tabindex="-1"
+                                                    id="name_tool" data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true"></input>
 
                                             </div>
@@ -341,9 +337,15 @@
                         </div>
 
                         <br>
+                        <div>
+                                        <h4 id="yeen" class=" text-center"style="margin-bottom:10px"></h4>
+                                        </div>
                         <div id="addings3">
-
+                        <div class="div-btns text-center">
+                                            <button  id="save_task" class="btn btn-grabar">GRABAR TAREA</button>
+                                        </div>
                         </div>
+                        
                         <div class="addtasks">
                             <br>
                             <div class="div-btns text-center">
@@ -971,13 +973,20 @@
                     cantidad: $('#cantidad').val(),
                     indicaciones: $('#indicaciones').val(),
                     ubicación: $('#ubicación').val(),
-                    filer: $('#filer').val()
+                    filer: $('#filer').val(),
+                    type: $('#type').val(),
+                    operators: $('#nooperators').val(),
+                    material_name: $('#name_material').val(),
+                    tool_name: $('#name_tool').val(),
+
+
+
                 },
 
                 success: function (data) {
                     if (data) {
                         if(data == 1){
-                            document.getElementById("yeen").innerHTML = "Nombre Required";
+                            document.getElementById("yeen").innerHTML = "Tarea Nombre Required";
                             $("#yeen").addClass('w3-red');
                             $("#yeen").removeClass('w3-green');
 

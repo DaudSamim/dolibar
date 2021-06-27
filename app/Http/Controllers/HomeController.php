@@ -545,4 +545,28 @@ class HomeController extends Controller
         echo "{{$data}}";
         // return response()->json(['result'=>$request->surname]);
     }
+
+    public function Change_status($id)
+    {
+        DB::table('project_task')->where('id',$id)->update([
+            'task_status' => 1,
+
+        ]);
+
+        return redirect()->back()->with('info', 'El estado cambió con éxito');
+
+    }
+
+    public function Change_statuss($id)
+    {
+        DB::table('project_task')->where('id',$id)->update([
+            'task_status' => 0,
+
+        ]);
+
+        return redirect()->back()->with('info', 'El estado cambió con éxito');
+
+    }
+
+
 }

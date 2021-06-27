@@ -270,7 +270,7 @@ function myFunction2() {
 };
 </script>
 <script>
-$('#flexCheckChecked1').click(function() {
+    $('#flexCheckChecked1').click(function() {
     if($(this).is(':checked')){
     document.getElementById("removeclass").innerHTML = "" ;
     document.getElementById("flexCheckChecked2").checked = false;

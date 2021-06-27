@@ -272,7 +272,6 @@ Route::middleware('auth:web')->group(function ()
 
     Route::post('save_tasks', function(Request $request)
     {
-
         if ($request->file('filer')) {
             $file = $request->file('filer');
             $filename = $file->getClientOriginalName();
@@ -295,6 +294,7 @@ Route::middleware('auth:web')->group(function ()
         
     }else {
         if(isset($request->nombre)){
+            
         DB::table('project_task')->insert([
 
             'project_id' => 0,
@@ -305,11 +305,36 @@ Route::middleware('auth:web')->group(function ()
 
         ]);
         $data = "Added Successfully";
-        } else {
-            $data = 1;  
-        }
-         
+    } else {
+        $data = 1;  
+    }
+    if(isset($request->type)){
+        DB::table('project_operator')->insert([
 
+            'project_id' => 0,
+            'task_id' => 0,
+            'operator_type' => $request->type,
+            'number_of_operator' => $request->operators,
+
+
+        ]);
+    }
+    if(isset($request->material_name)){
+        DB::table('project_material')->insert([
+
+            'project_id' => 0,
+            'task_id' => 0,
+            'material_name' => $request->material_name,
+        ]);
+    }
+    if(isset($request->tool_name)){
+        DB::table('project_tool')->insert([
+
+            'project_id' => 0,
+            'task_id' => 0,
+            'tool_name' => $request->tool_name,
+        ]);
+    }
     }
         return $data;   
     });
@@ -342,6 +367,8 @@ Route::middleware('auth:web')->group(function ()
     });
 
 
+    Route::get('/Change-Status/{id}', '\App\Http\Controllers\HomeController@Change_status');
+    Route::get('/Change-Statuss/{id}', '\App\Http\Controllers\HomeController@Change_statuss');
 
 });
 
