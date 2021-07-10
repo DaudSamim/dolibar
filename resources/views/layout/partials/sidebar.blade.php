@@ -98,13 +98,24 @@
             <div class="collapse"
                id="ip34">
                <ul class="nav sub-menu">
-                  <li class="nav-item">
-                     <a href="#"
+               <li class="nav-item">
+                     <a href="/create-materialas"
                         class="nav-link ">Crear Materiales</a>
                   </li>
+                  
                   <li class="nav-item">
                      <a href="#"
                         class="nav-link ">Crear Status
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a href="/material-stock"
+                        class="nav-link ">Stock de materiales
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a href="/material-edit"
+                        class="nav-link ">Materiales Editar
                      </a>
                   </li>
                   <li class="nav-item">
@@ -158,20 +169,22 @@
             <div class="collapse"
                id="ip45">
                <ul class="nav sub-menu">
-                  <li class="nav-item">
+               <li class="nav-item">
                      <a href="#"
-                        class="nav-link ">Crear Herramientas</a>
+                        class="nav-link ">Registrar Herramientas</a>
                   </li>
                   <li class="nav-item">
                      <a href="#"
                         class="nav-link ">Crear Status
                      </a>
                   </li>
+                  
                   <li class="nav-item">
                      <a href="#"
                         class="nav-link ">Asignar herramientas a operarios
                      </a>
                   </li>
+                  
                   <li class="nav-item">
                      <a data-toggle="collapse" href="#ip345" role="button" aria-expanded="false"
                         aria-controls=ip345 href="#"
@@ -218,10 +231,7 @@
             <div class="collapse"
                id="ip59">
                <ul class="nav sub-menu">
-                  <li class="nav-item">
-                     <a href="/add-materials"
-                        class="nav-link ">Registrar fabricaciones</a>
-                  </li>
+                  
                   <li class="nav-item">
                      <a href="/view-materials"
                         class="nav-link ">Productos en proceso</a>

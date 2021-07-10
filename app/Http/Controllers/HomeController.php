@@ -557,6 +557,30 @@ class HomeController extends Controller
 
     }
 
+    public function samim(Request $request)
+    {
+        if($request->mapLat =='' && $request->mapLong ==''){
+            // Get lat long from google
+            $address = str_replace(" ", "+", $request->location);
+    
+            $json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address&key=AIzaSyD6hpJXDlw2hJrqqLb7D4jrvNCVieSsfh4");
+            dd($json);
+            $json = json_decode($json);
+    
+            $lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
+            $long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'};
+            dd($lat);
+    }
+    
+    
+    // function to get  the address
+    function get_lat_long($address){
+    
+        
+    }
+
+    }
+
     public function Change_statuss($id)
     {
         DB::table('project_task')->where('id',$id)->update([
@@ -568,5 +592,29 @@ class HomeController extends Controller
 
     }
 
+    public function create_materialas(Request $request)
+    {
+        $this->validate(request(), [
+            'name' => 'required',
+            'category' => 'required',
+            'model' => 'required',
+            'description' => 'required',
 
+        ]);
+
+        DB::table('materials')->insert([
+            'name' => $request->name,
+            'category' => $request->category,
+            'model' => $request->model,
+            'description' => $request->description,
+            'height' => $request->height,
+            'length' => $request->length,
+            'width' => $request->width,
+            'depth' => $request->depth,
+            'diameter' => $request->diameter,
+            
+        ]);
+
+        return redirect()->back()->with('info', 'You have Registerd Materials Successfully!');
+    }
 }

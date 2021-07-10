@@ -358,7 +358,7 @@ Route::middleware('auth:web')->group(function ()
         return redirect()->back()->with('info','Successfully Updated');
     });
 
-     Route::get('task_reopen_{id}',function($id){
+    Route::get('task_reopen_{id}',function($id){
         DB::Table('daily_work_performance')->where('id',$id)->update([
                 'status' => 0,
         ]);
@@ -369,6 +369,20 @@ Route::middleware('auth:web')->group(function ()
 
     Route::get('/Change-Status/{id}', '\App\Http\Controllers\HomeController@Change_status');
     Route::get('/Change-Statuss/{id}', '\App\Http\Controllers\HomeController@Change_statuss');
+    Route::post('/samim', '\App\Http\Controllers\HomeController@samim');
+
+
+    Route::get('/material-edit',function(){
+        return view('material_edit');
+    });
+    Route::get('/material-stock',function(){
+        $materials =DB::table('materials')->get();
+        return view('material_stock',compact('materials'));
+    });
+    Route::get('/create-materialas',function(){
+        return view('create_materialas');
+    });
+    Route::post('/create_materialas', '\App\Http\Controllers\HomeController@create_materialas');
 
 });
 
