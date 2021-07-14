@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
+
 class HomeController extends Controller
 {
 
@@ -263,36 +264,59 @@ class HomeController extends Controller
         return redirect()->back()->with('info', 'You have Assigned Task Successfully!');
     }
 
-    public function postAddMaterials(Request $request)
+    public function postAddfabrication(Request $request)
     {
 
         $this->validate($request, [
             'manufacturer' => 'required',
             'types_of_material' => 'required',
             'quality' => 'required',
-            'thickness' => 'required',
 
 
         ]);
 
 // dd($request->emergency_number);
-        DB::table('materials')->insert([
+        DB::table('fabrications')->insert([
 
             'manufacturer_name' => $request->manufacturer,
-            'height' => $request->height,
-            'length' => $request->length,
-            'width' => $request->width,
-            'depth' => $request->depth,
-            'diameter' => $request->diameter,
             'types_of_materials' => $request->types_of_material,
             'quality_of_finishes' => $request->quality,
-            'thickness_of_material' => $request->thickness,
 
 
 
         ]);
 
-        return redirect()->back()->with('info', 'You have Added Materials Successfully!');
+        return redirect()->back()->with('info', 'You have Added Fabrication Successfully!');
+    }
+    public function create_service(Request $request)
+    {
+
+        $this->validate($request, [
+            'name' => 'required',
+            'type' => 'required',
+            'model' => 'required',
+            'time' => 'required',
+            'operator' => 'required',
+
+
+
+        ]);
+
+// dd($request->emergency_number);
+        DB::table('services')->insert([
+
+            'name' => $request->name,
+            'type_operators' => $request->type,
+            'model' => $request->model,
+            'time' => $request->time,
+            'operators' => $request->operator,
+
+
+
+
+        ]);
+
+        return redirect()->back()->with('info', 'You have Added Service Successfully!');
     }
 
     public function add_user(Request $request)
@@ -601,20 +625,98 @@ class HomeController extends Controller
             'description' => 'required',
 
         ]);
+        $pieces = explode(',', $request->model);
+        
+
 
         DB::table('materials')->insert([
             'name' => $request->name,
             'category' => $request->category,
-            'model' => $request->model,
+            'model' => $pieces[0],
             'description' => $request->description,
             'height' => $request->height,
             'length' => $request->length,
             'width' => $request->width,
             'depth' => $request->depth,
             'diameter' => $request->diameter,
+            'per_unit_price'=>$request->unit_price,
+            
+        ]);
+        $id = DB::table('materials')->orderby('id','desc')->first();
+        $code = $pieces[1].$id->id;
+
+        DB::table('materials')->where('id',$id->id)->update([
+            'code' => $code,
+            
             
         ]);
 
         return redirect()->back()->with('info', 'You have Registerd Materials Successfully!');
+    }
+
+    public function getpdf(Request $request){
+        $mpdf = new \Mpdf\Mpdf();
+
+        $cart_data = DB::table('carts')->where('user_id',auth()->user()->id)->get();
+        $name = $request->name;
+        $number = $request->number;
+        $address = $request->address;
+
+        $data = '';
+        $loop = '';
+        $amount = 0;
+
+        $data .=  "<h3>Reciept</h3> <br>
+                  Client Name: ".$name." <br>
+                  Client Mobile Number: ".$number." <br>
+                  Client Address: ".$address." <br>
+                  ";
+                  $data .= "<div class='card'>
+                  <div class='card-body'><table>
+                  <thead>
+                  <tr>
+                      <th>Code</th>
+                      <th>Nombre</th>
+                      <th>Precio por unidad</th>
+                      
+
+
+                  </tr>
+              </thead>
+              <tbody>";
+              if(count($cart_data) == 0){
+                return redirect()->back()->with('info', 'Cart Empty');
+              } 
+              else{
+
+              
+                  
+                      foreach($cart_data as $cart) {
+                        
+                          $name = DB::table("materials")->where("id",$cart->product_id)->first();
+                          $data .= 
+                          " 
+                          <tr>
+                          
+                          <td>".$name->code."</td>
+                          <td>".$name->name."</td>
+                          <td>".$cart->per_unit_price."</td>
+                          
+                          </tr>
+                          ";
+                          $amount += $cart->per_unit_price;
+                      };
+                      $data .= "</tbody>
+                      </table></div></div><div><br><div>Amount = ".$amount."</div></div> ";
+                    }    
+
+
+        $mpdf->WriteHTML($data);
+        $mpdf->Output('my.pdf','D');
+
+        DB::table('carts')->where('user_id',auth()->user()->id)->delete();
+
+        return redirect()->back()->with('info', 'Order Placed Successfully!');
+
     }
 }

@@ -114,6 +114,11 @@
                      </a>
                   </li>
                   <li class="nav-item">
+                     <a href="/materialas-cart"
+                        class="nav-link ">materiales Carro
+                     </a>
+                  </li>
+                  <li class="nav-item">
                      <a href="/material-edit"
                         class="nav-link ">Materiales Editar
                      </a>
@@ -231,6 +236,10 @@
             <div class="collapse"
                id="ip59">
                <ul class="nav sub-menu">
+               <li class="nav-item">
+                     <a href="/add-fabrication"
+                        class="nav-link ">Agregar fabricación</a>
+                  </li>
                   
                   <li class="nav-item">
                      <a href="/view-materials"
@@ -245,6 +254,11 @@
                   <li class="nav-item">
                      <a href="#"
                         class="nav-link ">Productos con fallas
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a href="/add-services"
+                        class="nav-link ">Servicios
                      </a>
                   </li>
                   

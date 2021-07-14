@@ -127,6 +127,7 @@ Route::middleware('auth:web')->group(function ()
 
         return view('create_tasks_and_subtasks', compact('tasks'));
     });
+
     Route::post('/create_task', '\App\Http\Controllers\HomeController@postCreateTask');
     Route::post('/create_subtask', '\App\Http\Controllers\HomeController@postCreateSubTask');
     Route::get('/schedule-task-subtask', function ()
@@ -138,9 +139,9 @@ Route::middleware('auth:web')->group(function ()
             ->get();
         return view('schedule_tasks_subtasks', compact('tasks', 'subtasks'));
     });
-    Route::get('/add-materials', function ()
+    Route::get('/add-fabrication', function ()
     {
-        return view('create_materials');
+        return view('create_fabrication');
     });
 
     Route::get('/view-materials', function ()
@@ -166,7 +167,7 @@ Route::middleware('auth:web')->group(function ()
     });
     Route::post('/register_material', '\App\Http\Controllers\HomeController@postRegisterMaterials');
 
-    Route::post('/create_material', '\App\Http\Controllers\HomeController@postAddMaterials');
+    Route::post('/create_fabrication', '\App\Http\Controllers\HomeController@postAddfabrication');
 
     Route::get('/password', '\App\Http\Controllers\HomeController@getChangePassword');
     Route::post('/password', '\App\Http\Controllers\HomeController@postChangePassword');
@@ -365,7 +366,295 @@ Route::middleware('auth:web')->group(function ()
 
         return redirect()->back()->with('info','Successfully Updated');
     });
+    Route::post('get_models_ajax', function(Request $request)
+    {
 
+        switch($request->date)
+        {
+                case 'Servicios Metalmecánic':
+                    
+                    $data = '<option value="Corte de planchas,0101">Corte de planchas</option> 
+                    <option value="Corte y doblez de planchas,0102">Corte y doblez de planchas</option>
+                    <option value="Rolado de tubos,0103">Rolado de tubos</option>
+                    <option value="Doblado de tubos,0104">Doblado de tubos</option>
+                    <option value="Torno,0105">Torno</option>
+                    <option value="Pintura al horno,0106">Pintura al horno</option>
+                    <option value="Troquelado,0107">Troquelado</option>';
+                    break;
+                case 'Tubos, Perfiles y vigas':
+                    $data = '<option value="Tubos Galvanizados,0201">Tubos Galvanizados</option>
+                    <option value="Tubos Negros,0202">Tubos Negros
+                    </option>
+                    <option value="Vigas,0203">Vigas</option>
+                    <option value="Ángulos,0204">Ángulos</option>
+                    <option value="Platinas,0205">Platinas</option>
+                    <option value="Rieles,0206">Rieles</option>';
+                    break;
+                case 'Planchas':
+                    $data ='<option value="Galvanizada,0301">Galvanizada</option>
+                    <option value="Negra,0302">Negra</option>
+                    <option value="Estriada,0303">Estriada</option>
+                    <option value="Inoxidables,0304">Inoxidables</option>';
+                    break;
+                case 'Retazos':
+                    $data ='<option value="Plancha Galvanizada,0401">Plancha Galvanizada</option>
+                    <option value="Plancha Inoxidable,0402">Plancha Inoxidable</option>
+                    <option value="Plancha Negra,0403">Plancha Negra</option>
+                    <option value="Plancha Estriada,0404">Plancha Estriada</option>
+                    <option value="Tubos inoxidables,0405">Tubos inoxidables</option>
+                    <option value="Tubos y perfiles,0406">Tubos y perfiles</option>';
+                    break;
+                case 'Coberturas':
+                    $data = '<option value="Aluzinc,0501">Aluzinc</option>
+                    <option value="Eternit,0502">Eternit</option>';
+                    break;
+                case 'Fabricaciones':
+                    $data = '<option value="Terminadas,0601">Terminadas</option>
+                    <option value="En proceso,0602">En proceso
+                    </option>';
+                    break;
+                case 'Prefabricados':
+                    $data = '<option value="Marcos para puerta,0701">Marcos para puerta</option>
+                    <option value="Arcos/barandas de tubo negroArcos/barandas de tubo negro,0702">Arcos/barandas de tubo negro</option>
+                    <option value="Arcos/barandas de tubo inoxidable,0703">Arcos/barandas de tubo inoxidable</option>
+                    <option value="Tapas de plancha,0704">Tapas de plancha</option>
+                    <option value="Cajas,0705">Cajas</option>
+                    <option value="Chasis de moto,0706">Chasis de moto</option>';
+                    break;
+                case 'Pernos y tornillos':
+                    $data = '<option value="Pernos,0801">Pernos</option>
+                    <option value="Tornillos,0802">Tornillos</option>
+                    <option value="Autoperforantes,0803">Autoperforantes</option>';
+                    break;
+                case 'Ferretería - Soldad':
+                    $data ='<option value="Discos,0901">Discos</option>
+                    <option value="Soldadura,0902">Soldadura</option>
+                    <option value="Acabados,0903">Acabados</option>
+                    <option value="Gases,0904">Gases</option>';
+                    break;
+                case 'Ferretería - Inoxidabl':
+                    $data = ' <option value="Discos,0111">Discos</option>
+                    <option value="Soldadura,0112">Soldadura</option>
+                    <option value="Acabados,0113">Acabados</option>
+                    <option value="Gases,0114">Gases</option>
+                    ';
+                    break;
+                case 'Ferretería - Uso común':
+                    break;
+                case 'Ferretería - Made':
+                    break;
+                case 'Ferretería - Drywall':
+                    break;
+                case 'Ferretería - Albañile':
+                    break;
+                case 'Ferretería - Electricistas':
+                    break;
+        }
+        
+
+        return $data;   
+    });
+
+    Route::post('get_names_ajax', function(Request $request)
+    {
+        
+        $names = DB::table('materials')->where('category',$request->category)->where('model',$request->model)->get();
+        $data = "<option>Select Material</option>";
+        if(count($names) > 0)
+        {
+        foreach ($names as $name) {
+            $data .= "<option value=".$name->id.">".$name->name."</option>";
+        };
+    };
+        
+        if(count($names) == 0){
+            $data = null;
+        };
+
+        return $data;   
+    });
+    Route::post('get_name_ajax', function(Request $request)
+    {
+        $pieces = explode(',', $request->model);
+        $names = DB::table('materials')->where('category',$request->category)->where('model',$pieces[0])->get();
+        $data = "<option>Select Material</option>";
+        if(count($names) > 0)
+        {
+        foreach ($names as $name) {
+            $data .= "<option value=".$name->name.">".$name->name."</option>";
+        };
+    };
+        
+        if(count($names) == 0){
+            $data = null;
+        };
+        return $data;   
+    });
+
+
+    Route::post('get_cart_ajax', function(Request $request)
+    
+    {
+        $price = DB::table('materials')->where('id',$request->id)->first();
+        DB::table('carts')->insert([
+
+            'user_id' => auth()->user()->id,
+            'product_id' => $request->id,
+            'per_unit_price'=>$price->per_unit_price,      
+        ]);
+        $loop="";
+        $amount = 0;
+        $cart_data = DB::table('carts')->where('user_id',auth()->user()->id)->get();
+        if(count($cart_data) > 0)
+        {
+            foreach ($cart_data as $cart) {
+                $name = DB::table("materials")->where("id",$cart->product_id)->first();
+                $loop .= 
+                ' 
+                <tr>
+                
+                <td>'.$name->code.'</td>
+                <td>'.$name->name.'</td>
+                <td>'.$cart->per_unit_price.'</td>
+                <td>
+                <a class="removecart" href="{{"remove_cart/".$cart->id}}"><i
+                class=" bx bxs-plus-circle"></i></a>                
+                
+                </tr>
+                
+                ';
+                $amount += $cart->per_unit_price;
+            };
+            $data = $loop.'<tr><td class="font-weight-bold">Amount = '.$amount.'</td></tr> ';
+        };
+        
+        if(count($cart_data) == 0){
+            $data = null;
+        };
+       
+        
+        
+        return $data;
+         
+    });
+
+    Route::get('/remove_cart/{id}', function($id)
+    
+    {
+        DB::table('carts')->where('id',$id)->delete();
+        $data = "Successfully Removed";
+        return redirect()->back()->with('info', 'Removed Item Successfully!');
+
+         
+    });
+
+    Route::post('get_search_ajax', function(Request $request)
+    
+    {  
+        $data = 2;
+        $pieces = explode(',', $request->model);
+        
+        $material = DB::table('materials')->where('category',$request->category)->where('model',$pieces[0])->where('name',$request->name)->first();
+        if(isset($material)) {
+            $alph =
+                                                "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+                                                $quantity='';
+                                                $lsymbol='';
+                                                $type= '';
+
+                                                for($i=0;$i < 7;$i++){ $quantity .=$alph[rand(0, 55)]; } for($i=0;$i <
+                                                    7;$i++){ $lsymbol .=$alph[rand(0, 55)]; } for($i=0;$i < 7;$i++){
+                                                    $type .=$alph[rand(0, 55)]; }
+            $data = 
+            ' 
+            <tr>
+            
+            <td> <span id="{{$quantity}}">
+            1
+            <input type="hidden" id="{{$type}}" value=1>
+            <span id="{{$lsymbol}}"
+                onclick="add('.$quantity.','.$lsymbol.','.$type.')">
+                <i class=" bx bxs-plus-circle"></i>
+            </span>
+        </span></td>
+            <td>'.$material->code.'</td>
+            <td>'.$material->name.'</td>
+            <td>'.$material->category.'</td>
+            <td>'.$material->model.'</td>
+            <td>'.$material->per_unit_price.'</td>
+
+            <td>
+            <input type="hidden" id="'.$material->id.'" value ="'.$material->id.'">
+            <button onclick="myFunction('.$material->id.')"class="addcart">Añadir a la cesta</button>
+            </td>
+            
+            
+            </tr>
+            
+            ';
+        };
+        return $data;
+         
+    });
+
+
+    Route::post('get_searchcode_ajax', function(Request $request)
+    
+    {  
+        $data = 2;
+        
+        $material = DB::table('materials')->where('code',$request->code)->first();
+        if(isset($material)) {
+            $alph =
+                                                "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+                                                $quantity='';
+                                                $lsymbol='';
+                                                $type= '';
+
+                                                for($i=0;$i < 7;$i++){ $quantity .=$alph[rand(0, 55)]; } for($i=0;$i <
+                                                    7;$i++){ $lsymbol .=$alph[rand(0, 55)]; } for($i=0;$i < 7;$i++){
+                                                    $type .=$alph[rand(0, 55)]; }
+            $data = 
+            ' 
+            <tr>
+            
+            <td> <span id="{{$quantity}}">
+            1
+            <input type="hidden" id="{{$type}}" value=1>
+            <span id="{{$lsymbol}}"
+                onclick="add('.$quantity.','.$lsymbol.','.$type.')">
+                <i class=" bx bxs-plus-circle"></i>
+            </span>
+        </span></td>
+            <td>'.$material->code.'</td>
+            <td>'.$material->name.'</td>
+            <td>'.$material->category.'</td>
+            <td>'.$material->model.'</td>
+            <td>'.$material->per_unit_price.'</td>
+
+            <td>
+            <input type="hidden" id="'.$material->id.'" value ="'.$material->id.'">
+            <button onclick="myFunction('.$material->id.')"class="addcart">Añadir a la cesta</button>
+            </td>
+            
+            
+            </tr>
+            
+            ';
+        };
+        return $data;
+         
+    });
+
+    Route::post('/update_materialas', function(Request $request)
+    {
+        DB::table('materials')->where('id',$request->name)->update([
+            'quantity' => $request->number,
+              
+        ]);
+        return redirect()->back()->with('info', 'You have Entered Materials Stock Successfully!');
+
+    });
 
     Route::get('/Change-Status/{id}', '\App\Http\Controllers\HomeController@Change_status');
     Route::get('/Change-Statuss/{id}', '\App\Http\Controllers\HomeController@Change_statuss');
@@ -383,6 +672,29 @@ Route::middleware('auth:web')->group(function ()
         return view('create_materialas');
     });
     Route::post('/create_materialas', '\App\Http\Controllers\HomeController@create_materialas');
+    Route::post('/getpdf', '\App\Http\Controllers\HomeController@getpdf');
+
+    Route::get('/materialas-cart',function(){
+        $amount = 0;
+        $carts = DB::table('carts')->where('user_id',auth()->user()->id)->get();
+        
+        foreach($carts as $cart){
+            $amount += $cart->per_unit_price;
+        }
+        $materials = DB::table('materials')->get();
+        return view('material_cart',compact('materials','carts','amount'));
+    });
+    Route::get('/add-services', function ()
+    {
+        
+
+        return view('services');
+    });
+    Route::post('/create_service', '\App\Http\Controllers\HomeController@create_service');
+
+    
 
 });
+
+
 
