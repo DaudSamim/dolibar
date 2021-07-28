@@ -256,11 +256,7 @@
                         class="nav-link ">Productos con fallas
                      </a>
                   </li>
-                  <li class="nav-item">
-                     <a href="/add-services"
-                        class="nav-link ">Servicios
-                     </a>
-                  </li>
+                  
                   
                </ul>
             </div>
@@ -276,11 +272,11 @@
                id="ip56">
                <ul class="nav sub-menu">
                   <li class="nav-item">
-                     <a href="#"
+                     <a href="/add-client"
                         class="nav-link ">Crear cliente</a>
                   </li>
                   <li class="nav-item">
-                     <a href="#"
+                     <a href="/add-services"
                         class="nav-link ">Crear Servicio
                      </a>
                   </li>

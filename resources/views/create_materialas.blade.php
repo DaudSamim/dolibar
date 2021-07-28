@@ -51,7 +51,7 @@
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputUsername1">Categoría del Material / Insumo / Herramienta</label>
                         <select id="category" name="category">
-                            <option value="N/A">Select Category</option>
+                            <option value="">Select Category</option>
                             <option value="Servicios Metalmecánic">Servicios Metalmecánic</option>
                             <option value="Tubos, Perfiles y vigas">Tubos, Perfiles y vigas</option>
                             <option value="Planchas">Planchas</option>
@@ -148,12 +148,7 @@
 
 
 
-                    <div class="form-group form-inline-custom">
-                        <label for="exampleInputPassword1">Precio por unidad</label>
-                        <input type="number" value="{{old('unit_price')}}" class="form-control"
-                            id="exampleInputPassword1" name="unit_price" autocomplete="off" placeholder=""
-                            aria-autocomplete="list">
-                    </div>
+                    
 
                     <div class="div-btns text-center">
                         <input type="hidden" name="_token" value={{csrf_token()}}>

@@ -457,8 +457,8 @@ Route::middleware('auth:web')->group(function ()
 
     Route::post('get_names_ajax', function(Request $request)
     {
-        
-        $names = DB::table('materials')->where('category',$request->category)->where('model',$request->model)->get();
+        $pieces = explode(',', $request->model);
+        $names = DB::table('materials')->where('category',$request->category)->where('model',$pieces[0])->get();
         $data = "<option>Select Material</option>";
         if(count($names) > 0)
         {
@@ -495,14 +495,24 @@ Route::middleware('auth:web')->group(function ()
     Route::post('get_cart_ajax', function(Request $request)
     
     {
+        
+        $int = (int)$request->quantity;
         $price = DB::table('materials')->where('id',$request->id)->first();
+        $gross_total = $int*$price->per_unit_price;
+
         DB::table('carts')->insert([
 
             'user_id' => auth()->user()->id,
             'product_id' => $request->id,
-            'per_unit_price'=>$price->per_unit_price,      
+            'per_unit_price'=>$price->per_unit_price,  
+            'quantity'=>$int,  
+            'gross_total'=>$gross_total,  
+
+
+
         ]);
         $loop="";
+        $gross_total = 0;
         $amount = 0;
         $cart_data = DB::table('carts')->where('user_id',auth()->user()->id)->get();
         if(count($cart_data) > 0)
@@ -516,16 +526,22 @@ Route::middleware('auth:web')->group(function ()
                 <td>'.$name->code.'</td>
                 <td>'.$name->name.'</td>
                 <td>'.$cart->per_unit_price.'</td>
+                <td>'.$cart->quantity.'</td>
+                <td>'.$cart->gross_total.'</td>
+
+
                 <td>
-                <a class="removecart" href="{{"remove_cart/".$cart->id}}"><i
-                class=" bx bxs-plus-circle"></i></a>                
+                    <a class="removecart" href="remove_cart/'.$cart->id.'"><i
+                    class=" bx bxs-minus-circle"></i></a>
+                </td>                
                 
                 </tr>
                 
                 ';
-                $amount += $cart->per_unit_price;
+
+                $amount += $cart->gross_total;
             };
-            $data = $loop.'<tr><td class="font-weight-bold">Amount = '.$amount.'</td></tr> ';
+            $data = $loop.'<tr><td></td><td></td><td></td><td></td><td class="font-weight-bold text-right">Total Amount = $'.$amount.'</td></tr> ';
         };
         
         if(count($cart_data) == 0){
@@ -551,6 +567,7 @@ Route::middleware('auth:web')->group(function ()
     Route::post('get_search_ajax', function(Request $request)
     
     {  
+        
         $data = 2;
         $pieces = explode(',', $request->model);
         
@@ -569,23 +586,26 @@ Route::middleware('auth:web')->group(function ()
             ' 
             <tr>
             
-            <td> <span id="{{$quantity}}">
+            <td> <span id="'.$quantity.'">
+            <span 
+                                                                onclick="remove(`'.$quantity.'`,`'.$lsymbol.'`,`'.$type.'`)">
+                                                                <i class=" bx bxs-minus-circle"></i>
+                                                            </span>
             1
-            <input type="hidden" id="{{$type}}" value=1>
-            <span id="{{$lsymbol}}"
-                onclick="add('.$quantity.','.$lsymbol.','.$type.')">
+            <input type="hidden" id="'.$type.'" value="1">
+            <span id="'.$lsymbol.'"
+                onclick="add(`'.$quantity.'`,`'.$lsymbol.'`,`'.$type.'`)">
                 <i class=" bx bxs-plus-circle"></i>
             </span>
         </span></td>
-            <td>'.$material->code.'</td>
-            <td>'.$material->name.'</td>
-            <td>'.$material->category.'</td>
-            <td>'.$material->model.'</td>
-            <td>'.$material->per_unit_price.'</td>
+            <td  style="cursor: pointer;" onclick="myFunction('.$material->id.',`'.$type.'`)"class="addcart">'.$material->code.'</td>
+            <td  style="cursor: pointer;" onclick="myFunction('.$material->id.',`'.$type.'`)"class="addcart">'.$material->name.'</td>
+            <td  style="cursor: pointer;" onclick="myFunction('.$material->id.',`'.$type.'`)"class="addcart">'.$material->category.'</td>
+            <td  style="cursor: pointer;" onclick="myFunction('.$material->id.',`'.$type.'`)"class="addcart">'.$material->model.'</td>
+            <td  style="cursor: pointer;" onclick="myFunction('.$material->id.',`'.$type.'`)"class="addcart">'.$material->per_unit_price.'</td>
 
             <td>
             <input type="hidden" id="'.$material->id.'" value ="'.$material->id.'">
-            <button onclick="myFunction('.$material->id.')"class="addcart">Añadir a la cesta</button>
             </td>
             
             
@@ -596,6 +616,9 @@ Route::middleware('auth:web')->group(function ()
         return $data;
          
     });
+
+
+    
 
 
     Route::post('get_searchcode_ajax', function(Request $request)
@@ -618,23 +641,27 @@ Route::middleware('auth:web')->group(function ()
             ' 
             <tr>
             
-            <td> <span id="{{$quantity}}">
+            <td>  <span id="'.$quantity.'">
+            <span 
+                                                                onclick="remove(`'.$quantity.'`,`'.$lsymbol.'`,`'.$type.'`)">
+                                                                <i class=" bx bxs-minus-circle"></i>
+                                                            </span>
             1
-            <input type="hidden" id="{{$type}}" value=1>
-            <span id="{{$lsymbol}}"
-                onclick="add('.$quantity.','.$lsymbol.','.$type.')">
+            <input type="hidden" id="'.$type.'" value=1>
+            <span id="'.$lsymbol.'"
+                onclick="add(`'.$quantity.'`,`'.$lsymbol.'`,`'.$type.'`)">
                 <i class=" bx bxs-plus-circle"></i>
             </span>
-        </span></td>
-            <td>'.$material->code.'</td>
-            <td>'.$material->name.'</td>
-            <td>'.$material->category.'</td>
-            <td>'.$material->model.'</td>
-            <td>'.$material->per_unit_price.'</td>
+        </span>
+        </td>
+        <td  style="cursor: pointer;" onclick="myFunction('.$material->id.',`'.$type.'`)"class="addcart">'.$material->code.'</td>
+        <td  style="cursor: pointer;" onclick="myFunction('.$material->id.',`'.$type.'`)"class="addcart">'.$material->name.'</td>
+        <td  style="cursor: pointer;" onclick="myFunction('.$material->id.',`'.$type.'`)"class="addcart">'.$material->category.'</td>
+        <td  style="cursor: pointer;" onclick="myFunction('.$material->id.',`'.$type.'`)"class="addcart">'.$material->model.'</td>
+        <td  style="cursor: pointer;" onclick="myFunction('.$material->id.',`'.$type.'`)"class="addcart">'.$material->per_unit_price.'</td>
 
             <td>
             <input type="hidden" id="'.$material->id.'" value ="'.$material->id.'">
-            <button onclick="myFunction('.$material->id.')"class="addcart">Añadir a la cesta</button>
             </td>
             
             
@@ -646,10 +673,74 @@ Route::middleware('auth:web')->group(function ()
          
     });
 
+
+
+
+    Route::post('get_searchstocks_ajax', function(Request $request)
+    
+    {  
+        $data = 2;
+        $pieces = explode(',', $request->model);
+        
+        $material = DB::table('materials')->where('category',$request->category)->where('model',$pieces[0])->where('name',$request->name)->first();
+        if(isset($material)) {
+            
+            
+            $data = 
+            ' 
+            
+            <tr>
+            <td>'.$material->code.'</td>
+            <td>'.$material->name.'</td>
+            <td>'.$material->category.'</td>
+            <td>'.$material->model.'</td>
+            <td>$'.$material->per_unit_price.'</td>
+            <td>'.$material->quantity.'</td> 
+            <td>$'.$material->quantity*$material->per_unit_price.'</td>          
+         
+
+            </tr>
+            
+            
+            ';
+        };
+        return $data;
+         
+    });
+
+    Route::post('get_searchcodestocks_ajax', function(Request $request)
+    
+    {  
+        $data = 2;
+        
+        $material = DB::table('materials')->where('code',$request->code)->first();
+        if(isset($material)) {
+            
+            $data = 
+            ' 
+            <tr>
+            <td>'.$material->code.'</td>
+            <td>'.$material->name.'</td>
+            <td>'.$material->category.'</td>
+            <td>'.$material->model.'</td>
+            <td>$'.$material->per_unit_price.'</td>  
+            <td>'.$material->quantity.'</td> 
+            <td>$'.$material->quantity*$material->per_unit_price.'</td>                   
+            </tr>
+            
+            ';
+        };
+        return $data;
+         
+    });
+
     Route::post('/update_materialas', function(Request $request)
     {
+        $old_quantity = DB::table('materials')->where('id',$request->name)->first();
+
         DB::table('materials')->where('id',$request->name)->update([
-            'quantity' => $request->number,
+            'quantity' => $request->number + $old_quantity->quantity,
+            'per_unit_price' => $request->price,
               
         ]);
         return redirect()->back()->with('info', 'You have Entered Materials Stock Successfully!');
@@ -658,7 +749,6 @@ Route::middleware('auth:web')->group(function ()
 
     Route::get('/Change-Status/{id}', '\App\Http\Controllers\HomeController@Change_status');
     Route::get('/Change-Statuss/{id}', '\App\Http\Controllers\HomeController@Change_statuss');
-    Route::post('/samim', '\App\Http\Controllers\HomeController@samim');
 
 
     Route::get('/material-edit',function(){
@@ -691,6 +781,19 @@ Route::middleware('auth:web')->group(function ()
         return view('services');
     });
     Route::post('/create_service', '\App\Http\Controllers\HomeController@create_service');
+    Route::get('/add-client', function ()
+    {
+        
+
+        return view('create_client');
+    });
+
+    Route::get('/from', function ()
+    {
+        
+
+        return view('fromm');
+    });
 
     
 

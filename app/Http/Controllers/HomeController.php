@@ -622,7 +622,6 @@ class HomeController extends Controller
             'name' => 'required',
             'category' => 'required',
             'model' => 'required',
-            'description' => 'required',
 
         ]);
         $pieces = explode(',', $request->model);
@@ -639,7 +638,6 @@ class HomeController extends Controller
             'width' => $request->width,
             'depth' => $request->depth,
             'diameter' => $request->diameter,
-            'per_unit_price'=>$request->unit_price,
             
         ]);
         $id = DB::table('materials')->orderby('id','desc')->first();

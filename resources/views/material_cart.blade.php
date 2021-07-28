@@ -128,8 +128,8 @@
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputPassword1">Enter Code of producto</label>
                                                 <input type="number" class="form-control" value="{{old('code')}}"
-                                                    id="code" name="code" autocomplete="off"
-                                                    placeholder="" aria-autocomplete="list">
+                                                    id="code" name="code" autocomplete="off" placeholder=""
+                                                    aria-autocomplete="list">
                                             </div>
                                             <button class="search btn-primary" id="searchcode">Search</button>
 
@@ -150,7 +150,6 @@
                                                     <th>Categoría</th>
                                                     <th>Modelo</th>
                                                     <th>Precio por unidad</th>
-                                                    <th>Acción</th>
 
                                                 </tr>
                                             </thead>
@@ -167,7 +166,11 @@
                                                     7;$i++){ $lsymbol .=$alph[rand(0, 55)]; } for($i=0;$i < 7;$i++){
                                                     $type .=$alph[rand(0, 55)]; } @endphp <tr>
                                                     <td>
-                                                        <span id="{{$quantity}}">
+                                                        <span style="cursor: pointer;" id="{{$quantity}}">
+                                                            <span
+                                                                onclick="remove('{{$quantity}}','{{$lsymbol}}','{{$type}}')">
+                                                                <i class=" bx bxs-minus-circle"></i>
+                                                            </span>
                                                             1
                                                             <input type="hidden" id="{{$type}}" value=1>
                                                             <span id="{{$lsymbol}}"
@@ -176,26 +179,37 @@
                                                             </span>
                                                         </span>
                                                     </td>
-                                                    <td>
+
+                                                    <td style="cursor: pointer;"
+                                                        onclick="myFunction('{{$material->id}}','{{$type}}')"
+                                                        class="addcart">
                                                         {{$material->code}}
                                                     </td>
-                                                    <td>
+                                                    <td style="cursor: pointer;"
+                                                        onclick="myFunction('{{$material->id}}','{{$type}}')"
+                                                        class="addcart">
                                                         {{$material->name}}
                                                     </td>
-                                                    <td>
+                                                    <td style="cursor: pointer;"
+                                                        onclick="myFunction('{{$material->id}}','{{$type}}')"
+                                                        class="addcart">
                                                         {{$material->category}}
                                                     </td>
-                                                    <td>
+                                                    <td style="cursor: pointer;"
+                                                        onclick="myFunction('{{$material->id}}','{{$type}}')"
+                                                        class="addcart">
                                                         {{$material->model}}
                                                     </td>
-                                                    <td>
+                                                    <td style="cursor: pointer;"
+                                                        onclick="myFunction('{{$material->id}}','{{$type}}')"
+                                                        class="addcart">
                                                         {{$material->per_unit_price}}
                                                     </td>
-                                                    <td>
+                                                    <td style="cursor: pointer;"
+                                                        onclick="myFunction('{{$material->id}}','{{$type}}')"
+                                                        class="addcart">
                                                         <input type="hidden" id="{{$material->id}}"
                                                             value="{{$material->id}}">
-                                                        <button onclick="myFunction('{{$material->id}}')"
-                                                            class="addcart">Añadir a la cesta</button>
                                                     </td>
 
                                                     </tr>
@@ -257,6 +271,11 @@
                                 <th>Code</th>
                                 <th>Nombre</th>
                                 <th>Precio por unidad</th>
+                                <th>Quantity</th>
+                                <th>Gross Amount</th>
+                                <th></th>
+
+
 
                             </tr>
                         </thead>
@@ -275,14 +294,20 @@
                                 <td>
                                     {{$cart->per_unit_price}}
                                 </td>
+                                <td>{{$cart->quantity}}</td>
+                                <td>{{$cart->gross_total}}</td>
                                 <td>
                                     <a class="removecart" href="{{'remove_cart/'.$cart->id}}"><i
-                                            class=" bx bxs-plus-circle"></i></a>
+                                            class=" bx bxs-minus-circle"></i></a>
                                 </td>
                             </tr>
                             @endforeach
                             <tr>
-                                <td>Amount = {{$amount}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="font-weight-bold">Total Amount = ${{$amount}}</td>
                             </tr>
 
 
@@ -307,11 +332,12 @@
 
 
 <script>
-    function myFunction(id) {
+    function myFunction(id, type) {
         // var c = document.getElementById("category");
         // var option = c.options[no.selectedIndex].text;
 
         d = "#" + id;
+        t = "#" + type;
 
 
 
@@ -328,6 +354,8 @@
             type: "POST",
             data: {
                 id: $(d).val(),
+                quantity: $(t).val(),
+
 
             },
 
@@ -349,6 +377,7 @@
     };
 
 </script>
+
 <script>
     function myremoveFunction(id) {
         // var c = document.getElementById("category");
@@ -570,7 +599,7 @@
                 type: "POST",
                 data: {
                     code: $('#code').val(),
-                    
+
 
 
 
@@ -605,8 +634,11 @@
         a = '#' + add;
         t = '#' + type;
         number = $(t).val();
-        added = number + "1";
-        document.getElementById(quantity).innerHTML = added + ` 
+        integer = parseInt(number, 10);
+        added = integer + 1;
+        document.getElementById(quantity).innerHTML = `<span onclick="remove('` + quantity + `','` + add + `','` +
+            type + `')"> <i class=" bx bxs-minus-circle"></i> ` + added + ` 
+                                                            </span>
                                         <input type="hidden" id="` + type + `" value ="` + added + `">
                                          <span id="` + add + `"onclick="add('` + quantity + `','` + add + `','` +
             type + `')">
@@ -615,4 +647,29 @@
     }
 
 </script>
+
+<script>
+    function remove(quantity, add, type) {
+        q = '#' + quantity;
+        a = '#' + add;
+        t = '#' + type;
+        number = $(t).val();
+        integer = parseInt(number, 10);
+        added = integer - 1;
+        if (added < 1) {
+            added = 1;
+        }
+        document.getElementById(quantity).innerHTML = `<span onclick="remove('` + quantity + `','` + add + `','` +
+            type + `')"> <i class=" bx bxs-minus-circle"></i> ` + added + ` 
+                                                            </span>
+                                        <input type="hidden" id="` + type + `" value ="` + added + `">
+                                         <span id="` + add + `"onclick="add('` + quantity + `','` + add + `','` +
+            type + `')">
+                                          <i class=" bx bxs-plus-circle"></i>
+                                        </span>`;
+    }
+
+</script>
+
+
 @endsection
