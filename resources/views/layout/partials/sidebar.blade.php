@@ -308,6 +308,11 @@
                         </ul>
                      </div>
                   </li>
+                  <li class="nav-item">
+                     <a href="/kardex"
+                        class="nav-link ">Kardex
+                     </a>
+                  </li>
                </ul>
             </div>
          </li>

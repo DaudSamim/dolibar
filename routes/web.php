@@ -807,7 +807,12 @@ Route::middleware('auth:web')->group(function ()
     Route::post('/create_client', '\App\Http\Controllers\HomeController@create_client');
     Route::post('/save_performa', '\App\Http\Controllers\HomeController@save_performa');
 
+    Route::get('/kardex', function ()
+    {
+        
 
+        return view('kardex');
+    });
 
     
 
