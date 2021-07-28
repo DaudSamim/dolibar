@@ -36,15 +36,16 @@
 </style>
 <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
 @section('content')
+@if(Session::has('info'))
+<p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('info') }}</p>
+@endif
+@if ($errors->any())
+@foreach ($errors->all() as $error)
+<p class="alert {{ Session::get('alert-class', 'alert-danger') }}">{{ $error }}</p>
+@endforeach
+@endif
 <div class="row justify-centent-right">
-    @if(Session::has('info'))
-    <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('info') }}</p>
-    @endif
-    @if ($errors->any())
-    @foreach ($errors->all() as $error)
-    <p class="alert {{ Session::get('alert-class', 'alert-danger') }}">{{ $error }}</p>
-    @endforeach
-    @endif
+
 
 
     <!-- Modal -->
@@ -154,7 +155,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="searchedata">
-                                                @foreach($materials as $material)
+                                                <!-- @foreach($materials as $material)
                                                 @php
                                                 $alph =
                                                 "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -214,7 +215,7 @@
 
                                                     </tr>
 
-                                                    @endforeach
+                                                    @endforeach -->
 
                                             </tbody>
                                         </table>
@@ -249,6 +250,32 @@
                 <input type="address" value="{{old('address')}}" required class="form-control w-50"
                     id="exampleInputUsername1" name="number" autocomplete="off" placeholder="">
             </div>
+
+    </div>
+    <div class="col-4">
+        <div class="form-group form-inline-custom">
+            <label for="exampleInputUsername1">Enter RUC/DNI</label>
+            <input type="number" value="{{old('ruc')}}"  class="form-control w-100" id="dni" name="ruc"
+                autocomplete="off" placeholder="">
+        </div>
+        <div class="form-group form-inline-custom">
+            <label for="exampleInputUsername1"> Typos Perfroma </label>
+            <select id="performa" name="type" class="w-100">
+                <option value="">Select Performa</option>
+                <option value="Sales">Sales</option>
+                <option value="Work">Work</option>
+                <option value="Construct">Construct</option>
+            </select>
+        </div>
+        <div class="form-group form-inline-custom">
+            <label for="exampleInputUsername1">Performa ID</label>
+            <select id="cartid" name="cartid" class="w-100">
+
+            </select>
+
+        </div>
+        <button class="search btn-danger mb-3" id="searchperforma">Search</button>
+
 
     </div>
 </div>
@@ -317,8 +344,14 @@
                 </div>
                 <div class="div-btns text-center">
                     <input type="hidden" name="_token" value={{csrf_token()}}>
-                    <button type="submit" class="btn btn-primary">Verificar</button>
+                    <button type="submit" class="btn btn-primary"> Generate Invoice</button>
+                    <button type="button" class="btn btn-danger text-right" data-toggle="modal" data-target="#example">
+                        Save Performa
+                    </button>
+
+
                 </div>
+
                 </form>
             </div>
 
@@ -326,6 +359,69 @@
 
     </div>
 
+</div>
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="example" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save Performa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="forms-sample" action="/save_performa" method="post" enctype='multipart/form-data'>
+                    <div class="form-group form-inline-custom">
+                        <label for="exampleInputUsername1">Nombre Client</label>
+                        <input type="text" value="{{old('name')}}" required class="form-control w-50"
+                            id="exampleInputUsername1" name="name" autocomplete="off" placeholder="">
+                    </div>
+                    <div class="form-group form-inline-custom">
+                        <label for="exampleInputUsername1">RUC/DNI</label>
+                        <input type="ruc" value="{{old('ruc')}}" required class="form-control w-50"
+                            id="exampleInputUsername1" name="ruc" autocomplete="off" placeholder="">
+                    </div>
+                    <div class="form-group form-inline-custom">
+                        <label for="exampleInputUsername1"> Mobile Number</label>
+                        <input type="number" value="{{old('number')}}" required class="form-control w-50"
+                            id="exampleInputUsername1" name="number" autocomplete="off" placeholder="">
+                    </div>
+                    <div class="form-group form-inline-custom">
+                        <label for="exampleInputUsername1"> Address</label>
+                        <input type="address" value="{{old('address')}}" required class="form-control w-50"
+                            id="exampleInputUsername1" name="address" autocomplete="off" placeholder="">
+                    </div>
+                    <div class="form-group form-inline-custom">
+                        <label for="exampleInputUsername1">Typos Perfroma</label>
+                        <select id="" name="type" class="w-50">
+                            <option value="">Select Performa</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Work">Work</option>
+                            <option value="Construct">Construct</option>
+
+
+
+
+
+
+
+                        </select>
+                    </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="hidden" name="_token" value={{csrf_token()}}>
+                <button type="submit" class="btn btn-primary">Save </button>
+
+            </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <!-- Button trigger modal -->
@@ -637,7 +733,7 @@
         integer = parseInt(number, 10);
         added = integer + 1;
         document.getElementById(quantity).innerHTML = `<span onclick="remove('` + quantity + `','` + add + `','` +
-            type + `')"> <i class=" bx bxs-minus-circle"></i> ` + added + ` 
+            type + `')"> <i class=" bx bxs-minus-circle"></i> ` + added + `
                                                             </span>
                                         <input type="hidden" id="` + type + `" value ="` + added + `">
                                          <span id="` + add + `"onclick="add('` + quantity + `','` + add + `','` +
@@ -660,7 +756,7 @@
             added = 1;
         }
         document.getElementById(quantity).innerHTML = `<span onclick="remove('` + quantity + `','` + add + `','` +
-            type + `')"> <i class=" bx bxs-minus-circle"></i> ` + added + ` 
+            type + `')"> <i class=" bx bxs-minus-circle"></i> ` + added + `
                                                             </span>
                                         <input type="hidden" id="` + type + `" value ="` + added + `">
                                          <span id="` + add + `"onclick="add('` + quantity + `','` + add + `','` +

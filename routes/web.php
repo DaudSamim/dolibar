@@ -496,21 +496,33 @@ Route::middleware('auth:web')->group(function ()
     
     {
         
+        
         $int = (int)$request->quantity;
         $price = DB::table('materials')->where('id',$request->id)->first();
+        $check_cart = DB::table('carts')->where('product_id',$request->id)->first();
         $gross_total = $int*$price->per_unit_price;
+        if(isset($check_cart)){
+            DB::table('carts')->where('product_id',$request->id)->update([
 
-        DB::table('carts')->insert([
+                
+                'quantity'=>$int + $check_cart->quantity,  
+                'gross_total'=>$gross_total + $check_cart->gross_total,  
+            ]);
+        } else{
+            DB::table('carts')->insert([
 
-            'user_id' => auth()->user()->id,
-            'product_id' => $request->id,
-            'per_unit_price'=>$price->per_unit_price,  
-            'quantity'=>$int,  
-            'gross_total'=>$gross_total,  
+                'user_id' => auth()->user()->id,
+                'product_id' => $request->id,
+                'per_unit_price'=>$price->per_unit_price,  
+                'quantity'=>$int,  
+                'gross_total'=>$gross_total,  
+    
+    
+    
+            ]);
+        }
 
-
-
-        ]);
+        
         $loop="";
         $gross_total = 0;
         $amount = 0;
@@ -790,10 +802,12 @@ Route::middleware('auth:web')->group(function ()
 
     Route::get('/from', function ()
     {
-        
-
         return view('fromm');
     });
+    Route::post('/create_client', '\App\Http\Controllers\HomeController@create_client');
+    Route::post('/save_performa', '\App\Http\Controllers\HomeController@save_performa');
+
+
 
     
 

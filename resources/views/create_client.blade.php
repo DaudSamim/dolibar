@@ -42,7 +42,7 @@
         <div class="card">
             <div class="card-body">
                 <h6 class="card-title">Ingresar Proveedor / Cliente / Interesado</h6>
-                <form class="forms-sample" action="/create_materialas" method="post" enctype='multipart/form-data'>
+                <form class="forms-sample" action="/create_client" method="post" enctype='multipart/form-data'>
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputUsername1">Nombre</label>
                         <input type="text" value="{{old('name')}}" class="form-control" id="exampleInputUsername1"
@@ -86,7 +86,7 @@
 
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputPassword1">Celular</label>
-                        <input type="text" value="{{old('mobile_contact[]')}}" class="form-control"
+                        <input type="number" value="{{old('mobile_contact[]')}}" class="form-control"
                             id="exampleInputPassword1" name="mobile_contact[]" autocomplete="off" placeholder=""
                             aria-autocomplete="list">
                     </div>
@@ -105,7 +105,7 @@
                     <br>
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputUsername1">Edad</label>
-                        <input type="text" value="{{old('age')}}" class="form-control" id="exampleInputUsername1"
+                        <input type="number" value="{{old('age')}}" class="form-control" id="exampleInputUsername1"
                             name="age" autocomplete="off" placeholder="">
                     </div>
                     <div class="form-group form-inline-custom">

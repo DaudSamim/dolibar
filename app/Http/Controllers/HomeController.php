@@ -717,4 +717,71 @@ class HomeController extends Controller
         return redirect()->back()->with('info', 'Order Placed Successfully!');
 
     }
+    public function create_client(Request $request)
+    {
+        $this->validate(request(), [
+            'name' => 'required',
+            'address' => 'required',
+            'ruc' => 'required',
+            'age' => 'required',
+            'category' => 'required',
+            'sex' => 'required',
+            'location' => 'required',
+            'interest' => 'required',
+            'profession' => 'required',
+            'others' => 'required',
+
+
+        ]);        
+
+        $persons = $request->get('name_contact');
+
+        foreach ($persons as $i => $person) {
+            DB::table('customers')->insert([
+                'name' => $request->name,
+                'address' => $request->address,
+                'ruc/dni' => $request->ruc,
+                'bussiness_turnaround' => $request->category,
+                'contact_person_name' => $persons[$i],
+                'person_cellular' => $request->get('mobile_contact')[$i],
+                'person_address' => $request->get('address_contact')[$i],
+                'age' => $request->age,
+                'sex' => $request->sex,
+                'location' => $request->location,
+                'product_interest' => $request->interest,
+                'profession' => $request->profession,
+                'other_purchase' => $request->others,
+
+
+            ]);
+
+        }
+
+        return redirect()->back()->with('info', 'You have Registered Successfully!');
+    }
+    public function save_performa(Request $request)
+    {
+        $cart_data = DB::table('carts')->where('user_id',auth()->user()->id)->get();
+        $count = sizeof($cart_data);
+        if($count > 0){
+            $cart = serialize($cart_data);
+        DB::table('orders')->insert([  
+
+            'user_id' => auth()->user()->id,
+            'ruc/dni' => $request->ruc,
+            'name' => $request->name,
+            'address' => $request->address,
+            'number' => $request->number,
+            'order_data' => $cart,
+        ]);
+         DB::table('carts')->where('user_id',auth()->user()->id)->delete();
+
+        return redirect()->back()->with('info', 'Saved Performa Successfully!');
+        } else{
+            return redirect()->back()->with('info', 'Cart Empty');
+
+        }
+        
+
+    }
 }
