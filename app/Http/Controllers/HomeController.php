@@ -762,7 +762,17 @@ class HomeController extends Controller
     public function save_performa(Request $request)
     {
         $cart_data = DB::table('carts')->where('user_id',auth()->user()->id)->get();
+
         $count = sizeof($cart_data);
+        foreach($cart_data as $cart)
+        {
+            $materials = DB::table('materials')->where('id',$cart->product_id)->first();
+            DB::table('materials')->where('id',$cart->product_id)->update([
+                'quantity' => $materials->quantity - $cart->quantity,
+            ]);
+
+
+        }
         if($count > 0){
             $cart = serialize($cart_data);
         DB::table('orders')->insert([  
@@ -782,6 +792,128 @@ class HomeController extends Controller
 
         }
         
+
+    }
+
+    public function searchingsale(Request $request)
+    {
+        $getsales = DB::table('orders')->orderby('id','desc')->get();
+        $pieces = explode(',', $request->model);
+        $i = 0;
+        $materials[] = '';
+        $quantity[] = '';
+        $gross_total[] = '';
+        $created_date[] = '';
+        $income[] = '';
+        $total = 0;
+        $temp = 0;
+        $exit[] = '';
+        if($request->enddate < $request->startdate)
+        {
+            return redirect()->back()->with('info', 'End date should be greater THAN start date');
+
+        } 
+        foreach($getsales as $sales){
+
+            if(($request->enddate >= $sales->created_at) && ($sales->created_at >= $request->startdate))
+            {
+                    $orders = unserialize($sales->order_data);
+                    foreach($orders as $order)
+                    {
+
+                        $getmaterials = DB::table('materials')->where('id',$order->product_id)->first();
+                        $numbers = DB::table('materials')->where('id',$order->product_id)->first();
+                        if($temp == 0)
+                        {
+                            $temp = $numbers->quantity + $order->quantity;
+                            $total = $total + $temp;
+
+                        }
+                        $total = $total + $order->quantity;
+
+                        $grand = $total*$getmaterials->per_unit_price;
+                        
+                        if(($request->category == $getmaterials->category) && ($pieces[0] == $getmaterials->model) && ($request->name == $getmaterials->name))
+                        {
+                            $quantity[$i] = $order->quantity;
+                            $created_date[$i] = $sales->created_at;
+                            $reason[$i] = $sales->reason;
+                            $income[$i] = $grand;
+                            $exit[$i] = $order->quantity*$getmaterials->per_unit_price;
+                            $id[$i] = $sales->id;
+                            $gross_total[$i] = $order->gross_total;
+                            $materials[$i] = $getmaterials;
+                            $i += 1;
+                        }    
+                    }
+            }
+        }
+    return view('kardex', compact('quantity','gross_total','materials','created_date','reason','id','income','exit'));
+
+    }
+
+
+    public function searchingsalecode(Request $request)
+    {
+        $getsales = DB::table('orders')->orderby('id','desc')->get();
+        $i = 0;
+        $materials[] = '';
+        $quantity[] = '';
+        $gross_total[] = '';
+        $created_date[] = '';
+        $income[] = '';
+        $total = 0;
+        $temp = 0;
+        $exit[] = '';
+        if($request->enddate < $request->startdate)
+        {
+            return redirect()->back()->with('info', 'End date should be greater THAN start date');
+
+        } 
+        foreach($getsales as $sales){
+
+            if(($request->enddate >= $sales->created_at) && ($sales->created_at >= $request->startdate))
+            {
+                    $orders = unserialize($sales->order_data);
+                    foreach($orders as $order)
+                    {
+
+                        $getmaterials = DB::table('materials')->where('id',$order->product_id)->first();
+                        $numbers = DB::table('materials')->where('id',$order->product_id)->first();
+                        if($temp == 0)
+                        {
+                            $temp = $numbers->quantity + $order->quantity;
+                            $total = $total + $temp;
+
+                        }
+                        $total = $total + $order->quantity;
+
+                        $grand = $total*$getmaterials->per_unit_price;
+                        
+                        if($request->code == $getmaterials->code)
+                        {
+                            $quantity[$i] = $order->quantity;
+                            $created_date[$i] = $sales->created_at;
+                            $reason[$i] = $sales->reason;
+                            $income[$i] = $grand;
+                            $exit[$i] = $order->quantity*$getmaterials->per_unit_price;
+                            $id[$i] = $sales->id;
+                            $gross_total[$i] = $order->gross_total;
+                            $materials[$i] = $getmaterials;
+                            $i += 1;
+                        } 
+                        else
+                        {
+                            return redirect()->back()->with('info', 'No Such Material');
+                        }   
+                    }
+            }
+            else
+                        {
+                            return view('kardex')->with('info', 'No Materials sold in these time period');
+                        }  
+        }
+    return view('kardex', compact('quantity','gross_total','materials','created_date','reason','id','income','exit'));
 
     }
 }

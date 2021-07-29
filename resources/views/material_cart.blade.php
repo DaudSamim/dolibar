@@ -402,13 +402,6 @@
                             <option value="Sales">Sales</option>
                             <option value="Work">Work</option>
                             <option value="Construct">Construct</option>
-
-
-
-
-
-
-
                         </select>
                     </div>
 
@@ -729,8 +722,13 @@
         q = '#' + quantity;
         a = '#' + add;
         t = '#' + type;
+        
+        limits = $("#limit").val();
         number = $(t).val();
+        limit = parseInt(limits, 10);
         integer = parseInt(number, 10);
+
+        if(limit > integer){
         added = integer + 1;
         document.getElementById(quantity).innerHTML = `<span onclick="remove('` + quantity + `','` + add + `','` +
             type + `')"> <i class=" bx bxs-minus-circle"></i> ` + added + `
@@ -740,6 +738,7 @@
             type + `')">
                                           <i class=" bx bxs-plus-circle"></i>
                                         </span>`;
+        }
     }
 
 </script>

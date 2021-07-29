@@ -584,6 +584,10 @@ Route::middleware('auth:web')->group(function ()
         $pieces = explode(',', $request->model);
         
         $material = DB::table('materials')->where('category',$request->category)->where('model',$pieces[0])->where('name',$request->name)->first();
+        if($material->quantity == 0){
+            $data = "Sold Out";
+            return $data;
+        }
         if(isset($material)) {
             $alph =
                                                 "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -597,7 +601,8 @@ Route::middleware('auth:web')->group(function ()
             $data = 
             ' 
             <tr>
-            
+            <input type="hidden" id="limit" value='.$material->quantity.'>
+
             <td> <span id="'.$quantity.'">
             <span 
                                                                 onclick="remove(`'.$quantity.'`,`'.$lsymbol.'`,`'.$type.'`)">
@@ -639,6 +644,10 @@ Route::middleware('auth:web')->group(function ()
         $data = 2;
         
         $material = DB::table('materials')->where('code',$request->code)->first();
+        if($material->quantity == 0){
+            $data = "Sold Out";
+            return $data;
+        }
         if(isset($material)) {
             $alph =
                                                 "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -652,7 +661,8 @@ Route::middleware('auth:web')->group(function ()
             $data = 
             ' 
             <tr>
-            
+            <input type="hidden" id="limit" value='.$material->quantity.'>
+
             <td>  <span id="'.$quantity.'">
             <span 
                                                                 onclick="remove(`'.$quantity.'`,`'.$lsymbol.'`,`'.$type.'`)">
@@ -660,6 +670,7 @@ Route::middleware('auth:web')->group(function ()
                                                             </span>
             1
             <input type="hidden" id="'.$type.'" value=1>
+
             <span id="'.$lsymbol.'"
                 onclick="add(`'.$quantity.'`,`'.$lsymbol.'`,`'.$type.'`)">
                 <i class=" bx bxs-plus-circle"></i>
@@ -813,6 +824,10 @@ Route::middleware('auth:web')->group(function ()
 
         return view('kardex');
     });
+    Route::post('/searchingsale', '\App\Http\Controllers\HomeController@searchingsale');
+    Route::post('/searchingsalecode', '\App\Http\Controllers\HomeController@searchingsalecode');
+
+
 
     
 
