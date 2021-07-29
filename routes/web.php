@@ -825,8 +825,19 @@ Route::middleware('auth:web')->group(function ()
         return view('kardex');
     });
     Route::post('/searchingsale', '\App\Http\Controllers\HomeController@searchingsale');
-    Route::post('/searchingsalecode', '\App\Http\Controllers\HomeController@searchingsalecode');
+    Route::get('/searchingsale', function ()
+    {
+        
 
+        return view('kardex');
+    });
+    Route::post('/searchingsalecode', '\App\Http\Controllers\HomeController@searchingsalecode');
+    Route::get('/searchingsalecode', function ()
+    {
+        
+
+        return view('kardex');
+    });
 
 
     
