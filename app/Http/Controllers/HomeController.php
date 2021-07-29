@@ -910,7 +910,7 @@ class HomeController extends Controller
             }
             else
                         {
-                            return view('kardex')->with('info', 'No Materials sold in these time period');
+                            return redirect()->back()->with('info', 'No sale on these dates');
                         }  
         }
     return view('kardex', compact('quantity','gross_total','materials','created_date','reason','id','income','exit'));

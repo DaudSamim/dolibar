@@ -66,13 +66,13 @@
                                     enctype='multipart/form-data'>
                                     <div class="form-group form-inline-custom">
                                         <label for="exampleInputUsername1">Start Fecha</label>
-                                        <input type="date" value="{{old('date')}}" class="form-control w-50"
+                                        <input type="date" value="{{old('date')}}"required class="form-control w-50"
                                             id="exampleInputPassword1" name="startdate" autocomplete="off"
                                             placeholder="" aria-autocomplete="list">
                                     </div>
                                     <div class="form-group form-inline-custom">
                                         <label for="exampleInputUsername1">End Fecha</label>
-                                        <input type="date" value="{{old('date')}}" class="form-control w-50"
+                                        <input type="date" value="{{old('date')}}"required class="form-control w-50"
                                             id="exampleInputPassword1" name="enddate" autocomplete="off" placeholder=""
                                             aria-autocomplete="list">
                                     </div>
@@ -80,8 +80,8 @@
 
                                         <label for="exampleInputUsername1">Categoría del Material / Insumo /
                                             Herramienta</label>
-                                        <select id="cat" name="category" class="w-50">
-                                            <option value="N/A">Select Category</option>
+                                        <select id="cat" name="category"required class="w-50">
+                                            <option value="">Select Category</option>
                                             <option value="Servicios Metalmecánic">Servicios Metalmecánic
                                             </option>
                                             <option value="Tubos, Perfiles y vigas">Tubos, Perfiles y vigas
@@ -120,14 +120,14 @@
 
                                         <label for="exampleInputUsername1"> Modelo del Material / Insumo /
                                             Herramienta</label>
-                                        <select id="mod" name="model" class="w-50">
+                                        <select id="mod" name="model"required class="w-50">
 
                                         </select>
                                     </div>
                                     <div class="form-group form-inline-custom">
                                         <label for="exampleInputUsername1">Nombre del Material / Insumo /
                                             Herramienta</label>
-                                        <select id="nam" name="name" class="w-50">
+                                        <select id="nam" name="name"required class="w-50">
 
                                         </select>
                                     </div>
@@ -143,19 +143,19 @@
                                     <br>
                                     <div class="form-group form-inline-custom">
                                         <label for="exampleInputUsername1">Start Fecha</label>
-                                        <input type="date" value="{{old('date')}}" class="form-control w-100"
+                                        <input type="date" value="{{old('date')}}"required class="form-control w-100"
                                             id="exampleInputPassword1" name="startdate" autocomplete="off"
                                             placeholder="" aria-autocomplete="list">
                                     </div>
                                     <div class="form-group form-inline-custom">
                                         <label for="exampleInputUsername1">End Fecha</label>
-                                        <input type="date" value="{{old('date')}}" class="form-control w-100"
+                                        <input type="date" value="{{old('date')}}"required class="form-control w-100"
                                             id="exampleInputPassword1" name="enddate" autocomplete="off" placeholder=""
                                             aria-autocomplete="list">
                                     </div>
                                     <div class="form-group form-inline-custom">
                                         <label for="exampleInputPassword1">Enter Code of producto</label>
-                                        <input type="number" class="form-control" value="{{old('code')}}" id="code"
+                                        <input type="number" class="form-control"required value="{{old('code')}}" id="code"
                                             name="code" autocomplete="off" placeholder="" aria-autocomplete="list">
                                     </div>
                                     <input type="hidden" name="_token" value={{csrf_token()}}>
