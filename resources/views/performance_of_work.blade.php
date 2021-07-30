@@ -57,11 +57,8 @@
                         <input type="month" class="form-control w-20" id="exampleInputPassword1" required name="date"
                             @if(isset($date2)) value="{{$date2}}" @endif autocomplete="off" placeholder=""
                             aria-autocomplete="list">
-                            <span style="padding-right:10px;padding-bottom:5px;padding-left:10px" for="exampleInputPassword1">Fecha
-                            End</span>
-                        <input type="month" class="form-control w-20" id="exampleInputPassword1" required name="date"
-                            @if(isset($date2)) value="{{$date2}}" @endif autocomplete="off" placeholder=""
-                            aria-autocomplete="list">
+                            
+                        
                     </div>
 
 
@@ -134,9 +131,10 @@
                                 @endphp
                                 @endif
                                 @endfor
-
+                                @if(isset($first_day))
                                 <tr>
                                     <th>Worker</th>
+                                    
                                     @for(; $first_day<=$d; $first_day++)
                                         @if(date('D',strtotime($first_day.'-'.$date[1].'-'.$date[0])) !='Sun' ) <th>
                                         {{date('D-d',strtotime($first_day.'-'.$date[1].'-'.$date[0]))}}</th>
@@ -144,6 +142,7 @@
                                         <th></th>
                                         @endif
                                         @endfor
+                                    
 
                                 </tr>
                         </thead>

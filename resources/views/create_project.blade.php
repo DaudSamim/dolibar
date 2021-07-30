@@ -60,16 +60,16 @@
                         <input type="text" value="{{old('customer')}}" class="form-control" id="exampleInputPassword1"
                             name="customer" autocomplete="off" placeholder="" aria-autocomplete="list">
                     </div>
-                    <div class="form-group form-inline-custom">
+                    <!-- <div class="form-group form-inline-custom">
                         <label for="exampleInputPassword1">Persona de contacto</label>
                         <input type="number" value="{{old('contact_person')}}" class="form-control"
                             id="exampleInputPassword1" name="contact_person" autocomplete="off" placeholder=""
                             aria-autocomplete="list">
-                    </div>
+                    </div> -->
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputPassword1">Ingeniero Encargado</label>
                         <input type="text" value="{{old('engineer_incharge')}}" class="form-control"
-                            id="exampleInputPassword1" name="engineer_incharge" maxlength="19" autocomplete="off"
+                            id="exampleInputPassword1" name="engineer_incharge"  autocomplete="off"
                             placeholder="" aria-autocomplete="list">
                     </div>
                     <div class="form-group form-inline-custom">
@@ -235,8 +235,8 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Horas hombre total</label>
-                                                <textarea value="{{old('total_hours[]')}}" name="total_hours[]"
-                                                    class="js-example-basic-single w-90"></textarea>
+                                                <input type="number"value="{{old('total_hours[]')}}" name="total_hours[]"
+                                                    class="js-example-basic-single w-90">
                                             </div>
 
                                         </div>
@@ -277,10 +277,10 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Cantidad</label>
-                                                <input value="{{old('subtasks')}}" name="subtasks"
+                                                <input value="{{old('subtasks')}}" name="subtasks" type="number"
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="project" data-width="100%" data-select2-id="1" tabindex="-1"
-                                                    aria-hidden="true"></input>
+                                                    ></input>
                                             </div>
 
                                         </div>

@@ -390,20 +390,24 @@ class HomeController extends Controller
 
     public function postAddProject(Request $request)
     {
-        $this->validate($request, [
-            // 'project' => 'required',
-            // 'location' => 'required',
-            // 'customer' => 'required',
-            // 'contact_person' => 'required|min:11',
-            // 'engineer_incharge' => 'required',
-            // 'amount' => 'required',
-            // 'start_date' => 'required',
-            // 'delivery_date' => 'required|after:start_date',
-            // 'video' => 'required',
-            // 'product_to_be_manufactured'  => 'required',
+        // $this->validate($request, [
+        //     'project' => 'required',
+        //     'location' => 'required',
+        //     'customer' => 'required',
+        //     'contact_person' => 'required|min:11',
+        //     'engineer_incharge' => 'required',
+        //     'amount' => 'required',
+        //     'start_date' => 'required',
+        //     'delivery_date' => 'required|after:start_date',
+        //     'video' => 'required',
+        //     'product_to_be_manufactured'  => 'required',
 
 
-        ]);
+        // ]);
+        if($request->start_date >= $request->delivery_date){
+            return redirect()->back()->with('info', 'Start date should be GREATER THAN Delivery date');
+
+        }
 
         if ($request->file('video')) {
             $file = $request->file('video');

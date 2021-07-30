@@ -62,6 +62,13 @@
                     <div class=row>
                         <div class="col-8"></div>
                         <div class="col-4">
+                        <div class="form-check">
+                                <input class="form-check-input"checked  type="checkbox"  id="flexCheckChecked3"
+                                    name="attendance">
+                                <label class="form-check-label" for="flexCheckChecked">
+                                    Attended
+                                </label>
+                            </div>
                             <div class="form-check">
                                 <input class="form-check-input"  type="checkbox"  id="flexCheckChecked1"
                                     name="attendance">
@@ -122,7 +129,7 @@
 
                         <div class="form-group form-inline-custom">
                             <label for="exampleInputPassword1">Tiempo de trabajo</label>
-                            <input type="text" value="{{old('working_time')}}" class="form-control"
+                            <input type="number" value="{{old('working_time')}}" class="form-control"
                                 id="exampleInputPassword1" name="working_time" maxlength="19" autocomplete="off"
                                 placeholder="" aria-autocomplete="list">
                         </div>
@@ -258,22 +265,89 @@
 </script>
 <script>
 
-   function myFunction() {
+    function myFunction() {
 
-      document.getElementById("removeclass").innerHTML = "" ;
-//   document.getElementById("fname").value = document.getElementById("fname").value.toUpperCase();
-};
+        document.getElementById("removeclass").innerHTML = "" ;
+    //   document.getElementById("fname").value = document.getElementById("fname").value.toUpperCase();
+    };
 
-function myFunction2() {
+    function myFunction2() {
 
-//   document.getElementById("fname").value = document.getElementById("fname").value.toUpperCase();
-};
+    //   document.getElementById("fname").value = document.getElementById("fname").value.toUpperCase();
+    };
+</script>
+<script>
+    $('#flexCheckChecked3').click(function() {
+    if($(this).is(':checked')){
+    document.getElementById("removeclass").innerHTML =  `<div class="form-group form-inline-custom">
+                            <label for="exampleInputPassword1">Requerimiento de la tarea</label>
+                            <input type="text" value="{{old('requirements')}}" class="form-control"
+                                id="exampleInputPassword1" name="requirements" autocomplete="off" placeholder=""
+                                aria-autocomplete="list">
+                        </div>
+
+                        <div class="form-group form-inline-custom">
+                            <label for="exampleInputPassword1">Tiempo de trabajo</label>
+                            <input type="number" value="{{old('working_time')}}" class="form-control"
+                                id="exampleInputPassword1" name="working_time"  autocomplete="off"
+                                placeholder="" aria-autocomplete="list">
+                        </div>
+
+                        <div class="form-group form-inline-custom">
+                            <label for="exampleInputPassword1">Unidades terminadas</label>
+                            <input type="number" value="{{old('finished_units')}}" class="form-control"
+                                id="exampleInputPassword1" name="finished_units" autocomplete="off" placeholder=""
+                                aria-autocomplete="list">
+                        </div>
+
+                        <div class="form-group form-inline-custom">
+                            <label for="exampleInputPassword1">Cumplimiento del objetivo</label>
+                            <select style="width: 75% !important" value="{{old('objective')}}"
+                                class="js-example-basic-single w-100 select2-hidden-accessible" name="objective"
+                                data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                                <option value="Sí" data-select2-id="3">Sí</option>
+                                <option value="No" data-select2-id="3">No</option>
+                                <option value="Incompleto" data-select2-id="3">Incompleto</option>
+
+                            </select>
+                        </div>
+
+                        <div class="form-group form-inline-custom">
+                            <label for="exampleInputPassword1">Unidades con fallas </label>
+                            <input type="number" class="form-control" value="{{old('faulty_units')}}"
+                                id="exampleInputPassword1" name="faulty_units" autocomplete="off" placeholder=""
+                                aria-autocomplete="list">
+                        </div>
+
+                        <div class="form-group form-inline-custom">
+                            <label for="exampleInputPassword1">Pérdida Valorizada </label>
+                            <input type="number" class="form-control" value="{{old('valued_loss')}}"
+                                id="exampleInputPassword1" name="valued_loss" autocomplete="off" placeholder=""
+                                aria-autocomplete="list">
+                        </div>
+
+                        <div class="form-group form-inline-custom">
+                            <label for="exampleInputPassword1">Comentario </label>
+                            <input type="text" class="form-control" value="{{old('commentary')}}"
+                                id="exampleInputPassword1" name="commentary" autocomplete="off" placeholder=""
+                                aria-autocomplete="list">
+                        </div>` ;
+    document.getElementById("flexCheckChecked2").checked = false;
+    document.getElementById("flexCheckChecked1").checked = false; 
+    
+
+   }
+
+    
+});
 </script>
 <script>
     $('#flexCheckChecked1').click(function() {
     if($(this).is(':checked')){
     document.getElementById("removeclass").innerHTML = "" ;
     document.getElementById("flexCheckChecked2").checked = false;
+    document.getElementById("flexCheckChecked3").checked = false; 
+
    }
 
     else
@@ -286,8 +360,8 @@ function myFunction2() {
 
                         <div class="form-group form-inline-custom">
                             <label for="exampleInputPassword1">Tiempo de trabajo</label>
-                            <input type="text" value="{{old('working_time')}}" class="form-control"
-                                id="exampleInputPassword1" name="working_time" maxlength="19" autocomplete="off"
+                            <input type="number" value="{{old('working_time')}}" class="form-control"
+                                id="exampleInputPassword1" name="working_time"  autocomplete="off"
                                 placeholder="" aria-autocomplete="list">
                         </div>
 
@@ -339,6 +413,8 @@ $('#flexCheckChecked2').click(function() {
     if($(this).is(':checked')){
     document.getElementById("removeclass").innerHTML = "" ;
     document.getElementById("flexCheckChecked1").checked = false; 
+    document.getElementById("flexCheckChecked3").checked = false; 
+
    }
 
     else
@@ -351,7 +427,7 @@ $('#flexCheckChecked2').click(function() {
 
                         <div class="form-group form-inline-custom">
                             <label for="exampleInputPassword1">Tiempo de trabajo</label>
-                            <input type="text" value="{{old('working_time')}}" class="form-control"
+                            <input type="number" value="{{old('working_time')}}" class="form-control"
                                 id="exampleInputPassword1" name="working_time" maxlength="19" autocomplete="off"
                                 placeholder="" aria-autocomplete="list">
                         </div>
