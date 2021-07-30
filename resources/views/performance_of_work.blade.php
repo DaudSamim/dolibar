@@ -58,7 +58,6 @@
                             @if(isset($date2)) value="{{$date2}}" @endif autocomplete="off" placeholder=""
                             aria-autocomplete="list">
                             
-                        
                     </div>
 
 
@@ -96,7 +95,8 @@
                     </div>
 
                 </form>
-
+                
+                     
                 <br> @foreach($tasks as $task)
                 <div class="row">
                     <div class="container">
@@ -131,10 +131,10 @@
                                 @endphp
                                 @endif
                                 @endfor
-                                @if(isset($first_day))
+                                @if(isset($worker))
                                 <tr>
-                                    <th>Worker</th>
                                     
+                                    <th>Worker</th>
                                     @for(; $first_day<=$d; $first_day++)
                                         @if(date('D',strtotime($first_day.'-'.$date[1].'-'.$date[0])) !='Sun' ) <th>
                                         {{date('D-d',strtotime($first_day.'-'.$date[1].'-'.$date[0]))}}</th>
@@ -164,8 +164,13 @@
 
                             @endphp
 
-                            @for($pointer = 0; $pointer <= $count; $pointer++) @php $array[$pointer]=1; @endphp @endfor
-                                @foreach($All_single_task_workers as $single_task_worker) @for($pointer=0; $pointer
+                            @for($pointer = 0; $pointer <= $count; $pointer++) 
+                            @php 
+                            $array[$pointer]=1;
+                             @endphp
+                             @endfor
+                                @foreach($All_single_task_workers as $single_task_worker) 
+                                @for($pointer=0; $pointer
                                 <=$count; $pointer++) @if($array[$pointer]==$single_task_worker->employee_id)
                                 @php
                                 $terminate = 1;
@@ -192,7 +197,7 @@
                                     $worker_name =
                                     DB::table('employees')->where('id',$single_task_worker->employee_id)->first();
                                     $single_record =
-                                    DB::table('daily_work_performance')->where('employee_id',$single_task_worker->employee_id)->where('attendance_status',0)->orderBy('date')->get();
+                                    DB::table('daily_work_performance')->where('employee_id',$single_task_worker->employee_id)->where('attendance_status','0')->orderBy('date')->get();
                                     @endphp
                                     @if(isset($worker_name))
                                     <td>{{$worker_name->name}}</td>
@@ -204,7 +209,9 @@
 
                                     @for(; $first_worker<=$d; $first_worker++) @php
                                         $date_format=date('Y-m-d',strtotime($first_worker.'-'.$date[1].'-'.$date[0]));
-                                        @endphp @if($record->date == $date_format)
+                                        @endphp 
+
+                                        @if($record->date == $date_format)
                                         <td>{{$record->date}}</td>
                                         @php
                                         break;
@@ -262,7 +269,15 @@
                 </div>
                 <br>
                 @endif
+                @else
+                <tr>
+                    <td>No worker assigned to this task</td>
+                </tr>
+                
+                @endif
                 @endforeach
+                
+                
 
 
             </div>

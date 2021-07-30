@@ -233,7 +233,9 @@ Route::middleware('auth:web')->group(function ()
         $tasks = DB::table('project_task')->whereIn('id',$tasks_id)->get();
         $projects = DB::table('projects')->get();
 
-        return view('performance_of_work', compact('tasks','projects','date2','date'));
+        
+            return view('performance_of_work', compact('tasks','projects','date2','date'));
+        
 
     });
 
