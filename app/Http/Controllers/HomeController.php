@@ -404,6 +404,11 @@ class HomeController extends Controller
 
 
         // ]);
+        // $yeen = $request->limits[0];
+        // $ex = explode(',', $yeen);
+        // $int = (int)$ex[0];
+        // dd($ex);
+        
         if($request->start_date >= $request->delivery_date){
             return redirect()->back()->with('info', 'Start date should be GREATER THAN Delivery date');
 
@@ -428,24 +433,31 @@ class HomeController extends Controller
                 'product_manufacturing' => $request->product_to_be_manufactured,
  
             ]);
+            $count_tasks = count($request->limits);
+            $count = $count_tasks - 1;
 
-            $items = $request->get('name_task');
+            // $items = $request->get('name_task');
             $project_id = DB::table('projects')->orderby('id', 'desc')->pluck('id')->first();
+            $i = 0;
             $c = 1;
-            foreach ($items as $i => $item) {
+            $j = 0;
+            $k = 0;
+            $z = 0;
+            
+            for(; $i <= $count;$i++) {
 
-                if ($request->file('file')[$i]) {
-                    $file = $request->file('file')[$i];
+                if ($request->file('document')[$i]) {
+                    $file = $request->file('document')[$i];
                     $filename = $file->getClientOriginalName();
                     $path = public_path() . '/task';
                     $file->move($path, $filename);
                     
-                    
+                    // dd($request->get('task_location')[$i]);
                     
                     DB::table('project_task')->insert([
                         'task_number' => $c,
                         'project_id' => $project_id,
-                        'task_name' => $item,
+                        'task_name' => $request->get('name_task')[$i],
                         'location' => $request->get('task_location')[$i],
                         'directions' => $request->get('task_directions_operator')[$i],
                         'target_quantity' => $request->get('target_quantity')[$i],
@@ -453,14 +465,37 @@ class HomeController extends Controller
          
                     ]);
 
+                    
                     $task_id = DB::table('project_task')->orderby('id', 'desc')->pluck('id')->first();
+                    $yeen = $request->limits[$i];
+                    $ex = explode(',', $yeen[0]);
+                    $int = (int)$ex[0];
 
-                    $operators = $request->get('type_operator');
-                    foreach ($operators as $i => $operator) { 
+                    
+
+                    for(;$j <= ($int - 1); $j++) { 
                         DB::table('project_operator')->insert([
-                            'operator_type' => $request->get('type_operator')[$i],
-                            'total_hour' => $request->get('total_hours')[$i],
-                            'number_of_operator' => $request->get('operator_number')[$i],
+                            'operator_type' => $request->get('type_operator')[$j],
+                            'total_hour' => $request->get('total_hours')[$j],
+                            'number_of_operator' => $request->get('operator_number')[$j],
+                            'task_id' => $task_id,
+                            'project_id' => $project_id,
+                        ]);
+                    }
+                    $int = (int)$ex[1];
+                    for(;$k <= ($int - 1); $k++) { 
+                        DB::table('project_material')->insert([
+                            'project_id' => $project_id,
+                            'material_id' => $request->get('material_name')[$k],
+                            'quantity' => $request->get('material_quantity')[$k],
+                            'task_id' => $task_id,
+                        ]);
+                    }
+                    $int = (int)$ex[2];
+                    for(;$z <= ($int - 1); $z++) { 
+                        DB::table('project_tool')->insert([
+                            'tool_name' => $request->get('tool_name')[$z],
+                            'quantity' => $request->get('tool_quantity')[$z],
                             'task_id' => $task_id,
                             'project_id' => $project_id,
                         ]);

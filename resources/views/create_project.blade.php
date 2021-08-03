@@ -2,8 +2,10 @@
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://use.fontawesome.com/your-embed-code.js"></script>
-<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/duotone.css" integrity="sha384-R3QzTxyukP03CMqKFe0ssp5wUvBPEyy9ZspCB+Y01fEjhMwcXixTyeot+S40+AjZ" crossorigin="anonymous"/>
-<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/fontawesome.css" integrity="sha384-eHoocPgXsiuZh+Yy6+7DsKAerLXyJmu2Hadh4QYyt+8v86geixVYwFqUvMU8X90l" crossorigin="anonymous"/>
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/duotone.css"
+    integrity="sha384-R3QzTxyukP03CMqKFe0ssp5wUvBPEyy9ZspCB+Y01fEjhMwcXixTyeot+S40+AjZ" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/fontawesome.css"
+    integrity="sha384-eHoocPgXsiuZh+Yy6+7DsKAerLXyJmu2Hadh4QYyt+8v86geixVYwFqUvMU8X90l" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 
@@ -56,27 +58,51 @@
                             name="location" placeholder="">
                     </div>
                     <div class="form-group form-inline-custom">
-                        <label for="exampleInputPassword1">Cliente</label>
-                        <input type="text" value="{{old('customer')}}" class="form-control" id="exampleInputPassword1"
-                            name="customer" autocomplete="off" placeholder="" aria-autocomplete="list">
+                        <label for="exampleInputPassword1">Client</label>
+
+                        <select class="js-example-basic-single w-90 select2-hidden-accessible" id="ubicación"
+                            value="{{old('customer')}}" name="customer" data-width="100%" data-select2-id="1"
+                            tabindex="-1" aria-hidden="true">
+                            <option value="" data-select2-id="3">Seleccione
+                            </option>
+                            @foreach($clients as $client)
+                            <option value="{{$client->id}}" data-select2-id="3">{{$client->name}}
+                            </option>
+                            @endforeach
+
+
+                        </select>
                     </div>
-                    <!-- <div class="form-group form-inline-custom">
-                        <label for="exampleInputPassword1">Persona de contacto</label>
-                        <input type="number" value="{{old('contact_person')}}" class="form-control"
-                            id="exampleInputPassword1" name="contact_person" autocomplete="off" placeholder=""
-                            aria-autocomplete="list">
-                    </div> -->
+                    
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputPassword1">Ingeniero Encargado</label>
-                        <input type="text" value="{{old('engineer_incharge')}}" class="form-control"
-                            id="exampleInputPassword1" name="engineer_incharge"  autocomplete="off"
-                            placeholder="" aria-autocomplete="list">
+                        <select class="js-example-basic-single w-90 select2-hidden-accessible" id="ubicación"
+                            value="{{old('engineer_incharge')}}" name="engineer_incharge" data-width="100%"
+                            data-select2-id="1" tabindex="-1" aria-hidden="true">
+                            <option value="" data-select2-id="3">Seleccione
+                            </option>
+                            @foreach($workers as $worker)
+                            <option value="{{$worker->id}}" data-select2-id="3">{{$worker->name}}
+                            </option>
+                            @endforeach
+
+
+                        </select>
                     </div>
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputPassword1">Producto a fabricar</label>
-                        <input type="text" value="{{old('engineer_incharge')}}" class="form-control"
-                            id="exampleInputPassword1" name="product_to_be_manufactured" maxlength="19" autocomplete="off"
-                            placeholder="" aria-autocomplete="list">
+                        <select class="js-example-basic-single w-90 select2-hidden-accessible" id="ubicación"
+                            value="{{old('product_to_be_manufactured')}}" name="product_to_be_manufactured"
+                            data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                            <option value="" data-select2-id="3">Seleccione
+                            </option>
+                            @foreach($materials as $material)
+                            <option value="{{$material->id}}" data-select2-id="3">{{$material->name}}
+                            </option>
+                            @endforeach
+
+
+                        </select>
                     </div>
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputPassword1">Precio de venta</label>
@@ -97,7 +123,7 @@
                     </div>
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputEmail1">Project File</label>
-                        <input class="form-control"  type="file" name="video">
+                        <input class="form-control" type="file" name="video">
                         @if ($errors->has('video'))
                         <span class="text-danger">
                             <small class="font-weight-bold">{{ $errors->first('video') }}</small>
@@ -123,15 +149,17 @@
                                         <div id="">
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Nombre </label>
-                                                <input value="{{old('name_task[]')}}"  id="nombre" name="name_task[]"
+                                                <input value="{{old('name_task[]')}}" id="nombre" name="name_task[]"
                                                     class="js-example-basic-single w-90"></input>
 
-                                                    <input value="{{old('count_op[]')}}" id="myop" name="count_op[]"type="hidden"value="1"
+                                                <input value="{{old('count_op[]')}}" id="myop" name="count_op[]"
+                                                    type="hidden" value="1"
                                                     class="js-example-basic-single w-90"></input>
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Cantidad objetivo</label>
-                                                <input value="{{old('target_quantity[]')}}"type="number" name="target_quantity[]"
+                                                <input value="{{old('target_quantity[]')}}" type="number"
+                                                    name="target_quantity[]"
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="cantidad" data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true"></input>
@@ -140,9 +168,10 @@
 
 
                                                 <label for="exampleInputUsername1"> Ubicación</label>
-                                                <select class="js-example-basic-single w-90 select2-hidden-accessible" id="ubicación"
-                                                    value="{{old('task_location[]')}}" name="task_location[]" data-width="100%"
-                                                    data-select2-id="1" tabindex="-1" aria-hidden="true">
+                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                    id="ubicación" value="{{old('task_location[]')}}"
+                                                    name="task_location[]" data-width="100%" data-select2-id="1"
+                                                    tabindex="-1" aria-hidden="true">
 
                                                     <option value="" data-select2-id="3">Lista desplegable:
                                                     </option>
@@ -160,25 +189,25 @@
                                                     (Subir
                                                     archivo)
                                                 </label>
-                                                <textarea value="{{old('task_directions_operator[]')}}"id="indicaciones" name="task_directions_operator[]"
+                                                <textarea value="{{old('task_directions_operator[]')}}"
+                                                    id="indicaciones" name="task_directions_operator[]"
                                                     class="js-example-basic-single w-90"></textarea>
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputEmail1"></label>
-                                                <input class="form-control" id="filer"  type="file" name="file[]">
+                                                <input class="form-control" id="filer" type="file" name="document[]">
                                                 @if ($errors->has('file'))
                                                 <span class="text-danger">
-                                                    <small
-                                                        class="font-weight-bold">{{ $errors->first('file') }}</small>
+                                                    <small class="font-weight-bold">{{ $errors->first('file') }}</small>
                                                 </span>
                                                 @endif
                                             </div>
 
                                         </div>
-                                        
-                                        
 
-                                        
+
+
+
                                         <!-- <div class="div-btns text-center">
                               <button type="button" id="addmore" class="btn btn">Add More</button>
                            </div> -->
@@ -206,8 +235,9 @@
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1"> Tipo de operario</label>
                                                 <select class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                    value="{{old('type_operator[]')}}"id="type" name="type_operator[]" data-width="100%"
-                                                    data-select2-id="1" tabindex="-1" aria-hidden="true">
+                                                    value="{{old('type_operator[]')}}" id="type" name="type_operator[]"
+                                                    data-width="100%" data-select2-id="1" tabindex="-1"
+                                                    aria-hidden="true">
 
                                                     <option value="" data-select2-id="3">Lista desplegable:
                                                     </option>
@@ -228,15 +258,16 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Cantidad de operarios</label>
-                                                <input value="{{old('operator_number[]')}}" type="number" name="operator_number[]"
+                                                <input value="{{old('operator_number[]')}}" type="number"
+                                                    name="operator_number[]"
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="nooperators" data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true"></input>
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Horas hombre total</label>
-                                                <input type="number"value="{{old('total_hours[]')}}" name="total_hours[]"
-                                                    class="js-example-basic-single w-90">
+                                                <input type="number" value="{{old('total_hours[]')}}"
+                                                    name="total_hours[]" class="js-example-basic-single w-90">
                                             </div>
 
                                         </div>
@@ -269,18 +300,28 @@
 
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Nombre del material</label>
-                                                <input value="{{old('subtasks')}}" name="subtasks"
-                                                    class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                    id="name_material" data-width="100%" data-select2-id="1" tabindex="-1"
-                                                    aria-hidden="true"></input>
+                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                    id="ubicación" value="{{old('material_name[]')}}" name="material_name[]"
+                                                    data-width="100%" data-select2-id="1" tabindex="-1"
+                                                    aria-hidden="true">
+                                                    <option value="" data-select2-id="3">Seleccione
+                                                    </option>
+                                                    @foreach($materials as $material)
+                                                    <option value="{{$material->id}}" data-select2-id="3">
+                                                        {{$material->name}}
+                                                    </option>
+                                                    @endforeach
+
+
+                                                </select>
 
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Cantidad</label>
-                                                <input value="{{old('subtasks')}}" name="subtasks" type="number"
+                                                <input value="{{old('material_quantity[]')}}" name="material_quantity[]" type="number"
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                    id="project" data-width="100%" data-select2-id="1" tabindex="-1"
-                                                    ></input>
+                                                    id="project" data-width="100%" data-select2-id="1"
+                                                    tabindex="-1"></input>
                                             </div>
 
                                         </div>
@@ -312,7 +353,7 @@
 
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Nombre de la herramienta</label>
-                                                <input value="{{old('subtasks')}}" name="subtasks"
+                                                <input value="{{old('tool_name[]')}}" name="tool_name[]"
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="name_tool" data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true"></input>
@@ -320,7 +361,7 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Cantidad</label>
-                                                <input value="{{old('subtasks')}}" name="subtasks"
+                                                <input value="{{old('tool_quantity[]')}}" name="tool_quantity[]"
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true"></input>
@@ -338,14 +379,14 @@
 
                         <br>
                         <div>
-                                        <h4 id="yeen" class=" text-center"style="margin-bottom:10px"></h4>
-                                        </div>
-                        <div id="addings3">
-                        <div class="div-btns text-center">
-                                            <button  id="save_task" class="btn btn-grabar">GRABAR TAREA</button>
-                                        </div>
+                            <h4 id="yeen" class=" text-center" style="margin-bottom:10px"></h4>
                         </div>
-                        
+                        <div id="addings3">
+                            <div class="div-btns text-center">
+                                <button id="save_task" class="btn btn-grabar">GRABAR TAREA</button>
+                            </div>
+                        </div>
+
                         <div class="addtasks">
                             <br>
                             <div class="div-btns text-center">
@@ -353,9 +394,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="div-btns text-center">
+                    <div class="div-btns text-center"id="array">
                         <input type="hidden" name="_token" value={{csrf_token()}}>
-                        <button type="submit" class="btn btn-grabar">GRABAR</button>
+                        <button type="submit" id="save_project" class="btn btn-grabar">GRABAR</button>
                     </div>
                 </form>
             </div>
@@ -363,11 +404,24 @@
     </div>
 </div>
 
+<script>
+    var tool = 1;
+    $("#save_project").click(function () {
+        array[counter] = [[operator,material,tool]] ;
 
+
+        $("#array").append(`<input value="` + array[counter] + `" name="limits[][]" type="hidden"
+                                                    class="js-example-basic-single w-90"></input>
+                              `);
+        
+    });
+
+</script>
 
 
 
 <script>
+    var tool = 1;
     var q = 7000;
     $("#addmore2").click(function () {
 
@@ -375,7 +429,7 @@
         $("#addings2").append(`<div class="aaa"> <hr>
         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Nombre de la herramienta</label>
-                                            <input value="{{old('subtasks')}}" name="subtasks"
+                                            <input value="{{old('tool_name[]')}}" name="tool_name[]"
                                                 class="js-example-basic-single w-90 select2-hidden-accessible"
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
@@ -383,7 +437,7 @@
                                         </div>
                                         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Cantidad</label>
-                                            <input value="{{old('subtasks')}}" name="subtasks"
+                                            <input value="{{old('tool_quantity[]')}}" name="tool_quantity[]" type="number"
                                                 class="js-example-basic-single w-90 select2-hidden-accessible"
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
@@ -392,19 +446,21 @@
                                             </div>
                               `);
         q = q + 1;
+        tool = tool + 1;
     });
 
 </script>
 
 <script>
+    var operator = 1;
     var b = 0;
     var p = 5000;
     $(document).ready(function () {
         $('.addmore').on('click', function () {
-    
-            
-    if(b==0){
-            $(this).closest('.addings').before(`<div class="aaa"><hr>
+
+
+            if (b == 0) {
+                $(this).closest('.addings').before(`<div class="aaa"><hr>
             <div style="float:right!important">
             <button type="button" onclick="removeop('` + p + `')"id="` + p + `" class="btn btn addmore"><h5 style="color:red">X</h5></button>
             </div>
@@ -443,20 +499,21 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Horas hombre total</label>
-                                                <textarea value="{{old('total_hours[]')}}" name="total_hours[]"
-                                                    class="js-example-basic-single w-90"></textarea>
+                                                <input value="{{old('total_hours[]')}}" name="total_hours[]"type="number"
+                                                    class="js-example-basic-single w-90">
                                             </div>
                                             </div>
                                         
                                     `);
-                                    z = p;
-            p = p + 1;
-            b = b + 1;
-        }else if(b > 0){
-            w = "#" + z;
-            $(w).addClass('d-none');
+                z = p;
+                p = p + 1;
+                b = b + 1;
+                operator = operator + 1;
+            } else if (b > 0) {
+                w = "#" + z;
+                $(w).addClass('d-none');
 
-            $(this).closest('.addings').before(`<div class="aaa"><hr>
+                $(this).closest('.addings').before(`<div class="aaa"><hr>
             <div style="float:right!important">
             <button type="button" onclick="removeop('` + p + `')"id="` + p + `" class="btn btn addmore"><h5 style="color:red">X</h5></button>
             </div>
@@ -495,23 +552,25 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Horas hombre total</label>
-                                                <textarea value="{{old('total_hours[]')}}" name="total_hours[]"
+                                                <textarea value="{{old('total_hours[]')}}" name="total_hours[]"type="number"
                                                     class="js-example-basic-single w-90"></textarea>
                                             </div>
                                             </div>
                                         
                                     `);
-                                    z = p;
-            
-            p = p + 1;
+                z = p;
 
-        }
+                p = p + 1;
+                operator = operator + 1;
+
+            }
         });
     });
 
 </script>
 
 <script>
+    var material = 1;
     var t = 6000;
     $(document).ready(function () {
         $('.addmore1').on('click', function () {
@@ -519,30 +578,42 @@
             $(this).closest('.addings1').before(`<div class="aaa"><hr><br>
     <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Nombre del material</label>
-                                            <input value="{{old('subtasks')}}" name="subtasks"
-                                                class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
-                                                aria-hidden="true"></input>
+                                            <select class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                    id="ubicación" value="{{old('material_name[]')}}" name="material_name[]"
+                                                    data-width="100%" data-select2-id="1" tabindex="-1"
+                                                    aria-hidden="true">
+                                                    <option value="" data-select2-id="3">Seleccione
+                                                    </option>
+                                                    @foreach($materials as $material)
+                                                    <option value="{{$material->id}}" data-select2-id="3">
+                                                        {{$material->name}}
+                                                    </option>
+                                                    @endforeach
+
+
+                                                </select>
 
                                         </div>
                                         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Cantidad</label>
-                                            <input value="{{old('subtasks')}}" name="subtasks"
-                                                class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
-                                                aria-hidden="true"></input>
-                                        </div>
+                                            <input value="{{old('material_quantity[]')}}" name="material_quantity[]" type="number"
+                                                    class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                    id="project" data-width="100%" data-select2-id="1"
+                                                    tabindex="-1"></input>
                                         <button type="button" onclick="removeop('` + t + `')"id="` + t + `" class="btn btn addmore">Remove Material</button>
                                             </div>
                                         
                                     `);
             t = t + 1
+            material = material + 1;
         });
     });
 
 </script>
 
 <script>
+    var counter = 0;
+    let array = [];
     var c = 1;
     var k = 500;
     var j = 1000;
@@ -553,8 +624,10 @@
     $(document).ready(function () {
         $('.tasks').on('click', function () {
             c = c + 1;
-
-
+             
+             array[counter] = [[operator,material,tool]] ;
+    console.log(array);
+    counter = counter + 1;
 
 
             $(this).closest('.addtasks').before(`<div class="yoo">
@@ -567,6 +640,7 @@
                         </ul>
                     </div>
                     <div class="col-2"></div>
+
                     <div class="row ">
                         <div class="col-2"><br></div>
                         <div class="col-10">
@@ -574,6 +648,10 @@
                                 <div class="card-body">
                                     <div id="">
                                     <div class="form-group form-inline-custom">
+                                    <input value="` + array[counter - 1] + `" name="limits[][]" 
+                                                    class="js-example-basic-single w-90"></input>
+
+
                                                 <label for="exampleInputUsername1">Nombre </label>
                                                 <input value="{{old('name_task[]')}}" name="name_task[]"
                                                     class="js-example-basic-single w-90"></input>
@@ -614,7 +692,7 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputEmail1"></label>
-                                                <input class="form-control"  type="file" name="file[]">
+                                                <input class="form-control"  type="file" name="document[]">
                                                 @if ($errors->has('file'))
                                                 <span class="text-danger">
                                                     <small
@@ -683,8 +761,8 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Horas hombre total</label>
-                                                <textarea value="{{old('total_hours[]')}}" name="total_hours[]"
-                                                    class="js-example-basic-single w-90"></textarea>
+                                                <input value="{{old('total_hours[]')}}" name="total_hours[]"type="number"
+                                                    class="js-example-basic-single w-90">
                                             </div>
                                         
                                     </div>
@@ -718,15 +796,25 @@
 
                                         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Nombre del material</label>
-                                            <input value="{{old('subtasks')}}" name="subtasks"
-                                                class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
-                                                aria-hidden="true"></input>
+                                            <select class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                    id="ubicación" value="{{old('material_name[]')}}" name="material_name[]"
+                                                    data-width="100%" data-select2-id="1" tabindex="-1"
+                                                    aria-hidden="true">
+                                                    <option value="" data-select2-id="3">Seleccione
+                                                    </option>
+                                                    @foreach($materials as $material)
+                                                    <option value="{{$material->id}}" data-select2-id="3">
+                                                        {{$material->name}}
+                                                    </option>
+                                                    @endforeach
+
+
+                                                </select>
 
                                         </div>
                                         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Cantidad</label>
-                                            <input value="{{old('subtasks')}}" name="subtasks"
+                                            <input value="{{old('material_quantity[]')}}" name="material_quantity[]"type="number"
                                                 class="js-example-basic-single w-90 select2-hidden-accessible"
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
@@ -761,7 +849,7 @@
 
                                         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Nombre de la herramienta</label>
-                                            <input value="{{old('subtasks')}}" name="subtasks"
+                                            <input value="{{old('subtasks')}}" name="tool_name[]"
                                                 class="js-example-basic-single w-90 select2-hidden-accessible"
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
@@ -769,7 +857,7 @@
                                         </div>
                                         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Cantidad</label>
-                                            <input value="{{old('subtasks')}}" name="subtasks"
+                                            <input value="{{old('tool_quantity[]')}}" name="tool_quantity[]" type="number"
                                                 class="js-example-basic-single w-90 select2-hidden-accessible"
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
@@ -796,6 +884,9 @@
             m = m + 1;
             n = n + 1;
             x = x + 1;
+            material = material + 1;
+            tool = tool + 1;
+            operator = operator + 1;
         });
     });
 
@@ -837,19 +928,166 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Horas hombre total</label>
-                                                <textarea value="{{old('total_hours[]')}}" name="total_hours[]"
-                                                    class="js-example-basic-single w-90"></textarea>
+                                                <input value="{{old('total_hours[]')}}" name="total_hours[]"type="number"
+                                                    class="js-example-basic-single w-90">
                                             </div>  
                                         <button type="button" onclick="removeop('` + j + `')"id="` + j + `" class="btn btn addmore">Remove Opperator</button>
                                             </div>`);
         k = k + 1;
         j = j + 1;
+        operator = operator + 1;
+
 
 
 
     }
 
 </script>
+
+
+
+<script>
+    function myFunction2(p1) {
+        // var closest = element.closest(p1);
+
+        var y = "#" + p1;
+        $(y).closest('.addings').before(`<div class="aaa"> <hr> <div class="form-group form-inline-custom">
+                                            <label for="exampleInputUsername1">Nombre del material</label>
+                                            <input value="{{old('material_name[]')}}" name="material_name[]"
+                                                class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
+                                                aria-hidden="true"></input>
+
+                                        </div>
+                                        <div class="form-group form-inline-custom">
+                                            <label for="exampleInputUsername1">Cantidad</label>
+                                            <input value="{{old('material_quantity[]')}}" name="material_quantity[]"type="number"
+                                                class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
+                                                aria-hidden="true"></input>
+                                        </div>
+                                        <button type="button" onclick="removemat('` + m + `')"id="` + m + `" class="btn btn addmore">Remove Material</button>
+                                            </div>
+                                        </div>
+        `);
+        m = m + 1;
+        u = u + 1;
+        material = material + 1;
+
+
+
+    }
+
+    function removemat(yes) {
+
+        var o = "#" + yes;
+        // var closest = element.closest(p1);
+        $(o).closest('.aaa').addClass('d-none');
+    }
+
+
+    function myFunction3(p1) {
+        // var closest = element.closest(p1);
+
+        var y = "#" + p1;
+        $(y).closest('.addings').before(`<div class="aaa"> <hr><div class="form-group form-inline-custom">
+                                            <label for="exampleInputUsername1">Nombre de la herramienta</label>
+                                            <input value="{{old('tool_name[]')}}" name="tool_name[]"
+                                                class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
+                                                aria-hidden="true"></input>
+
+                                        </div>
+                                        <div class="form-group form-inline-custom">
+                                            <label for="exampleInputUsername1">Cantidad</label>
+                                            <input value="{{old('tool_quantity[]')}}" name="tool_quantity[]"type="number"
+                                                class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
+                                                aria-hidden="true"></input>
+                                        </div>
+                                        <button type="button" onclick="removetool('` + x + `')"id="` + x + `" class="btn btn addmore">Remove Tool</button>
+                                            </div>
+                                        </div>
+
+        `);
+        n = n + 1;
+        x = x + 1;
+        tool = tool + 1;
+
+
+
+    }
+
+    function removetool(yes) {
+
+        var o = "#" + yes;
+        // var closest = element.closest(p1);
+        $(o).closest('.aaa').addClass('d-none');
+    }
+
+</script>
+
+<script>
+    $("#save_task").click(function (e) {
+        e.preventDefault();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')
+            }
+
+
+        });
+
+        $.ajax({
+            url: "save_tasks",
+            type: "POST",
+            data: {
+                nombre: $('#nombre').val(),
+                cantidad: $('#cantidad').val(),
+                indicaciones: $('#indicaciones').val(),
+                ubicación: $('#ubicación').val(),
+                filer: $('#filer').val(),
+                type: $('#type').val(),
+                operators: $('#nooperators').val(),
+                material_name: $('#name_material').val(),
+                tool_name: $('#name_tool').val(),
+
+
+
+            },
+
+            success: function (data) {
+                if (data) {
+                    if (data == 1) {
+                        document.getElementById("yeen").innerHTML = "Tarea Nombre Required";
+                        $("#yeen").addClass('w3-red');
+                        $("#yeen").removeClass('w3-green');
+
+                        console.log('hiya');
+                    } else {
+                        document.getElementById("yeen").innerHTML = data;
+                        $("#yeen").addClass('w3-green');
+                        $("#yeen").removeClass('w3-red');
+                        console.log('hi');
+                    }
+                } else {
+                    document.getElementById("yeen").innerHTML =
+                        "Something Wrong";
+                }
+
+            },
+            error: function () {
+                document.getElementById("projects").innerHTML =
+                    "<option>No Projects Available</option>";
+            }
+        });
+
+    });
+
+</script>
+
+
+
 
 <script>
     function yeen(yes) {
@@ -874,148 +1112,6 @@
     }
 
 </script>
-
-<script>
-    function myFunction2(p1) {
-        // var closest = element.closest(p1);
-
-        var y = "#" + p1;
-        $(y).closest('.addings').before(`<div class="aaa"> <hr> <div class="form-group form-inline-custom">
-                                            <label for="exampleInputUsername1">Nombre del material</label>
-                                            <input value="{{old('subtasks')}}" name="subtasks"
-                                                class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
-                                                aria-hidden="true"></input>
-
-                                        </div>
-                                        <div class="form-group form-inline-custom">
-                                            <label for="exampleInputUsername1">Cantidad</label>
-                                            <input value="{{old('subtasks')}}" name="subtasks"
-                                                class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
-                                                aria-hidden="true"></input>
-                                        </div>
-                                        <button type="button" onclick="removemat('` + m + `')"id="` + m + `" class="btn btn addmore">Remove Material</button>
-                                            </div>
-                                        </div>
-        `);
-        m = m + 1;
-        u = u + 1;
-
-
-
-    }
-
-    function removemat(yes) {
-
-        var o = "#" + yes;
-        // var closest = element.closest(p1);
-        $(o).closest('.aaa').addClass('d-none');
-    }
-
-
-    function myFunction3(p1) {
-        // var closest = element.closest(p1);
-
-        var y = "#" + p1;
-        $(y).closest('.addings').before(`<div class="aaa"> <hr><div class="form-group form-inline-custom">
-                                            <label for="exampleInputUsername1">Nombre de la herramienta</label>
-                                            <input value="{{old('subtasks')}}" name="subtasks"
-                                                class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
-                                                aria-hidden="true"></input>
-
-                                        </div>
-                                        <div class="form-group form-inline-custom">
-                                            <label for="exampleInputUsername1">Cantidad</label>
-                                            <input value="{{old('subtasks')}}" name="subtasks"
-                                                class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
-                                                aria-hidden="true"></input>
-                                        </div>
-                                        <button type="button" onclick="removetool('` + x + `')"id="` + x + `" class="btn btn addmore">Remove Tool</button>
-                                            </div>
-                                        </div>
-
-        `);
-        n = n + 1;
-        x = x + 1;
-
-
-
-    }
-
-    function removetool(yes) {
-
-        var o = "#" + yes;
-        // var closest = element.closest(p1);
-        $(o).closest('.aaa').addClass('d-none');
-    }
-
-</script>
-
-<script>
-    $("#save_task").click(function (e) {
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')
-                }
-
-
-            });
-
-            $.ajax({
-                url: "save_tasks",
-                type: "POST",
-                data: {
-                    nombre: $('#nombre').val(),
-                    cantidad: $('#cantidad').val(),
-                    indicaciones: $('#indicaciones').val(),
-                    ubicación: $('#ubicación').val(),
-                    filer: $('#filer').val(),
-                    type: $('#type').val(),
-                    operators: $('#nooperators').val(),
-                    material_name: $('#name_material').val(),
-                    tool_name: $('#name_tool').val(),
-
-
-
-                },
-
-                success: function (data) {
-                    if (data) {
-                        if(data == 1){
-                            document.getElementById("yeen").innerHTML = "Tarea Nombre Required";
-                            $("#yeen").addClass('w3-red');
-                            $("#yeen").removeClass('w3-green');
-
-                            console.log('hiya');
-                        } else {
-                        document.getElementById("yeen").innerHTML = data;
-                        $("#yeen").addClass('w3-green');
-                        $("#yeen").removeClass('w3-red');
-                        console.log('hi');
-                    }
-                    } else {
-                        document.getElementById("yeen").innerHTML =
-                            "Something Wrong";
-                    }
-
-                },
-                error: function () {
-                    document.getElementById("projects").innerHTML =
-                        "<option>No Projects Available</option>";
-                }
-            });
-
-        });
-</script>
-
-
-
-
-
 
 
 

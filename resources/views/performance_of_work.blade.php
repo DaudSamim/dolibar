@@ -119,7 +119,7 @@
                                 $worker_id=DB::table('daily_work_performance')->
                                 whereDate('date',$date_format)->where('task_id',$task->id)->where('attendance_status',0)->pluck('employee_id')->first();
                                 $worker = DB::table('employees')->where('id',$worker_id)->first();
-
+                                
 
                                 if(isset($worker)){
 
@@ -127,10 +127,12 @@
                                 $first_worker = $i;
                                 break;
                                 }
+                                
 
                                 @endphp
                                 @endif
                                 @endfor
+                                
                                 @if(isset($worker))
                                 <tr>
                                     

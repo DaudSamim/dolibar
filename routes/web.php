@@ -69,9 +69,14 @@ Route::middleware('auth:web')->group(function ()
     });
     Route::get('/create_project', function ()
     {
-        $tasks = DB::table('tasks_and_subtasks')->get();
+        $materials = DB::table('materials')->get();
+        $workers = DB::table('employees')->where('workers_type','Ingeniero')->get();
+        $clients = DB::table('customers')->get();
 
-        return view('create_project', compact('tasks'));
+
+
+
+        return view('create_project', compact('materials','workers','clients'));
     });
     Route::post('/create_project', '\App\Http\Controllers\HomeController@postAddProject');
 
