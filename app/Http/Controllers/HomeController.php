@@ -361,6 +361,9 @@ class HomeController extends Controller
             $present = "0";
         
         }
+        else if($request->present == 'on'){
+            $present = "0";
+        }
         else if($request->attendance == 'on'){
             $present = "1";
         }
@@ -484,6 +487,13 @@ class HomeController extends Controller
                     }
                     $int = (int)$ex[1];
                     for(;$k <= ($int - 1); $k++) { 
+                        $m_id = $request->get('material_name')[$k];
+                        $change = DB::table('materials')->where('id',$m_id)->first();
+                        if(isset($change)){
+                            DB::table('materials')->where('id',$m_id)->update([
+                                'quantity' => $change->quantity - $request->get('material_quantity')[$k],    
+                            ]);
+                        }
                         DB::table('project_material')->insert([
                             'project_id' => $project_id,
                             'material_id' => $request->get('material_name')[$k],

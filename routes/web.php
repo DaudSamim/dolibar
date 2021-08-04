@@ -69,14 +69,15 @@ Route::middleware('auth:web')->group(function ()
     });
     Route::get('/create_project', function ()
     {
-        $materials = DB::table('materials')->get();
+        $product = DB::table('materials')->get();
+        $materials = DB::table('materials')->where('quantity','!=',0)->get();
         $workers = DB::table('employees')->where('workers_type','Ingeniero')->get();
         $clients = DB::table('customers')->get();
 
 
 
 
-        return view('create_project', compact('materials','workers','clients'));
+        return view('create_project', compact('materials','workers','clients','product'));
     });
     Route::post('/create_project', '\App\Http\Controllers\HomeController@postAddProject');
 
@@ -101,10 +102,23 @@ Route::middleware('auth:web')->group(function ()
                 $labour += DB::table('employees')->where('id',$value->employee_id)->pluck('salary')->first() * $value->working_time;
             }
             $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
-             $total_tasks = DB::table('daily_work_performance')->where('project_id',$row->id)->count();
+            $total_tasks = DB::table('daily_work_performance')->where('project_id',$row->id)->count();
+            $total_sum_material = DB::table('project_material')->where('project_id',$row->id)->get();
+            $counting = 0;
+            foreach($total_sum_material as $sum){
+                $price = DB::table('materials')->where('id',$sum->material_id)->first();
+                $counting = $counting + ($price->per_unit_price * $sum->quantity);
+
+            }
+            
+
             $row->progress = $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->sum('working_time') / DB::table('project_operator')->where('project_id',$row->id)->sum('total_hour') * 100;
             $row->labour_cost = $labour;
             $row->current_task = $recent_task;
+            $row->material_cost = $counting;
+            $engineer = DB::table('employees')->where('id',$row->engineer_incharge)->pluck('name')->first();
+            $row->engineers = $engineer;
+
         }
             
         }

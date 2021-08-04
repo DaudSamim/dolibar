@@ -64,7 +64,7 @@
                         <div class="col-4">
                         <div class="form-check">
                                 <input class="form-check-input"checked  type="checkbox"  id="flexCheckChecked3"
-                                    name="attendance">
+                                    name="present">
                                 <label class="form-check-label" for="flexCheckChecked">
                                     Attended
                                 </label>

@@ -104,13 +104,16 @@
                           <td>N/A</td>
 
                           @endif
-                          <td>N/A</td>
-                           @if(isset($project->labour_cost))
-                          <td>${{$project->labour_cost}}</td>
+                           @if(isset($project->material_cost))
+                          <td>${{$project->material_cost}}</td>
                           @else 
                           <td>N/A</td>
+                          
+
 
                           @endif
+                          <td>N/A</td>
+
 													<td>${{$project->amount}}</td>
                           
                           @if(isset($project->progress))
@@ -127,7 +130,7 @@
                           <td>N/A</td>
 
                           @endif
-                          <td>{{$project->engineer_incharge}}</td>
+                          <td>{{$project->engineers}}</td>
                          
                                                     
                         @endforeach	

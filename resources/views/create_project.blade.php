@@ -49,18 +49,18 @@
                 <form class="forms-sample" action="/create_project" method="post" enctype='multipart/form-data'>
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputUsername1">Nombre del proyecto</label>
-                        <input type="text" value="{{old('project')}}" class="form-control" id="exampleInputUsername1"
+                        <input type="text" required value="{{old('project')}}" class="form-control" id="exampleInputUsername1"
                             name="project" autocomplete="off" placeholder="">
                     </div>
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputEmail1">Ubicación</label>
-                        <input type="text" value="{{old('location')}}" class="form-control" id="exampleInputEmail1"
+                        <input type="text"required value="{{old('location')}}" class="form-control" id="exampleInputEmail1"
                             name="location" placeholder="">
                     </div>
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputPassword1">Client</label>
 
-                        <select class="js-example-basic-single w-90 select2-hidden-accessible" id="ubicación"
+                        <select class="js-example-basic-single w-90 select2-hidden-accessible"required id="ubicación"
                             value="{{old('customer')}}" name="customer" data-width="100%" data-select2-id="1"
                             tabindex="-1" aria-hidden="true">
                             <option value="" data-select2-id="3">Seleccione
@@ -76,7 +76,7 @@
                     
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputPassword1">Ingeniero Encargado</label>
-                        <select class="js-example-basic-single w-90 select2-hidden-accessible" id="ubicación"
+                        <select class="js-example-basic-single w-90 select2-hidden-accessible"required id="ubicación"
                             value="{{old('engineer_incharge')}}" name="engineer_incharge" data-width="100%"
                             data-select2-id="1" tabindex="-1" aria-hidden="true">
                             <option value="" data-select2-id="3">Seleccione
@@ -91,13 +91,13 @@
                     </div>
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputPassword1">Producto a fabricar</label>
-                        <select class="js-example-basic-single w-90 select2-hidden-accessible" id="ubicación"
+                        <select class="js-example-basic-single w-90 select2-hidden-accessible"required id="ubicación"
                             value="{{old('product_to_be_manufactured')}}" name="product_to_be_manufactured"
                             data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
                             <option value="" data-select2-id="3">Seleccione
                             </option>
-                            @foreach($materials as $material)
-                            <option value="{{$material->id}}" data-select2-id="3">{{$material->name}}
+                            @foreach($product as $row)
+                            <option value="{{$row->id}}" data-select2-id="3">{{$row->name}}
                             </option>
                             @endforeach
 
@@ -106,24 +106,24 @@
                     </div>
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputPassword1">Precio de venta</label>
-                        <input type="number" value="{{old('amount')}}" class="form-control" id="exampleInputPassword1"
+                        <input type="number" value="{{old('amount')}}" class="form-control"required id="exampleInputPassword1"
                             name="amount" autocomplete="off" placeholder="" aria-autocomplete="list">
                     </div>
 
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputPassword1">Fecha de inicio</label>
-                        <input type="date" value="{{old('start_date')}}" class="form-control" id="exampleInputPassword1"
+                        <input type="date" value="{{old('start_date')}}" class="form-control"required id="exampleInputPassword1"
                             name="start_date" autocomplete="off" placeholder="" aria-autocomplete="list">
                     </div>
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputPassword1">Fecha de entrega </label>
-                        <input type="date" class="form-control" value="{{old('delivery_date')}}"
+                        <input type="date" class="form-control" value="{{old('delivery_date')}}"required
                             id="exampleInputPassword1" name="delivery_date" autocomplete="off" placeholder=""
                             aria-autocomplete="list">
                     </div>
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputEmail1">Project File</label>
-                        <input class="form-control" type="file" name="video">
+                        <input class="form-control" type="file"required name="video">
                         @if ($errors->has('video'))
                         <span class="text-danger">
                             <small class="font-weight-bold">{{ $errors->first('video') }}</small>
@@ -149,16 +149,16 @@
                                         <div id="">
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Nombre </label>
-                                                <input value="{{old('name_task[]')}}" id="nombre" name="name_task[]"
+                                                <input value="{{old('name_task[]')}}" id="nombre" name="name_task[]"required
                                                     class="js-example-basic-single w-90"></input>
 
-                                                <input value="{{old('count_op[]')}}" id="myop" name="count_op[]"
+                                                <input value="{{old('count_op[]')}}" id="myop" name="count_op[]"required
                                                     type="hidden" value="1"
                                                     class="js-example-basic-single w-90"></input>
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Cantidad objetivo</label>
-                                                <input value="{{old('target_quantity[]')}}" type="number"
+                                                <input value="{{old('target_quantity[]')}}" type="number"required
                                                     name="target_quantity[]"
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="cantidad" data-width="100%" data-select2-id="1" tabindex="-1"
@@ -168,7 +168,7 @@
 
 
                                                 <label for="exampleInputUsername1"> Ubicación</label>
-                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"required
                                                     id="ubicación" value="{{old('task_location[]')}}"
                                                     name="task_location[]" data-width="100%" data-select2-id="1"
                                                     tabindex="-1" aria-hidden="true">
@@ -189,13 +189,13 @@
                                                     (Subir
                                                     archivo)
                                                 </label>
-                                                <textarea value="{{old('task_directions_operator[]')}}"
+                                                <textarea value="{{old('task_directions_operator[]')}}"required
                                                     id="indicaciones" name="task_directions_operator[]"
                                                     class="js-example-basic-single w-90"></textarea>
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputEmail1"></label>
-                                                <input class="form-control" id="filer" type="file" name="document[]">
+                                                <input class="form-control" id="filer" type="file" name="document[]"required>
                                                 @if ($errors->has('file'))
                                                 <span class="text-danger">
                                                     <small class="font-weight-bold">{{ $errors->first('file') }}</small>
@@ -234,7 +234,7 @@
 
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1"> Tipo de operario</label>
-                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"required
                                                     value="{{old('type_operator[]')}}" id="type" name="type_operator[]"
                                                     data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true">
@@ -258,7 +258,7 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Cantidad de operarios</label>
-                                                <input value="{{old('operator_number[]')}}" type="number"
+                                                <input value="{{old('operator_number[]')}}" type="number"required
                                                     name="operator_number[]"
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="nooperators" data-width="100%" data-select2-id="1" tabindex="-1"
@@ -266,7 +266,7 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Horas hombre total</label>
-                                                <input type="number" value="{{old('total_hours[]')}}"
+                                                <input type="number" value="{{old('total_hours[]')}}"required
                                                     name="total_hours[]" class="js-example-basic-single w-90">
                                             </div>
 
@@ -300,7 +300,7 @@
 
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Nombre del material</label>
-                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"required
                                                     id="ubicación" value="{{old('material_name[]')}}" name="material_name[]"
                                                     data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true">
@@ -318,7 +318,7 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Cantidad</label>
-                                                <input value="{{old('material_quantity[]')}}" name="material_quantity[]" type="number"
+                                                <input value="{{old('material_quantity[]')}}" name="material_quantity[]" type="number"required
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="project" data-width="100%" data-select2-id="1"
                                                     tabindex="-1"></input>
@@ -353,7 +353,7 @@
 
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Nombre de la herramienta</label>
-                                                <input value="{{old('tool_name[]')}}" name="tool_name[]"
+                                                <input value="{{old('tool_name[]')}}" name="tool_name[]"required
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="name_tool" data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true"></input>
@@ -361,7 +361,7 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Cantidad</label>
-                                                <input value="{{old('tool_quantity[]')}}" name="tool_quantity[]"
+                                                <input value="{{old('tool_quantity[]')}}" name="tool_quantity[]"required
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true"></input>
@@ -369,7 +369,7 @@
 
                                         </div>
                                         <div class="div-btns text-center">
-                                            <button type="button" id="addmore2" class="btn btn">Agregar otro tipo de
+                                            <button type="button" id="addmore2" class="btn btn addmore2">Agregar otro tipo de
                                                 herramienta</button>
                                         </div>
                                     </div>
@@ -381,11 +381,11 @@
                         <div>
                             <h4 id="yeen" class=" text-center" style="margin-bottom:10px"></h4>
                         </div>
-                        <div id="addings3">
+                        <!-- <div id="addings3">
                             <div class="div-btns text-center">
                                 <button id="save_task" class="btn btn-grabar">GRABAR TAREA</button>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="addtasks">
                             <br>
@@ -404,6 +404,31 @@
     </div>
 </div>
 
+    <!-- <script>
+     $("#addmore3").click(function () {
+    let text;
+  let person = prompt("", "You wont be able to add more operators, materials and tools in the previous tasks");
+  if (person == null || person == "") {
+    text = "User cancelled the prompt.";
+  } else {
+    $('.addmore2').remove();
+        $('.addmore').remove();
+        $('.addmore1').remove();
+  }
+});
+</script> -->
+
+<!-- <script>
+    $("#addmore3").click(function () {
+        $('.addmore2').remove();
+        $('.addmore').remove();
+        $('.addmore1').remove();
+        alert("You wont be able to add more operators, materials and tools in the previous tasks");
+
+        // document.getElementsByClassName("addmore2").remove();
+        
+    });
+</script> -->
 <script>
     var tool = 1;
     $("#save_project").click(function () {
@@ -418,8 +443,6 @@
 
 </script>
 
-
-
 <script>
     var tool = 1;
     var q = 7000;
@@ -429,7 +452,7 @@
         $("#addings2").append(`<div class="aaa"> <hr>
         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Nombre de la herramienta</label>
-                                            <input value="{{old('tool_name[]')}}" name="tool_name[]"
+                                            <input value="{{old('tool_name[]')}}" name="tool_name[]"required
                                                 class="js-example-basic-single w-90 select2-hidden-accessible"
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
@@ -437,7 +460,7 @@
                                         </div>
                                         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Cantidad</label>
-                                            <input value="{{old('tool_quantity[]')}}" name="tool_quantity[]" type="number"
+                                            <input value="{{old('tool_quantity[]')}}" name="tool_quantity[]" type="number"required
                                                 class="js-example-basic-single w-90 select2-hidden-accessible"
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
@@ -471,7 +494,7 @@
             
 
                                                 <label for="exampleInputUsername1"> Tipo de operario</label>
-                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"required
                                                     value="{{old('type_operator[]')}}" name="type_operator[]" data-width="100%"
                                                     data-select2-id="1" tabindex="-1" aria-hidden="true">
 
@@ -492,14 +515,14 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Cantidad de operarios</label>
-                                                <input value="{{old('operator_number[]')}}"type="number" name="operator_number[]"
+                                                <input value="{{old('operator_number[]')}}"type="number" name="operator_number[]"required
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true"></input>
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Horas hombre total</label>
-                                                <input value="{{old('total_hours[]')}}" name="total_hours[]"type="number"
+                                                <input value="{{old('total_hours[]')}}" name="total_hours[]"type="number"required
                                                     class="js-example-basic-single w-90">
                                             </div>
                                             </div>
@@ -524,7 +547,7 @@
             
 
                                                 <label for="exampleInputUsername1"> Tipo de operario</label>
-                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"required
                                                     value="{{old('type_operator[]')}}" name="type_operator[]" data-width="100%"
                                                     data-select2-id="1" tabindex="-1" aria-hidden="true">
 
@@ -545,15 +568,15 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Cantidad de operarios</label>
-                                                <input value="{{old('operator_number[]')}}"type="number" name="operator_number[]"
+                                                <input value="{{old('operator_number[]')}}"type="number" name="operator_number[]"required
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true"></input>
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Horas hombre total</label>
-                                                <textarea value="{{old('total_hours[]')}}" name="total_hours[]"type="number"
-                                                    class="js-example-basic-single w-90"></textarea>
+                                                <input value="{{old('total_hours[]')}}" name="total_hours[]"type="number"required
+                                                    class="js-example-basic-single w-90">
                                             </div>
                                             </div>
                                         
@@ -579,7 +602,7 @@
     <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Nombre del material</label>
                                             <select class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                    id="ubicación" value="{{old('material_name[]')}}" name="material_name[]"
+                                                    id="ubicación" value="{{old('material_name[]')}}" name="material_name[]"required
                                                     data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true">
                                                     <option value="" data-select2-id="3">Seleccione
@@ -596,7 +619,7 @@
                                         </div>
                                         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Cantidad</label>
-                                            <input value="{{old('material_quantity[]')}}" name="material_quantity[]" type="number"
+                                            <input value="{{old('material_quantity[]')}}" name="material_quantity[]" type="number"required
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="project" data-width="100%" data-select2-id="1"
                                                     tabindex="-1"></input>
@@ -623,6 +646,15 @@
     var x = 3000;
     $(document).ready(function () {
         $('.tasks').on('click', function () {
+            let text;
+  let person = prompt("", "You wont be able to add more operators, materials and tools in the previous tasks");
+  if (person == null || person == "") {
+    text = "User cancelled the prompt.";
+  } else {
+    $('.addmore2').remove();
+        $('.addmore').remove();
+        $('.addmore1').remove();
+  
             c = c + 1;
              
              array[counter] = [[operator,material,tool]] ;
@@ -648,17 +680,17 @@
                                 <div class="card-body">
                                     <div id="">
                                     <div class="form-group form-inline-custom">
-                                    <input value="` + array[counter - 1] + `" name="limits[][]" 
+                                    <input type="hidden" value="` + array[counter - 1] + `" name="limits[][]" 
                                                     class="js-example-basic-single w-90"></input>
 
 
                                                 <label for="exampleInputUsername1">Nombre </label>
-                                                <input value="{{old('name_task[]')}}" name="name_task[]"
+                                                <input value="{{old('name_task[]')}}" name="name_task[]"required
                                                     class="js-example-basic-single w-90"></input>
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Cantidad objetivo</label>
-                                                <input value="{{old('target_quantity[]')}}"type="number" name="target_quantity[]"
+                                                <input value="{{old('target_quantity[]')}}"type="number" name="target_quantity[]"required
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true"></input>
@@ -667,7 +699,7 @@
 
 
                                                 <label for="exampleInputUsername1"> Ubicación</label>
-                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"required
                                                     value="{{old('task_location[]')}}" name="task_location[]" data-width="100%"
                                                     data-select2-id="1" tabindex="-1" aria-hidden="true">
 
@@ -687,12 +719,12 @@
                                                     (Subir
                                                     archivo)
                                                 </label>
-                                                <textarea value="{{old('task_directions_operator[]')}}" name="task_directions_operator[]"
+                                                <textarea value="{{old('task_directions_operator[]')}}" name="task_directions_operator[]"required
                                                     class="js-example-basic-single w-90"></textarea>
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputEmail1"></label>
-                                                <input class="form-control"  type="file" name="document[]">
+                                                <input class="form-control"  type="file" name="document[]"required>
                                                 @if ($errors->has('file'))
                                                 <span class="text-danger">
                                                     <small
@@ -733,7 +765,7 @@
 
                                     <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1"> Tipo de operario</label>
-                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"required
                                                     value="{{old('type_operator[]')}}" name="type_operator[]" data-width="100%"
                                                     data-select2-id="1" tabindex="-1" aria-hidden="true">
 
@@ -754,14 +786,14 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Cantidad de operarios</label>
-                                                <input value="{{old('operator_number[]')}}" type="number" name="operator_number[]"
+                                                <input value="{{old('operator_number[]')}}" type="number" name="operator_number[]"required
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true"></input>
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Horas hombre total</label>
-                                                <input value="{{old('total_hours[]')}}" name="total_hours[]"type="number"
+                                                <input value="{{old('total_hours[]')}}" name="total_hours[]"type="number"required
                                                     class="js-example-basic-single w-90">
                                             </div>
                                         
@@ -797,7 +829,7 @@
                                         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Nombre del material</label>
                                             <select class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                    id="ubicación" value="{{old('material_name[]')}}" name="material_name[]"
+                                                    id="ubicación" value="{{old('material_name[]')}}" name="material_name[]"required
                                                     data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true">
                                                     <option value="" data-select2-id="3">Seleccione
@@ -814,7 +846,7 @@
                                         </div>
                                         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Cantidad</label>
-                                            <input value="{{old('material_quantity[]')}}" name="material_quantity[]"type="number"
+                                            <input value="{{old('material_quantity[]')}}" name="material_quantity[]"type="number"required
                                                 class="js-example-basic-single w-90 select2-hidden-accessible"
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
@@ -849,7 +881,7 @@
 
                                         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Nombre de la herramienta</label>
-                                            <input value="{{old('subtasks')}}" name="tool_name[]"
+                                            <input value="{{old('subtasks')}}" name="tool_name[]"required
                                                 class="js-example-basic-single w-90 select2-hidden-accessible"
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
@@ -857,7 +889,7 @@
                                         </div>
                                         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Cantidad</label>
-                                            <input value="{{old('tool_quantity[]')}}" name="tool_quantity[]" type="number"
+                                            <input value="{{old('tool_quantity[]')}}" name="tool_quantity[]" type="number"required
                                                 class="js-example-basic-single w-90 select2-hidden-accessible"
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
@@ -866,7 +898,7 @@
                                     </div>
                                     <div class="addings">
                                     <div class="div-btns text-center">
-                                        <button type="button" onclick="myFunction3('` + n + `')"id="` + n + `" class="btn btn">Agregar otro tipo de
+                                        <button type="button" onclick="myFunction3('` + n + `')"id="` + n + `" class="btn btn addmore2">Agregar otro tipo de
                                             herramienta</button>
                                     </div>
                                     </div>
@@ -887,6 +919,7 @@
             material = material + 1;
             tool = tool + 1;
             operator = operator + 1;
+  }
         });
     });
 
@@ -900,7 +933,7 @@
         $(y).closest('.addings5').before(` 
         <div class="aaa"> <hr><div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1"> Tipo de operario</label>
-                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"
+                                                <select class="js-example-basic-single w-90 select2-hidden-accessible"required
                                                     value="{{old('type_operator[]')}}" name="type_operator[]" data-width="100%"
                                                     data-select2-id="1" tabindex="-1" aria-hidden="true">
 
@@ -921,14 +954,14 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Cantidad de operarios</label>
-                                                <input value="{{old('operator_number[]')}}" type="number" name="operator_number[]"
+                                                <input value="{{old('operator_number[]')}}" type="number" name="operator_number[]"required
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                     aria-hidden="true"></input>
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1">Horas hombre total</label>
-                                                <input value="{{old('total_hours[]')}}" name="total_hours[]"type="number"
+                                                <input value="{{old('total_hours[]')}}" name="total_hours[]"type="number"required
                                                     class="js-example-basic-single w-90">
                                             </div>  
                                         <button type="button" onclick="removeop('` + j + `')"id="` + j + `" class="btn btn addmore">Remove Opperator</button>
@@ -953,7 +986,7 @@
         var y = "#" + p1;
         $(y).closest('.addings').before(`<div class="aaa"> <hr> <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Nombre del material</label>
-                                            <input value="{{old('material_name[]')}}" name="material_name[]"
+                                            <input value="{{old('material_name[]')}}" name="material_name[]"required
                                                 class="js-example-basic-single w-90 select2-hidden-accessible"
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
@@ -961,7 +994,7 @@
                                         </div>
                                         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Cantidad</label>
-                                            <input value="{{old('material_quantity[]')}}" name="material_quantity[]"type="number"
+                                            <input value="{{old('material_quantity[]')}}" name="material_quantity[]"type="number"required
                                                 class="js-example-basic-single w-90 select2-hidden-accessible"
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
@@ -992,7 +1025,7 @@
         var y = "#" + p1;
         $(y).closest('.addings').before(`<div class="aaa"> <hr><div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Nombre de la herramienta</label>
-                                            <input value="{{old('tool_name[]')}}" name="tool_name[]"
+                                            <input value="{{old('tool_name[]')}}" name="tool_name[]"required
                                                 class="js-example-basic-single w-90 select2-hidden-accessible"
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
@@ -1000,7 +1033,7 @@
                                         </div>
                                         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Cantidad</label>
-                                            <input value="{{old('tool_quantity[]')}}" name="tool_quantity[]"type="number"
+                                            <input value="{{old('tool_quantity[]')}}" name="tool_quantity[]"type="number"required
                                                 class="js-example-basic-single w-90 select2-hidden-accessible"
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
@@ -1027,7 +1060,7 @@
 
 </script>
 
-<script>
+<!-- <script>
     $("#save_task").click(function (e) {
         e.preventDefault();
         $.ajaxSetup({
@@ -1084,7 +1117,7 @@
 
     });
 
-</script>
+</script> -->
 
 
 
