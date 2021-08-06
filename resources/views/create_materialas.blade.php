@@ -90,6 +90,11 @@
 
                         </select>
                     </div>
+                    <div class="form-group form-inline-custom">
+                        <label for="exampleInputPassword1">Número de serie de herramientas</label>
+                        <input type="number" value="{{old('serial_no')}}" class="form-control"
+                            id="exampleInputPassword1" name="serial_no" autocomplete="off" aria-autocomplete="list">
+                    </div>
                     <ul>
                         <li>Dimensiones
                             <ul>
@@ -148,7 +153,7 @@
 
 
 
-                    
+
 
                     <div class="div-btns text-center">
                         <input type="hidden" name="_token" value={{csrf_token()}}>
