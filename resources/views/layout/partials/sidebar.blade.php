@@ -71,7 +71,7 @@
                      <a href="/new_employee" class="nav-link ">Crear trabajador</a>
                   </li>
                   <li class="nav-item">
-                     <a href="/assign_task" class="nav-link ">Asignar Trabajadores</a>
+                     <a href="add-to-the-system" class="nav-link ">Agregar al sistema</a>
                   </li>
                   <li class="nav-item">
                      <a href="/daily_worker_performance" class="nav-link ">Desempeño diario del trabajador</a>

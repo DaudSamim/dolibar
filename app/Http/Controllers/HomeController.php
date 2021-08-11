@@ -105,47 +105,6 @@ class HomeController extends Controller
         return redirect()->back()->with('info', 'You have Added User Successfully!');
     }
 
-    public function postCreateTask(Request $request)
-    {
-
-        $this->validate($request, [
-            'name' => 'required',
-            'description' => 'required',
-
-        ]);
-
-// dd($request->emergency_number);
-        DB::table('tasks_and_subtasks')->insert([
-            'parent_id' => 0,
-            'task' => $request->name,
-            'description' => $request->description,
-
-        ]);
-
-        return redirect()->back()->with('info', 'You have Added Task Successfully!');
-    }
-
-    public function postCreateSubTask(Request $request)
-    {
-
-        $this->validate($request, [
-            'task_id' => 'required',
-            'subtasks' => 'required',
-            'description' => 'required',
-
-        ]);
-
-// dd($request->emergency_number);
-        DB::table('tasks_and_subtasks')->insert([
-
-            'parent_id' => $request->task_id,
-            'task' => $request->subtasks,
-            'description' => $request->description,
-        ]);
-
-        return redirect()->back()->with('message', 'You have Added SubTask Successfully!');
-    }
-
     public function SearchProject(Request $request)
     {
         $fecha = $request->fecha;
@@ -248,20 +207,27 @@ class HomeController extends Controller
             'employee_id_1' => 'required',
             'date' => 'required',
         ]);
-
-        $employees = $request->get('employee_id_1');
+        $check_date = DB::table('projects')->where('id',$request->project_id)->first();
+        if(($request->date >= $check_date->start_date) && ($request->date <= $check_date->delivery_date)){
+            $employees = $request->get('employee_id_1');
    
-        foreach ($employees as $key => $value) {        
-            DB::table('assignments')->insert([
+            foreach ($employees as $key => $value) {        
+                DB::table('assignments')->insert([
+    
+                    'project_id' => $request->project_id,
+                    'task_id' => $request->task_id,
+                    'date' => $request->date,
+                    'employee_id_1' => $value,
+                ]);
+            }       
+    
+            return redirect()->back()->with('info', 'You have Assigned Task Successfully!');
+        }
+        else{
+            return redirect()->back()->with('alert', 'The assigning date should be between the project started and ended');
+        }
 
-                'project_id' => $request->project_id,
-                'task_id' => $request->task_id,
-                'date' => $request->date,
-                'employee_id_1' => $value,
-            ]);
-        }       
-
-        return redirect()->back()->with('info', 'You have Assigned Task Successfully!');
+        
     }
 
     public function postAddfabrication(Request $request)
@@ -355,6 +321,9 @@ class HomeController extends Controller
                 
 
             ]);
+            $check_date = DB::table('projects')->where('id',$request->projects)->first();
+        if(($request->date >= $check_date->start_date) && ($request->date <= $check_date->delivery_date)){
+
 
         
         if(!isset($request->attendance) && !isset($request->break)){
@@ -389,32 +358,17 @@ class HomeController extends Controller
 
         return redirect()->back()->with('info', 'Successfully Added');
     }
+    else{
+        return redirect()->back()->with('alert', 'This project was unavailable on this date');
+    }
+    }
     
 
     public function postAddProject(Request $request)
     {
-        // $this->validate($request, [
-        //     'project' => 'required',
-        //     'location' => 'required',
-        //     'customer' => 'required',
-        //     'contact_person' => 'required|min:11',
-        //     'engineer_incharge' => 'required',
-        //     'amount' => 'required',
-        //     'start_date' => 'required',
-        //     'delivery_date' => 'required|after:start_date',
-        //     'video' => 'required',
-        //     'product_to_be_manufactured'  => 'required',
-
-
-        // ]);
-        // $yeen = $request->limits[0];
-        // $ex = explode(',', $yeen);
-        // $int = (int)$ex[0];
-        // dd($ex);
         
         if($request->start_date >= $request->delivery_date){
             return redirect()->back()->with('info', 'Start date should be GREATER THAN Delivery date');
-
         }
 
         if ($request->file('video')) {
@@ -431,6 +385,7 @@ class HomeController extends Controller
                 'engineer_incharge' => $request->engineer_incharge,
                 'amount' => $request->amount,
                 'start_date' => $request->start_date,
+                'quantity_m2' => $request->unidad,
                 'delivery_date' => $request->delivery_date,
                 'file' => $filename,
                 'product_manufacturing' => $request->product_to_be_manufactured,
@@ -448,8 +403,162 @@ class HomeController extends Controller
             $z = 0;
             
             for(; $i <= $count;$i++) {
+                
+                if (isset($request->file('document')[$i]) && $request->file('document')[$i]) {
+           
+                    $file = $request->file('document')[$i];
+                    $filename = $file->getClientOriginalName();
+                    $path = public_path() . '/task';
+                    $file->move($path, $filename);
+                    
+                    // dd($request->get('task_location')[$i]);
+                    
+                    DB::table('project_task')->insert([
+                        'task_number' => $c,
+                        'project_id' => $project_id,
+                        'task_name' => $request->get('name_task')[$i],
+                        'location' => $request->get('task_location')[$i],
+                        'directions' => $request->get('task_directions_operator')[$i],
+                        'target_quantity' => $request->get('target_quantity')[$i],
+                        'file' => $filename,
+         
+                    ]);
+                    
+                    $task_id = DB::table('project_task')->orderby('id', 'desc')->pluck('id')->first();
+                    $yeen = $request->limits[$i];
+                    $ex = explode(',', $yeen[0]);
+                    $int = (int)$ex[0];
 
-                if ($request->file('document')[$i]) {
+                    
+
+                    for(;$j <= ($int - 1); $j++) { 
+                        DB::table('project_operator')->insert([
+                            'operator_type' => $request->get('type_operator')[$j],
+                            'total_hour' => $request->get('total_hours')[$j],
+                            'number_of_operator' => $request->get('operator_number')[$j],
+                            'task_id' => $task_id,
+                            'project_id' => $project_id,
+                        ]);
+                    }
+                    $int = (int)$ex[1];
+                    for(;$k <= ($int - 1); $k++) { 
+                        $m_id = $request->get('material_name')[$k];
+                        $change = DB::table('materials')->where('id',$m_id)->first();
+                        if(isset($change)){
+                            DB::table('materials')->where('id',$m_id)->update([
+                                'quantity' => $change->quantity - $request->get('material_quantity')[$k],    
+                            ]);
+                        }
+                        DB::table('project_material')->insert([
+                            'project_id' => $project_id,
+                            'material_id' => $request->get('material_name')[$k],
+                            'quantity' => $request->get('material_quantity')[$k],
+                            'task_id' => $task_id,
+                        ]);
+                    }
+                    $int = (int)$ex[2];
+                    for(;$z <= ($int - 1); $z++) { 
+                        DB::table('project_tool')->insert([
+                            'tool_name' => $request->get('tool_name')[$z],
+                            'quantity' => $request->get('tool_quantity')[$z],
+                            'task_id' => $task_id,
+                            'project_id' => $project_id,
+                        ]);
+                    }
+                }
+
+                else { 
+                    DB::table('project_task')->insert([
+                        'task_number' => $c,
+                        'project_id' => $project_id,
+                        'task_name' => $request->get('name_task')[$i],
+                        'location' => $request->get('task_location')[$i],
+                        'directions' => $request->get('task_directions_operator')[$i],
+                        'target_quantity' => $request->get('target_quantity')[$i],
+         
+                    ]);
+
+                    
+                    $task_id = DB::table('project_task')->orderby('id', 'desc')->pluck('id')->first();
+                    $yeen = $request->limits[$i];
+                    $ex = explode(',', $yeen[0]);
+                    $int = (int)$ex[0];
+
+                    
+
+                    for(;$j <= ($int - 1); $j++) { 
+                        DB::table('project_operator')->insert([
+                            'operator_type' => $request->get('type_operator')[$j],
+                            'total_hour' => $request->get('total_hours')[$j],
+                            'number_of_operator' => $request->get('operator_number')[$j],
+                            'task_id' => $task_id,
+                            'project_id' => $project_id,
+                        ]);
+                    }
+                    $int = (int)$ex[1];
+                    for(;$k <= ($int - 1); $k++) { 
+                        $m_id = $request->get('material_name')[$k];
+                        $change = DB::table('materials')->where('id',$m_id)->first();
+                        if(isset($change)){
+                            DB::table('materials')->where('id',$m_id)->update([
+                                'quantity' => $change->quantity - $request->get('material_quantity')[$k],    
+                            ]);
+                        }
+                        DB::table('project_material')->insert([
+                            'project_id' => $project_id,
+                            'material_id' => $request->get('material_name')[$k],
+                            'quantity' => $request->get('material_quantity')[$k],
+                            'task_id' => $task_id,
+                        ]);
+                    }
+                    $int = (int)$ex[2];
+                    for(;$z <= ($int - 1); $z++) { 
+                        DB::table('project_tool')->insert([
+                            'tool_name' => $request->get('tool_name')[$z],
+                            'quantity' => $request->get('tool_quantity')[$z],
+                            'task_id' => $task_id,
+                            'project_id' => $project_id,
+                        ]);
+                    }
+                }
+                $c = $c + 1;
+    
+            };
+            
+
+
+
+            return redirect()->back()->with('info', 'You have Added Project Successfully!');
+
+
+        }
+        else{
+            DB::table('projects')->insert([
+                'project' => $request->project,
+                'location' => $request->location,
+                'customer' => $request->customer,
+                'contact_person' => $request->contact_person,
+                'engineer_incharge' => $request->engineer_incharge,
+                'amount' => $request->amount,
+                'start_date' => $request->start_date,
+                'delivery_date' => $request->delivery_date,
+                'product_manufacturing' => $request->product_to_be_manufactured,
+ 
+            ]);
+            $count_tasks = count($request->limits);
+            $count = $count_tasks - 1;
+
+            // $items = $request->get('name_task');
+            $project_id = DB::table('projects')->orderby('id', 'desc')->pluck('id')->first();
+            $i = 0;
+            $c = 1;
+            $j = 0;
+            $k = 0;
+            $z = 0;
+            
+            for(; $i <= $count;$i++) {
+
+                if (isset($request->file('document')[$i]) && ($request->file('document')[$i])) {
                     $file = $request->file('document')[$i];
                     $filename = $file->getClientOriginalName();
                     $path = public_path() . '/task';
@@ -513,7 +622,58 @@ class HomeController extends Controller
                 }
 
                 else { 
-                    dd($filename[$i]);
+                    DB::table('project_task')->insert([
+                        'task_number' => $c,
+                        'project_id' => $project_id,
+                        'task_name' => $request->get('name_task')[$i],
+                        'location' => $request->get('task_location')[$i],
+                        'directions' => $request->get('task_directions_operator')[$i],
+                        'target_quantity' => $request->get('target_quantity')[$i],
+         
+                    ]);
+
+                    
+                    $task_id = DB::table('project_task')->orderby('id', 'desc')->pluck('id')->first();
+                    $yeen = $request->limits[$i];
+                    $ex = explode(',', $yeen[0]);
+                    $int = (int)$ex[0];
+
+                    
+
+                    for(;$j <= ($int - 1); $j++) { 
+                        DB::table('project_operator')->insert([
+                            'operator_type' => $request->get('type_operator')[$j],
+                            'total_hour' => $request->get('total_hours')[$j],
+                            'number_of_operator' => $request->get('operator_number')[$j],
+                            'task_id' => $task_id,
+                            'project_id' => $project_id,
+                        ]);
+                    }
+                    $int = (int)$ex[1];
+                    for(;$k <= ($int - 1); $k++) { 
+                        $m_id = $request->get('material_name')[$k];
+                        $change = DB::table('materials')->where('id',$m_id)->first();
+                        if(isset($change)){
+                            DB::table('materials')->where('id',$m_id)->update([
+                                'quantity' => $change->quantity - $request->get('material_quantity')[$k],    
+                            ]);
+                        }
+                        DB::table('project_material')->insert([
+                            'project_id' => $project_id,
+                            'material_id' => $request->get('material_name')[$k],
+                            'quantity' => $request->get('material_quantity')[$k],
+                            'task_id' => $task_id,
+                        ]);
+                    }
+                    $int = (int)$ex[2];
+                    for(;$z <= ($int - 1); $z++) { 
+                        DB::table('project_tool')->insert([
+                            'tool_name' => $request->get('tool_name')[$z],
+                            'quantity' => $request->get('tool_quantity')[$z],
+                            'task_id' => $task_id,
+                            'project_id' => $project_id,
+                        ]);
+                    }
                 }
                 $c = $c + 1;
     
@@ -523,9 +683,8 @@ class HomeController extends Controller
 
 
             return redirect()->back()->with('info', 'You have Added Project Successfully!');
-
-
-        };
+        }
+        ;
 
         return redirect()->back()->with('info', 'Something Wrong');
 
@@ -606,7 +765,8 @@ class HomeController extends Controller
     public function daily_worker_performance()
     {
         $employees = DB::table('employees')->orderby('name','asc')->get();
-        return view('daily_worker_performance', compact('employees'));
+        $projects = DB::table('projects')->get();
+        return view('daily_worker_performance', compact('employees','projects'));
     }
 
     

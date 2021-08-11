@@ -859,6 +859,12 @@ Route::middleware('auth:web')->group(function ()
 
         return view('kardex');
     });
+    Route::get('/add-to-the-system', function ()
+    {
+        
+
+        return view('add_to_the_system');
+    });
 
 
     

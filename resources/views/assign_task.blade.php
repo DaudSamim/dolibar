@@ -10,7 +10,7 @@
 
     .form-inline-custom label {
         width: 35% !important;
-        a
+        
     }
 
     select {
@@ -34,6 +34,9 @@
     <div class="col-md-12">
         @if(Session::has('info'))
         <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('info') }}</p>
+        @endif
+        @if(Session::has('alert'))
+        <p class="alert {{ Session::get('alert-class', 'alert-danger') }}">{{ Session::get('alert') }}</p>
         @endif
         @if ($errors->any())
         @foreach ($errors->all() as $error)
@@ -142,7 +145,7 @@
 
     function removeop(yes) {
         var o = "#" + yes; 
-        $(o).closest('.aaa').addClass('d-none');
+        $(o).closest('.aaa').remove();
         c = c - 1;
     }
 

@@ -52,9 +52,8 @@
                                 <label>Status de la obra</label>
                                     <select class="js-example-basic-single w-100 select2-hidden-accessible" name="work" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
                                           <option @if(isset($work)) value="{{$work}}" @endif>@if(isset($work)) @if($work==0) Proyecto por iniciar @endif @if($work==1) Proyecto abierto @endif @if($work==2) Proyecto cerrado @endif @else Select @endif</option>
-                                          <option value="0"> Proyecto por iniciar</option>   
-                                          <option value="1" >Proyecto abierto</option>
-                                          <option value="2" >Proyecto cerrado</option>
+                                          <option value="1" >Activo</option>
+                                          <option value="2" >Delivered</option>
                                     </select>
                                 </div>
                                     <div class="div-btns text-center">

@@ -58,6 +58,12 @@
                             name="location" placeholder="">
                     </div>
                     <div class="form-group form-inline-custom">
+                        <label for="exampleInputEmail1">Unidad de cantidad / m2</label>
+                        <input type="number"required value="{{old('unidad')}}" class="form-control" id="exampleInputEmail1"
+                            name="unidad" placeholder="">
+                    </div>
+                    
+                    <div class="form-group form-inline-custom">
                         <label for="exampleInputPassword1">Client</label>
 
                         <select class="js-example-basic-single w-90 select2-hidden-accessible"required id="ubicación"
@@ -123,7 +129,7 @@
                     </div>
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputEmail1">Project File</label>
-                        <input class="form-control" type="file"required name="video">
+                        <input class="form-control" type="file" name="video">
                         @if ($errors->has('video'))
                         <span class="text-danger">
                             <small class="font-weight-bold">{{ $errors->first('video') }}</small>
@@ -195,7 +201,7 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputEmail1"></label>
-                                                <input class="form-control" id="filer" type="file" name="document[]"required>
+                                                <input class="form-control" id="filer" type="file" name="document[]">
                                                 @if ($errors->has('file'))
                                                 <span class="text-danger">
                                                     <small class="font-weight-bold">{{ $errors->first('file') }}</small>
@@ -404,31 +410,7 @@
     </div>
 </div>
 
-    <!-- <script>
-     $("#addmore3").click(function () {
-    let text;
-  let person = prompt("", "You wont be able to add more operators, materials and tools in the previous tasks");
-  if (person == null || person == "") {
-    text = "User cancelled the prompt.";
-  } else {
-    $('.addmore2').remove();
-        $('.addmore').remove();
-        $('.addmore1').remove();
-  }
-});
-</script> -->
-
-<!-- <script>
-    $("#addmore3").click(function () {
-        $('.addmore2').remove();
-        $('.addmore').remove();
-        $('.addmore1').remove();
-        alert("You wont be able to add more operators, materials and tools in the previous tasks");
-
-        // document.getElementsByClassName("addmore2").remove();
-        
-    });
-</script> -->
+  
 <script>
     var tool = 1;
     $("#save_project").click(function () {
@@ -446,10 +428,16 @@
 <script>
     var tool = 1;
     var q = 7000;
+    
     $("#addmore2").click(function () {
 
 
         $("#addings2").append(`<div class="aaa"> <hr>
+        <div style="float:right!important">
+            <button type="button" onclick="removetooling('` + q + `')"id="` + q + `" class="btn btn addmore"><h5 style="color:red">X</h5></button>
+            </div>
+            <br>
+            <br>
         <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Nombre de la herramienta</label>
                                             <input value="{{old('tool_name[]')}}" name="tool_name[]"required
@@ -465,7 +453,6 @@
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
                                         </div> 
-                                        <button type="button" onclick="removeop('` + q + `')"id="` + q + `" class="btn btn addmore">Remove Tool</button>
                                             </div>
                               `);
         q = q + 1;
@@ -534,7 +521,6 @@
                 operator = operator + 1;
             } else if (b > 0) {
                 w = "#" + z;
-                $(w).addClass('d-none');
 
                 $(this).closest('.addings').before(`<div class="aaa"><hr>
             <div style="float:right!important">
@@ -599,6 +585,11 @@
         $('.addmore1').on('click', function () {
 
             $(this).closest('.addings1').before(`<div class="aaa"><hr><br>
+            <div style="float:right!important">
+            <button type="button" onclick="removematerial('` + t + `')"id="` + t + `" class="btn btn addmore"><h5 style="color:red">X</h5></button>
+            </div>
+            <br>
+            <br>
     <div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Nombre del material</label>
                                             <select class="js-example-basic-single w-90 select2-hidden-accessible"
@@ -623,7 +614,6 @@
                                                     class="js-example-basic-single w-90 select2-hidden-accessible"
                                                     id="project" data-width="100%" data-select2-id="1"
                                                     tabindex="-1"></input>
-                                        <button type="button" onclick="removeop('` + t + `')"id="` + t + `" class="btn btn addmore">Remove Material</button>
                                             </div>
                                         
                                     `);
@@ -667,8 +657,9 @@
     
     <div class="col-lg-10 ">
                         <ul>
-                            <h4>Tarea ` + c + `</h4> <button type="button"  onclick="yeen('` + c + `')"id="` + c + `" class="btn btn addmore uoo">Remove</button>
-                                        
+                            <h4>Tarea ` + c + `</h4> <button  type="button" onclick="yeen('` + c + `')"id="` + c + `" class="btn btn addmore"><h5 style="color:red">X</h5></button>
+                            
+                  
                         </ul>
                     </div>
                     <div class="col-2"></div>
@@ -724,7 +715,7 @@
                                             </div>
                                             <div class="form-group form-inline-custom">
                                                 <label for="exampleInputEmail1"></label>
-                                                <input class="form-control"  type="file" name="document[]"required>
+                                                <input class="form-control"  type="file" name="document[]">
                                                 @if ($errors->has('file'))
                                                 <span class="text-danger">
                                                     <small
@@ -931,7 +922,13 @@
 
         var y = "#" + p1;
         $(y).closest('.addings5').before(` 
-        <div class="aaa"> <hr><div class="form-group form-inline-custom">
+        <div class="aaa"> <hr>
+        <div style="float:right!important">
+            <button type="button" onclick="removeop('` + j + `')"id="` + j + `" class="btn btn addmore"><h5 style="color:red">X</h5></button>
+            </div>
+            <br>
+            <br>
+        <div class="form-group form-inline-custom">
                                                 <label for="exampleInputUsername1"> Tipo de operario</label>
                                                 <select class="js-example-basic-single w-90 select2-hidden-accessible"required
                                                     value="{{old('type_operator[]')}}" name="type_operator[]" data-width="100%"
@@ -964,7 +961,6 @@
                                                 <input value="{{old('total_hours[]')}}" name="total_hours[]"type="number"required
                                                     class="js-example-basic-single w-90">
                                             </div>  
-                                        <button type="button" onclick="removeop('` + j + `')"id="` + j + `" class="btn btn addmore">Remove Opperator</button>
                                             </div>`);
         k = k + 1;
         j = j + 1;
@@ -984,12 +980,27 @@
         // var closest = element.closest(p1);
 
         var y = "#" + p1;
-        $(y).closest('.addings').before(`<div class="aaa"> <hr> <div class="form-group form-inline-custom">
-                                            <label for="exampleInputUsername1">Nombre del material</label>
-                                            <input value="{{old('material_name[]')}}" name="material_name[]"required
-                                                class="js-example-basic-single w-90 select2-hidden-accessible"
-                                                id="project" data-width="100%" data-select2-id="1" tabindex="-1"
-                                                aria-hidden="true"></input>
+        $(y).closest('.addings').before(`<div class="aaa"> <hr>
+        <div style="float:right!important">
+            <button type="button" onclick="removemat('` + m + `')"id="` + m + `" class="btn btn addmore"><h5 style="color:red">X</h5></button>
+            </div>
+            <br>
+            <br> <div class="form-group form-inline-custom">
+            <label for="exampleInputUsername1">Nombre del material</label>
+        <select class="js-example-basic-single w-90 select2-hidden-accessible"required
+                                                    id="ubicación" value="{{old('material_name[]')}}" name="material_name[]"
+                                                    data-width="100%" data-select2-id="1" tabindex="-1"
+                                                    aria-hidden="true">
+                                                    <option value="" data-select2-id="3">Seleccione
+                                                    </option>
+                                                    @foreach($materials as $material)
+                                                    <option value="{{$material->id}}" data-select2-id="3">
+                                                        {{$material->name}}
+                                                    </option>
+                                                    @endforeach
+
+
+                                                </select>
 
                                         </div>
                                         <div class="form-group form-inline-custom">
@@ -999,7 +1010,6 @@
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
                                         </div>
-                                        <button type="button" onclick="removemat('` + m + `')"id="` + m + `" class="btn btn addmore">Remove Material</button>
                                             </div>
                                         </div>
         `);
@@ -1015,7 +1025,8 @@
 
         var o = "#" + yes;
         // var closest = element.closest(p1);
-        $(o).closest('.aaa').addClass('d-none');
+        $(o).closest('.aaa').remove();
+        material = material - 1;
     }
 
 
@@ -1023,7 +1034,12 @@
         // var closest = element.closest(p1);
 
         var y = "#" + p1;
-        $(y).closest('.addings').before(`<div class="aaa"> <hr><div class="form-group form-inline-custom">
+        $(y).closest('.addings').before(`<div class="aaa"> <hr>
+        <div style="float:right!important">
+            <button type="button" onclick="removetool('` + x + `')"id="` + x + `" class="btn btn addmore"><h5 style="color:red">X</h5></button>
+            </div>
+            <br>
+            <br><div class="form-group form-inline-custom">
                                             <label for="exampleInputUsername1">Nombre de la herramienta</label>
                                             <input value="{{old('tool_name[]')}}" name="tool_name[]"required
                                                 class="js-example-basic-single w-90 select2-hidden-accessible"
@@ -1038,7 +1054,6 @@
                                                 id="project" data-width="100%" data-select2-id="1" tabindex="-1"
                                                 aria-hidden="true"></input>
                                         </div>
-                                        <button type="button" onclick="removetool('` + x + `')"id="` + x + `" class="btn btn addmore">Remove Tool</button>
                                             </div>
                                         </div>
 
@@ -1055,69 +1070,13 @@
 
         var o = "#" + yes;
         // var closest = element.closest(p1);
-        $(o).closest('.aaa').addClass('d-none');
+        $(o).closest('.aaa').remove();
+        tool = tool - 1;
     }
 
 </script>
 
-<!-- <script>
-    $("#save_task").click(function (e) {
-        e.preventDefault();
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')
-            }
 
-
-        });
-
-        $.ajax({
-            url: "save_tasks",
-            type: "POST",
-            data: {
-                nombre: $('#nombre').val(),
-                cantidad: $('#cantidad').val(),
-                indicaciones: $('#indicaciones').val(),
-                ubicación: $('#ubicación').val(),
-                filer: $('#filer').val(),
-                type: $('#type').val(),
-                operators: $('#nooperators').val(),
-                material_name: $('#name_material').val(),
-                tool_name: $('#name_tool').val(),
-
-
-
-            },
-
-            success: function (data) {
-                if (data) {
-                    if (data == 1) {
-                        document.getElementById("yeen").innerHTML = "Tarea Nombre Required";
-                        $("#yeen").addClass('w3-red');
-                        $("#yeen").removeClass('w3-green');
-
-                        console.log('hiya');
-                    } else {
-                        document.getElementById("yeen").innerHTML = data;
-                        $("#yeen").addClass('w3-green');
-                        $("#yeen").removeClass('w3-red');
-                        console.log('hi');
-                    }
-                } else {
-                    document.getElementById("yeen").innerHTML =
-                        "Something Wrong";
-                }
-
-            },
-            error: function () {
-                document.getElementById("projects").innerHTML =
-                    "<option>No Projects Available</option>";
-            }
-        });
-
-    });
-
-</script> -->
 
 
 
@@ -1128,7 +1087,11 @@
         var r = "#" + yes;
         c = c - 1;
         // var closest = element.closest(p1);
-        $(r).closest('.yoo').addClass('d-none');
+        $(r).closest('.yoo').remove();
+        material = material - 1;
+        tool = tool - 1;
+        operator = operator -1;
+        counter = counter - 1;
     }
 
 </script>
@@ -1139,10 +1102,31 @@
         var o = "#" + yes;
         var g = "#" + (yes - 1);
         // var closest = element.closest(p1);
-        $(o).closest('.aaa').addClass('d-none');
+        $(o).closest('.aaa').remove();
         $(g).removeClass('d-none');
+        operator = operator - 1;
 
     }
+    function removematerial(yes) {
+
+var o = "#" + yes;
+var g = "#" + (yes - 1);
+// var closest = element.closest(p1);
+$(o).closest('.aaa').remove();
+$(g).removeClass('d-none');
+material = material - 1;
+
+}
+function removetooling(yes) {
+
+var o = "#" + yes;
+var g = "#" + (yes - 1);
+// var closest = element.closest(p1);
+$(o).closest('.aaa').remove();
+$(g).removeClass('d-none');
+tool = tool - 1;
+
+}
 
 </script>
 

@@ -49,6 +49,9 @@
         @if(Session::has('info'))
         <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('info') }}</p>
         @endif
+        @if(Session::has('alert'))
+        <p class="alert {{ Session::get('alert-class', 'alert-danger') }}">{{ Session::get('alert') }}</p>
+        @endif
         @if ($errors->any())
         @foreach ($errors->all() as $error)
         <p class="alert {{ Session::get('alert-class', 'alert-danger') }}">{{ $error }}</p>
@@ -57,28 +60,31 @@
         <div class="card">
             <div class="card-body">
                 <h6 class="card-title">Desempeño diario del trabajador</h6>
+                <button style="float:right!important" type="button" class="btn btn-danger" data-toggle="modal"
+                    data-target="#exampleModal">
+                    Asignar Trabajadores
+                </button>
                 <form class="forms-sample" action="/daily_worker_performance" method="post"
                     enctype='multipart/form-data'>
                     <div class=row>
                         <div class="col-8"></div>
                         <div class="col-4">
-                        <div class="form-check">
-                                <input class="form-check-input"checked  type="checkbox"  id="flexCheckChecked3"
+                            <div class="form-check">
+                                <input class="form-check-input" checked type="checkbox" id="flexCheckChecked3"
                                     name="present">
                                 <label class="form-check-label" for="flexCheckChecked">
                                     Attended
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input"  type="checkbox"  id="flexCheckChecked1"
+                                <input class="form-check-input" type="checkbox" id="flexCheckChecked1"
                                     name="attendance">
                                 <label class="form-check-label" for="flexCheckChecked">
                                     Did not attend
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox"  id="flexCheckChecked2"
-                                    name="break">
+                                <input class="form-check-input" type="checkbox" id="flexCheckChecked2" name="break">
                                 <label class="form-check-label" for="flexCheckChecked">
                                     Paid break
                                 </label>
@@ -90,8 +96,10 @@
                         <select style="width: 75% !important" value="{{old('employee_id')}}" id="name"
                             class="js-example-basic-single w-100 select2-hidden-accessible" name="employee_id"
                             data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                            <option value="" data-select2-id="3">Select</option>
 
                             @foreach($employees as $row)
+
                             <option value="{{$row->id}}" data-select2-id="3">{{$row->name}}</option>
                             @endforeach
 
@@ -183,7 +191,90 @@
         </div>
     </div>
 </div>
+<!-- Button trigger modal -->
 
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <form class="forms-sample" action="/assign_task" method="post">
+                    <div class="form-group form-inline-custom">
+                        @php
+                       
+                        $employees = DB::table('employees')->get();
+                       
+                        @endphp
+                        <label for="exampleInputUsername1">Seleccionar Proyecto Activo </label>
+                        <select value="{{old('project_id')}}"
+                            class="js-example-basic-single w-100 select2-hidden-accessible" id="project"
+                            name="project_id" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                            <option value="" data-select2-id="3">Select</option>
+                            @foreach($projects as $project)
+                            <option value="{{$project->id}}" data-select2-id="3">{{$project->project}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group form-inline-custom">
+                        <label for="exampleInputUsername1">Seleccionar Tarea Pendiente </label>
+                        <select value="{{old('task_id')}}"
+                            class="js-example-basic-single w-100 select2-hidden-accessible" name="task_id" id="task_id" 
+                            data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                           
+                        </select>
+                    </div>
+
+                    <div class="form-group form-inline-custom">
+                        <label for="exampleInputUsername1">Seleccionar Fecha</label>
+                        <input type="date" value="{{old('date')}}" class="form-control" id="exampleInputPassword1"
+                            name="date" autocomplete="off" placeholder="" aria-autocomplete="list">
+                    </div>
+
+                    <div class="form-group form-inline-custom">
+                        <label for="exampleInputUsername1">Nombre del operario 1</label>
+                        <select value="{{old('employee_id_1[]')}}"required
+                            class="js-example-basic-single w-100 select2-hidden-accessible" name="employee_id_1[]"
+                            data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                            <option value="" data-select2-id="3">Select</option>
+                            @foreach($employees as $employee)
+                            <option value="{{$employee->id}}" data-select2-id="3">{{$employee->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
+                    <!-- <div class="form-group form-inline-custom">
+                        <label for="exampleInputUsername1">Agregar Operario Adicional </label>
+                        <input type="text" name="employee_id_4" class="form-control">
+                    </div> -->
+
+                    <div class="addings">
+                        <div class="div-btns text-center">
+                            <button type="button" class="btn btn addmore">Agregar Operario Adicional</button>
+                        </div>
+                    </div>
+
+                    <div class="div-btns text-center">
+                        <input type="hidden" name="_token" value={{csrf_token()}}>
+                        
+                    </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-primary">Save changes</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 <script>
     $(document).ready(function () {
 
@@ -264,22 +355,22 @@
 
 </script>
 <script>
-
     function myFunction() {
 
-        document.getElementById("removeclass").innerHTML = "" ;
-    //   document.getElementById("fname").value = document.getElementById("fname").value.toUpperCase();
+        document.getElementById("removeclass").innerHTML = "";
+        //   document.getElementById("fname").value = document.getElementById("fname").value.toUpperCase();
     };
 
     function myFunction2() {
 
-    //   document.getElementById("fname").value = document.getElementById("fname").value.toUpperCase();
+        //   document.getElementById("fname").value = document.getElementById("fname").value.toUpperCase();
     };
+
 </script>
 <script>
-    $('#flexCheckChecked3').click(function() {
-    if($(this).is(':checked')){
-    document.getElementById("removeclass").innerHTML =  `<div class="form-group form-inline-custom">
+    $('#flexCheckChecked3').click(function () {
+        if ($(this).is(':checked')) {
+            document.getElementById("removeclass").innerHTML = `<div class="form-group form-inline-custom">
                             <label for="exampleInputPassword1">Requerimiento de la tarea</label>
                             <input type="text" value="{{old('requirements')}}" class="form-control"
                                 id="exampleInputPassword1" name="requirements" autocomplete="off" placeholder=""
@@ -331,27 +422,26 @@
                             <input type="text" class="form-control" value="{{old('commentary')}}"
                                 id="exampleInputPassword1" name="commentary" autocomplete="off" placeholder=""
                                 aria-autocomplete="list">
-                        </div>` ;
-    document.getElementById("flexCheckChecked2").checked = false;
-    document.getElementById("flexCheckChecked1").checked = false; 
-    
+                        </div>`;
+            document.getElementById("flexCheckChecked2").checked = false;
+            document.getElementById("flexCheckChecked1").checked = false;
 
-   }
 
-    
-});
+        }
+
+
+    });
+
 </script>
 <script>
-    $('#flexCheckChecked1').click(function() {
-    if($(this).is(':checked')){
-    document.getElementById("removeclass").innerHTML = "" ;
-    document.getElementById("flexCheckChecked2").checked = false;
-    document.getElementById("flexCheckChecked3").checked = false; 
+    $('#flexCheckChecked1').click(function () {
+        if ($(this).is(':checked')) {
+            document.getElementById("removeclass").innerHTML = "";
+            document.getElementById("flexCheckChecked2").checked = false;
+            document.getElementById("flexCheckChecked3").checked = false;
 
-   }
-
-    else
-    document.getElementById("removeclass").innerHTML = `<div class="form-group form-inline-custom">
+        } else
+            document.getElementById("removeclass").innerHTML = `<div class="form-group form-inline-custom">
                             <label for="exampleInputPassword1">Requerimiento de la tarea</label>
                             <input type="text" value="{{old('requirements')}}" class="form-control"
                                 id="exampleInputPassword1" name="requirements" autocomplete="off" placeholder=""
@@ -403,22 +493,21 @@
                             <input type="text" class="form-control" value="{{old('commentary')}}"
                                 id="exampleInputPassword1" name="commentary" autocomplete="off" placeholder=""
                                 aria-autocomplete="list">
-                        </div>` ;
-});
+                        </div>`;
+    });
+
 </script>
 
 
 <script>
-$('#flexCheckChecked2').click(function() {
-    if($(this).is(':checked')){
-    document.getElementById("removeclass").innerHTML = "" ;
-    document.getElementById("flexCheckChecked1").checked = false; 
-    document.getElementById("flexCheckChecked3").checked = false; 
+    $('#flexCheckChecked2').click(function () {
+        if ($(this).is(':checked')) {
+            document.getElementById("removeclass").innerHTML = "";
+            document.getElementById("flexCheckChecked1").checked = false;
+            document.getElementById("flexCheckChecked3").checked = false;
 
-   }
-
-    else
-    document.getElementById("removeclass").innerHTML = `<div class="form-group form-inline-custom">
+        } else
+            document.getElementById("removeclass").innerHTML = `<div class="form-group form-inline-custom">
                             <label for="exampleInputPassword1">Requerimiento de la tarea</label>
                             <input type="text" value="{{old('requirements')}}" class="form-control"
                                 id="exampleInputPassword1" name="requirements" autocomplete="off" placeholder=""
@@ -470,8 +559,80 @@ $('#flexCheckChecked2').click(function() {
                             <input type="text" class="form-control" value="{{old('commentary')}}"
                                 id="exampleInputPassword1" name="commentary" autocomplete="off" placeholder=""
                                 aria-autocomplete="list">
-                        </div>` ;
-});
+                        </div>`;
+    });
+
 </script>
 
+
+<script>
+    var c = 1;
+    var q = 2000;
+    $(document).ready(function(){
+  $('.addmore').on('click', function(){
+     c = c + 1;
+  
+    $(this).closest('.addings').before(`<div class="aaa">
+    <div class="form-group form-inline-custom">
+                        <label for="exampleInputUsername1">Nombre del operario `+ c + `</label>
+                        <select value="{{old('employee_id_1[]')}}"required
+                            class="js-example-basic-single w-100 select2-hidden-accessible" name="employee_id_1[]"
+                            data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                            <option value="" data-select2-id="3">Select</option>
+                            @foreach($employees as $employee)
+                            <option value="{{$employee->id}}" data-select2-id="3">{{$employee->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="button" onclick="removeop('`+ q +`')"id="`+ q +`" class="btn btn addmore">Remove Operator</button>
+                                            </div>
+                                        
+                                    `);
+                q = q + 1;
+  });
+ });
+
+</script>
+
+<script>
+
+    function removeop(yes) {
+        var o = "#" + yes; 
+        $(o).closest('.aaa').remove();
+        c = c - 1;
+    }
+
+    $("#project").change(function(e){
+
+       e.preventDefault();
+        $.ajaxSetup({
+                 headers:{
+                     'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')
+                 }
+                 
+
+             });
+                
+        $.ajax({
+            url: "get_task_list",
+            type:"POST",
+            data: {
+                    project: $('#project').val(),
+                  },
+            
+            success:function(data){
+                document.getElementById("task_id").innerHTML = data;
+                
+            },error:function(){ 
+                document.getElementById("task_id").innerHTML = "<option>No Tasks Available</option>";    
+            }
+        });
+
+      });
+
+    
+
+
+
+</script>
 @endsection
