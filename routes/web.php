@@ -25,7 +25,9 @@ Route::middleware('auth:web')->group(function ()
     Route::get('/home', function ()
     {
         $times = DB::table('times')->first();
-        return view('home', compact('times'));
+        $date = Carbon::now();
+        $projects = DB::table('projects')->where('delivery_date','>=',$date)->get();
+        return view('home', compact('times','projects','date'));
     });
     Route::get('/profile/{id}', function ($id)
     {
@@ -101,20 +103,21 @@ Route::middleware('auth:web')->group(function ()
             foreach($workers as $value){
                 $labour += DB::table('employees')->where('id',$value->employee_id)->pluck('salary')->first() * $value->working_time;
             }
-            $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
             $total_tasks = DB::table('daily_work_performance')->where('project_id',$row->id)->count();
             $total_sum_material = DB::table('project_material')->where('project_id',$row->id)->get();
             $counting = 0;
             foreach($total_sum_material as $sum){
                 $price = DB::table('materials')->where('id',$sum->material_id)->first();
-                $counting = $counting + ($price->per_unit_price * $sum->quantity);
+                if(isset($price)){
+                    $counting = $counting + ($price->per_unit_price * $sum->quantity);
+                }
+
 
             }
             
 
             $row->progress = $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->sum('working_time') / DB::table('project_operator')->where('project_id',$row->id)->sum('total_hour') * 100;
             $row->labour_cost = $labour;
-            $row->current_task = $recent_task;
             $row->material_cost = $counting;
             $engineer = DB::table('employees')->where('id',$row->engineer_incharge)->pluck('name')->first();
             $row->engineers = $engineer;
@@ -123,8 +126,8 @@ Route::middleware('auth:web')->group(function ()
             
         }
         
-
-        return view('search_project', compact("projects"));
+            $proyecto = DB::table('projects')->get();
+        return view('search_project', compact("projects",'proyecto'));
     });
     Route::post('/search_project', '\App\Http\Controllers\HomeController@SearchProject');
     
@@ -865,6 +868,28 @@ Route::middleware('auth:web')->group(function ()
 
         return view('add_to_the_system');
     });
+    Route::get('/add-material-project/{id}', function ($id)
+    {
+        $project = DB::table('projects')->where('id',$id)->first();
+        $tasks =DB::table('project_task')->where('project_id',$id)->get();
+        $materials =DB::table('materials')->get();
+
+        
+        return view('materials_add' ,compact('project','materials','tasks'));
+    });
+    Route::get('/product-to-be-manufactured', '\App\Http\Controllers\HomeController@getproduct_manufactured');
+    Route::post('/product-to-be-manufactured', '\App\Http\Controllers\HomeController@search_product_manufacturing');
+    Route::post('/add_another_material', '\App\Http\Controllers\HomeController@add_another_material');
+
+    Route::get('/edit-the-material/{id}', function ($id)
+    {
+        $project = DB::table('projects')->where('id',$id)->first();
+
+        
+        return view('edit_the_materials' ,compact('project'));
+    });
+    Route::post('/edit_another_material', '\App\Http\Controllers\HomeController@edit_another_material');
+
 
 
     

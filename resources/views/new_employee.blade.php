@@ -49,7 +49,7 @@
 										<input type="text"value="{{old('address')}}"class="form-control" id="exampleInputPassword1"name="address" autocomplete="off" placeholder="" aria-autocomplete="list">
 									</div>
                                     <div class="form-group form-inline-custom">
-										<label for="exampleInputPassword1">Privincia</label>
+										<label for="exampleInputPassword1">Provincia</label>
 										<input type="text"value="{{old('province')}}"class="form-control" id="exampleInputPassword1"name="province" autocomplete="off" placeholder="" aria-autocomplete="list">
 									</div>
                                     <div class="form-group form-inline-custom">
@@ -71,7 +71,7 @@
 									<div class="form-group form-inline-custom">
                                     <label for="exampleInputPassword1">Tipo de cuenta</label>
 									<select class="js-example-basic-single w-100 select2-hidden-accessible" value="{{old('bank')}}"name="account_type" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
-                              <option value="cuenta de ahorros" data-select2-id="3">cuenta de ahorros</option>
+                              <option value="" data-select2-id="3">Select</option>
                                  <option value="cuenta corriente" data-select2-id="12">cuenta corriente</option>
                                  <option value="cuenta de ahorros" data-select2-id="13">cuenta de ahorros</option>
                                  <option value="Cuenta suelda" data-select2-id="14">Cuenta suelda</option>
@@ -83,8 +83,7 @@
 
 									<select class="js-example-basic-single w-100 select2-hidden-accessible" value="{{old('bank')}}"name="bank" data-width="100%" data-select2-id="1" tabindex="-1" aria-hidden="true">
                               <option value="BCP" data-select2-id="3">BCP</option>
-                                 <option value="Banco de la" data-select2-id="12">Banco de la</option>
-                                 <option value="Nacion" data-select2-id="13">Nacion</option>
+                                 <option value="Banco de la Nacion" data-select2-id="12">Banco de la Nacion</option>
                                  <option value="BBVA Continental" data-select2-id="14">BBVA Continental</option>
                                  <option value="Interbank" data-select2-id="15">Interbank</option>
                                  <option value="Banco pichincha" data-select2-id="15">Banco pichincha</option>

@@ -52,7 +52,7 @@
                 <a href="add-client"><button type="submit"  class="btn btn-grabar">Agregar Partes interesadas</button></a>
                 <a href="add-client"><button type="submit"  class="btn btn-grabar">Agregar Instrumentos</button></a>
                 <br><br>
-                <a href="add-client"><button type="submit"  class="btn btn-grabar">Agregar Productos a fabricar</button></a>
+                <a href="product-to-be-manufactured"><button type="submit"  class="btn btn-grabar">Agregar Productos a fabricar</button></a>
 
 
 

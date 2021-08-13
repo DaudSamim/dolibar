@@ -44,8 +44,11 @@
                      <a href="/create_project"
                         class="nav-link ">Crear Proyecto</a>
                   </li>
-                  
                   <li class="nav-item">
+                     <a href="/search_project" class="nav-link ">Vista resumen de la obra</a>
+                  </li>
+                  
+                  <!-- <li class="nav-item">
                      <a href="#"
                         class="nav-link ">Gantt
                      </a>
@@ -54,6 +57,9 @@
                      <a href="#"
                         class="nav-link ">Status de los proyectos
                      </a>
+                  </li> -->
+                  <li class="nav-item">
+                     <a href="/product-to-be-manufactured" class="nav-link ">Producto a fabricar</a>
                   </li>
                </ul>
             </div>
@@ -71,20 +77,23 @@
                      <a href="/new_employee" class="nav-link ">Crear trabajador</a>
                   </li>
                   <li class="nav-item">
+                     <a href="/add-client"
+                        class="nav-link ">Crear cliente</a>
+                  </li>
+                  <li class="nav-item">
                      <a href="add-to-the-system" class="nav-link ">Agregar al sistema</a>
                   </li>
+                  
                   <li class="nav-item">
                      <a href="/daily_worker_performance" class="nav-link ">Desempeño diario del trabajador</a>
                   </li>
                   <li class="nav-item">
                      <a href="/work-performance" class="nav-link "> Desempeño de la obra</a>
                   </li>
-                  <li class="nav-item">
-                     <a href="/search_project" class="nav-link ">Vista resumen de la obra</a>
-                  </li>
-                   <li class="nav-item">
+                  
+                   <!-- <li class="nav-item">
                      <a href="/#" class="nav-link ">Vista resumen de los trabajadores</a>
-                  </li>
+                  </li> -->
                </ul>
             </div>
          </li>
@@ -103,11 +112,11 @@
                         class="nav-link ">Crear Materiales</a>
                   </li>
                   
-                  <li class="nav-item">
+                  <!-- <li class="nav-item">
                      <a href="#"
                         class="nav-link ">Crear Status
                      </a>
-                  </li>
+                  </li> -->
                   <li class="nav-item">
                      <a href="/material-stock"
                         class="nav-link ">Stock de materiales
@@ -118,17 +127,21 @@
                         class="nav-link ">materiales Carro
                      </a>
                   </li>
-                  <li class="nav-item">
+                  <!-- <li class="nav-item">
                      <a href="/material-edit"
                         class="nav-link ">Materiales Editar
                      </a>
-                  </li>
-                  <li class="nav-item">
+                  </li> -->
+                  <!-- <li class="nav-item">
                      <a href="#"
                         class="nav-link ">Asignar materiales a proyectos
                      </a>
-                  </li>
+                  </li> -->
                   <li class="nav-item">
+                     <a href="/view-materials"
+                        class="nav-link ">Lista de materiales</a>
+                  </li>
+                  <!-- <li class="nav-item">
                      <a data-toggle="collapse" href="#ip341" role="button" aria-expanded="false"
                         aria-controls=ip341 href="/new_employee"
                         class="nav-link ">Almacén <i class="link-arrow" data-feather="chevron-down"></i></a>
@@ -160,7 +173,7 @@
                            </li>
                         </ul>
                      </div>
-                  </li>
+                  </li> -->
                </ul>
             </div>
          </li>
@@ -241,10 +254,7 @@
                         class="nav-link ">Agregar fabricación</a>
                   </li>
                   
-                  <li class="nav-item">
-                     <a href="/view-materials"
-                        class="nav-link ">Productos en proceso</a>
-                  </li>
+                  
                   
                   <li class="nav-item">
                      <a href="#"
@@ -271,10 +281,7 @@
             <div class="collapse"
                id="ip56">
                <ul class="nav sub-menu">
-                  <li class="nav-item">
-                     <a href="/add-client"
-                        class="nav-link ">Crear cliente</a>
-                  </li>
+                  
                   <li class="nav-item">
                      <a href="/add-services"
                         class="nav-link ">Crear Servicio

@@ -113,11 +113,11 @@
                         <input type="text" value="{{old('sex')}}" class="form-control" id="exampleInputUsername1"
                             name="sex" autocomplete="off" placeholder="">
                     </div>
-                    <div class="form-group form-inline-custom">
+                    <!-- <div class="form-group form-inline-custom">
                         <label for="exampleInputUsername1">Ubicación</label>
                         <input type="text" value="{{old('location')}}" class="form-control" id="exampleInputUsername1"
                             name="location" autocomplete="off" placeholder="">
-                    </div>
+                    </div> -->
                     <div class="form-group form-inline-custom">
                         <label for="exampleInputUsername1">Producto de interés</label>
                         <input type="text" value="{{old('interest')}}" class="form-control" id="exampleInputUsername1"
@@ -144,14 +144,23 @@
 </div>
 
 <script>
-    c = 1;
-    $(document).ready(function(){
-  $('.addmore').on('click', function(){
-     
-  c = c + 1;
-    $(this).closest('.addings').before(`
+    fon = 1;
+    $(document).ready(function () {
+        $('.addmore').on('click', function () {
+
+
+
+            fon = fon + 1;
+
+
+            $(this).closest('.addings').before(`
+    <div class="minus">
+                    <button style="float:right!important" type="button" onclick="removecontact('` + fon + `')"id="` +
+                fon + `" class="btn btn addmore"><h5 style="color:red;">X</h5></button>
+                    <br>
+                    <br>
                     <div class="form-group form-inline-custom">
-                        <label for="exampleInputUsername1">Nombre persona de contacto ` + c +`</label>
+                        <label for="exampleInputUsername1">Nombre persona de contacto</label>
                         <input type="text" value="{{old('name_contact[]')}}" class="form-control"
                             id="exampleInputPassword1" name="name_contact[]" autocomplete="off" placeholder=""
                             aria-autocomplete="list">
@@ -169,9 +178,17 @@
                             id="exampleInputPassword1" name="address_contact[]" autocomplete="off" placeholder=""
                             aria-autocomplete="list">
                     </div> 
-                    <hr>`);
-               
-  });
- });
+                    <hr>
+                    </div>`);
+
+        });
+    });
+
+    function removecontact(yes) {
+        var o = "#" + yes;
+        $(o).closest('.minus').remove();
+        fon = fon - 1;
+    }
+
 </script>
 @endsection

@@ -79,9 +79,7 @@ class HomeController extends Controller
             'address' => 'required',
             'province' => 'required',
             'mobile' => 'required|integer|min:12|unique:employees',
-            'emergency_number' => 'digits_between:7,12|required',
             'salary' => 'required',
-            'working_hours' => 'required',
             'type'=> 'required',
         ]);
 
@@ -107,11 +105,12 @@ class HomeController extends Controller
 
     public function SearchProject(Request $request)
     {
-        $fecha = $request->fecha;
-        $work = $request->work;
-        if(isset($request->fecha) && isset($request->work)){
 
-            $projects = DB::table('projects')->where('status', $request->work)->where('start_date', $request->fecha)->get();
+        $work = $request->work;
+        $int = (int)$work;
+        if(isset($request->id) && isset($request->work)){
+
+            $projects = DB::table('projects')->where('status', $int)->where('id', $request->id)->get();
             foreach($projects as $row){
                 $workers = DB::table('daily_work_performance')->where('project_id',$row->id)->get();
                 $labour = null;
@@ -120,16 +119,30 @@ class HomeController extends Controller
                 }
                 $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
                  $total_tasks = DB::table('daily_work_performance')->where('project_id',$row->id)->count();
+                 $total_sum_material = DB::table('project_material')->where('project_id',$row->id)->get();
+                    $counting = 0;
+                    foreach($total_sum_material as $sum){
+                        $price = DB::table('materials')->where('id',$sum->material_id)->first();
+                        if(isset($price)){
+                            $counting = $counting + ($price->per_unit_price * $sum->quantity);
+                        }
+                        
+        
+                    }
                     $row->progress = $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->sum('working_time') / DB::table('project_operator')->where('project_id',$row->id)->sum('total_hour') * 100;
                 $row->labour_cost = $labour;
-                $row->current_task = $recent_task;                
+                $row->current_task = $recent_task; 
+                $engineer = DB::table('employees')->where('id',$row->engineer_incharge)->pluck('name')->first();
+            $row->engineers = $engineer;      
+            $row->material_cost = $counting;         
             }
-            return view('search_project', compact('projects','work','fecha'));
+            $proyecto = DB::table('projects')->get();
+            return view('search_project', compact('projects','proyecto'));
             }
 
-            else if(isset($request->fecha)){
-
-                $projects = DB::table('projects')->where('start_date', $request->fecha)->get();
+            else if(isset($request->id)){
+                
+                $projects = DB::table('projects')->where('id', $request->id)->get();
                 foreach($projects as $row){
                     $workers = DB::table('daily_work_performance')->where('project_id',$row->id)->get();
                     $labour = null;
@@ -139,14 +152,29 @@ class HomeController extends Controller
                     $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
 
                     $total_tasks = DB::table('daily_work_performance')->where('project_id',$row->id)->count();
+                    $total_sum_material = DB::table('project_material')->where('project_id',$row->id)->get();
+                    $counting = 0;
+                    foreach($total_sum_material as $sum){
+                        $price = DB::table('materials')->where('id',$sum->material_id)->first();
+                        if(isset($price)){
+                            $counting = $counting + ($price->per_unit_price * $sum->quantity);
+                        }
+                        
+        
+                    }
                     $row->progress = $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->sum('working_time') / DB::table('project_operator')->where('project_id',$row->id)->sum('total_hour') * 100;
                     $row->labour_cost = $labour;
                     $row->current_task = $recent_task;
+                    $engineer = DB::table('employees')->where('id',$row->engineer_incharge)->pluck('name')->first();
+            $row->engineers = $engineer; 
+            $row->material_cost = $counting;
+ 
+
                     
                 }
                 
-                return view('search_project', compact('projects','fecha'));
-                
+                $proyecto = DB::table('projects')->get();
+                return view('search_project', compact('projects','proyecto'));                
             }
             
             else if (isset($request->work)){
@@ -158,17 +186,26 @@ class HomeController extends Controller
                         $labour += DB::table('employees')->where('id',$value->employee_id)->pluck('salary')->first() * $value->working_time;
                     }
                     $recent_task = DB::table('project_task')->where('project_id',$row->id)->pluck('task_name')->first();
-
+                    $total_sum_material = DB::table('project_material')->where('project_id',$row->id)->get();
+                    $counting = 0;
+                    foreach($total_sum_material as $sum){
+                        $price = DB::table('materials')->where('id',$sum->material_id)->first();
+                        if(isset($price)){
+                            $counting = $counting + ($price->per_unit_price * $sum->quantity);
+                        }
+                        
+        
+                    }
+                    $row->material_cost = $counting;
                      $total_tasks = DB::table('daily_work_performance')->where('project_id',$row->id)->count();
                     $row->progress = $row->progress = DB::table('daily_work_performance')->where('project_id',$row->id)->sum('working_time') / DB::table('project_operator')->where('project_id',$row->id)->sum('total_hour') * 100;
                     $row->labour_cost = $labour;
                     $row->current_task = $recent_task;
-                    
-                }
-                
-                return view('search_project', compact('projects','work'));
-
-
+                    $engineer = DB::table('employees')->where('id',$row->engineer_incharge)->pluck('name')->first();
+            $row->engineers = $engineer;       
+                }  
+                $proyecto = DB::table('projects')->get();
+                return view('search_project', compact('projects','proyecto'));  
             }
                 
             return redirect()->back();
@@ -235,7 +272,6 @@ class HomeController extends Controller
 
         $this->validate($request, [
             'manufacturer' => 'required',
-            'types_of_material' => 'required',
             'quality' => 'required',
 
 
@@ -366,7 +402,25 @@ class HomeController extends Controller
 
     public function postAddProject(Request $request)
     {
-        
+        $checking = count($request->total_task) - 1; 
+        $checking_counter = 0;
+        for(;$checking_counter <= $checking;$checking_counter++ )   {
+            if($checking_counter == $checking){
+                $yoo = $request->limits;
+                $yoo[$checking_counter] = end($yoo);
+
+                $count_limit = count($yoo) - 1;
+                if($count_limit == $checking_counter){
+                    break;
+                }
+                else{
+                    $checking_counter = $checking_counter + 1;
+                    for(;$checking_counter <= $count_limit;$checking_counter++){
+                        unset($yoo[$checking_counter]);
+                    }
+                }
+            }
+        }  
         if($request->start_date >= $request->delivery_date){
             return redirect()->back()->with('info', 'Start date should be GREATER THAN Delivery date');
         }
@@ -391,7 +445,7 @@ class HomeController extends Controller
                 'product_manufacturing' => $request->product_to_be_manufactured,
  
             ]);
-            $count_tasks = count($request->limits);
+            $count_tasks = count($yoo);
             $count = $count_tasks - 1;
 
             // $items = $request->get('name_task');
@@ -545,7 +599,7 @@ class HomeController extends Controller
                 'product_manufacturing' => $request->product_to_be_manufactured,
  
             ]);
-            $count_tasks = count($request->limits);
+            $count_tasks = count($yoo);
             $count = $count_tasks - 1;
 
             // $items = $request->get('name_task');
@@ -579,7 +633,7 @@ class HomeController extends Controller
 
                     
                     $task_id = DB::table('project_task')->orderby('id', 'desc')->pluck('id')->first();
-                    $yeen = $request->limits[$i];
+                    $yeen = $yoo[$i];
                     $ex = explode(',', $yeen[0]);
                     $int = (int)$ex[0];
 
@@ -634,7 +688,7 @@ class HomeController extends Controller
 
                     
                     $task_id = DB::table('project_task')->orderby('id', 'desc')->pluck('id')->first();
-                    $yeen = $request->limits[$i];
+                    $yeen = $yoo[$i];
                     $ex = explode(',', $yeen[0]);
                     $int = (int)$ex[0];
 
@@ -934,11 +988,6 @@ class HomeController extends Controller
             'ruc' => 'required',
             'age' => 'required',
             'category' => 'required',
-            'sex' => 'required',
-            'location' => 'required',
-            'interest' => 'required',
-            'profession' => 'required',
-            'others' => 'required',
 
 
         ]);        
@@ -1124,5 +1173,47 @@ class HomeController extends Controller
         }
     return view('kardex', compact('quantity','gross_total','materials','created_date','reason','id','income','exit'));
 
+    }
+    public function getproduct_manufactured(){
+        $get_product_id = DB::table('projects')->get();
+        $search = DB::table('projects')->get();
+        return view('product_to_be_manufactured', compact('get_product_id','search'));
+
+    }
+    public function search_product_manufacturing(Request $request){
+        $get_product_id = DB::table('projects')->where('id',$request->product_id)->get();
+        $search = DB::table('projects')->get();
+        return view('product_to_be_manufactured', compact('get_product_id','search'));
+
+    }
+    public function add_another_material(Request $request){
+        $count = count($request->material_name) - 1;
+
+        for($i = 0;$i <= $count;$i++){
+            DB::table('project_material')->insert([
+                'project_id' => $request->id,
+                'task_id' => $request->task,
+                'material_id' => $request->get('material_name')[$i],
+                'quantity' => $request->get('material_quantity')[$i],
+        ]);
+        }
+        return redirect('/search_project')->with('info', 'Added Material Successfully');
+
+    }
+    public function edit_another_material(Request $request){
+        // $count = count($request->material_name) - 1;
+
+        // for($i = 0;$i <= $count;$i++){
+        //     DB::table('project_material')->insert([
+        //         'project_id' => $request->id,
+        //         'task_id' => $request->task,
+        //         'material_id' => $request->get('material_name')[$i],
+        //         'quantity' => $request->get('material_quantity')[$i],
+        // ]);
+        // }
+        return redirect('/search_project')->with('info', 'You have edited Materials Successfully');
+
+
+        
     }
 }

@@ -45,14 +45,25 @@
                         <h5>Días restantes</h5>
                      </div>
                      <div class="div-border">
+                        @php 
+                        $count = count($projects);
+                        @endphp
+                        @if($count >= 1)
+                     @foreach($projects as $project)
                         <div class="div-flex">
-                           <span>Rejillas metalicas</span>
-                           <span>15 dias</span>
+                        
+                        @php 
+                        $result = $date->diffInDays($project->delivery_date, false);
+                        @endphp
+                           <span>{{$project->project}}</span>
+                           <span>{{$result}}</span>
+                        
                         </div>
-                        <div class="div-flex">
-                           <span>Cercos metalicos</span>
-                           <span class="text-danger">3 dias</span>
-                        </div>
+                        @endforeach
+                        @else
+                        <span>No Project to show</span>
+                        @endif
+                        
                      </div>
                   </div>
                </div>
